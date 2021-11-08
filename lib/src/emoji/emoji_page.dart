@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../clipboard/cubit/clipboard_cubit.dart';
 import '../settings/settings_page.dart';
 import 'cubit/emoji_cubit.dart';
 import 'emoji.dart';
@@ -52,15 +51,26 @@ class CategoryListView extends StatelessWidget {
     return ConstrainedBox(
       // Constrain width to be just big enough to fit the buttons.
       constraints: const BoxConstraints(maxWidth: 180),
-      child: ListView(
-        controller: sidebarScrollController,
-        children: [
-          for (final category in EmojiCategory.values)
-            ListTile(
-              title: Center(child: Text(category.value)),
-              onTap: () => emojiCubit.setCategory(category),
-            ),
-        ],
+      child: BlocBuilder<EmojiCubit, EmojiState>(
+        builder: (context, state) {
+          return ListView.builder(
+            controller: sidebarScrollController,
+            itemCount: EmojiCategory.values.length,
+            itemBuilder: (context, index) {
+              final category = EmojiCategory.values[index];
+              if ((category == EmojiCategory.recent) &&
+                  !state.haveRecentEmojis) {
+                // Only show recent category if we have any recents.
+                return const SizedBox();
+              } else {
+                return ListTile(
+                  title: Center(child: Text(category.value)),
+                  onTap: () => emojiCubit.setCategory(category),
+                );
+              }
+            },
+          );
+        },
       ),
     );
   }
@@ -82,7 +92,9 @@ class EmojiGridView extends StatelessWidget {
       child: Scrollbar(
         controller: gridviewScrollController,
         isAlwaysShown: true,
-        child: BlocListener<ClipboardCubit, ClipboardState>(
+        child: BlocListener<EmojiCubit, EmojiState>(
+          listenWhen: (previous, current) =>
+              previous.copiedEmoji != current.copiedEmoji,
           listener: (context, state) {
             // Show a notification when an emoji is copied to clipboard.
             if (state.copiedEmoji == null) return;
@@ -129,9 +141,7 @@ class EmojiGridView extends StatelessWidget {
                       child: InkWell(
                         hoverColor: Colors.lightBlue,
                         onTap: () async {
-                          await clipboardCubit.setClipboardContents(
-                            emoji.emoji,
-                          );
+                          await emojiCubit.userSelectedEmoji(emoji);
                         },
                         radius: 50,
                         child: Text(

@@ -15,6 +15,16 @@ void main() {
     // Verify there is no notification shown at start.
     expect(find.byType(SnackBar), findsNothing);
 
+    // Find the 'All' category button.
+    // We want to switch from 'Recent' if needs be for the test.
+    final categoryButton = find.text('All');
+
+    // Switch to the 'All' category.
+    await tester.tap(categoryButton);
+
+    // Ensure the transition to the new category has completed.
+    await tester.pumpAndSettle();
+
     // Find an emoji to tap on.
     final emojiWidget = find.text('😃');
 

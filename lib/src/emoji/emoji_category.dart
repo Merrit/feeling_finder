@@ -1,4 +1,5 @@
 enum EmojiCategory {
+  recent,
   all,
   smileys,
   peopleAndBody,
@@ -20,6 +21,8 @@ enum EmojiCategory {
 extension EmojiCategoryHelper on EmojiCategory {
   String get value {
     switch (this) {
+      case EmojiCategory.recent:
+        return 'Recent';
       case EmojiCategory.all:
         return 'All';
       case EmojiCategory.smileys:

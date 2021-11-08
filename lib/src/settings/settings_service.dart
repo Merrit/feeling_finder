@@ -1,12 +1,45 @@
 import 'package:flutter/material.dart';
 
+import '../emoji/emoji.dart';
+import '../emoji/emoji_service.dart';
 import '../storage/storage_service.dart';
 
 /// Stores and retrieves user settings.
 class SettingsService {
+  final EmojiService _emojiService;
   final StorageService _storageService;
 
-  SettingsService(this._storageService);
+  SettingsService(this._emojiService, this._storageService);
+
+  /// In-memory variable for the recent emojis list.
+  final List<Emoji> _recentEmojis = [];
+
+  /// Loads the list of recent emojis from storage.
+  List<Emoji> recentEmojis() {
+    if (_recentEmojis.isNotEmpty) return _recentEmojis;
+    final List<String>? emojiStringList = _storageService.getValue(
+      'recentEmojis',
+    );
+    if (emojiStringList == null) return [];
+    if (emojiStringList.isEmpty) return [];
+    for (var emoji in emojiStringList) {
+      final emojiObject = _emojiService.emojiObjectFromString(emoji);
+      if (emojiObject != null) _recentEmojis.add(emojiObject);
+    }
+    return _recentEmojis;
+  }
+
+  /// Updates the list of recent emojis in storage.
+  Future<void> saveRecentEmoji(Emoji emoji) async {
+    if (_recentEmojis.contains(emoji)) return; // Don't add duplicates.
+    if (_recentEmojis.length == 20) _recentEmojis.removeLast();
+    _recentEmojis.insert(0, emoji);
+    final emojiStringList = _recentEmojis.map((e) => e.emoji).toList();
+    await _storageService.saveValue(
+      key: 'recentEmojis',
+      value: emojiStringList,
+    );
+  }
 
   /// Loads the user's preferred ThemeMode from storage.
   Future<ThemeMode> themeMode() async {

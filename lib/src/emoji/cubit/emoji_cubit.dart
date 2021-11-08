@@ -2,6 +2,8 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 
+import '../../clipboard/clipboard_service.dart';
+import '../../settings/settings_service.dart';
 import '../emoji.dart';
 import '../emoji_category.dart';
 import '../emoji_service.dart';
@@ -18,28 +20,46 @@ late EmojiCubit emojiCubit;
 /// Controls the state of [EmojiPage] and connects the
 /// view to the [EmojiService].
 class EmojiCubit extends Cubit<EmojiState> {
+  final ClipboardService _clipboardService;
   final EmojiService _emojiService;
+  final SettingsService _settingsService;
 
   EmojiCubit(
+    this._clipboardService,
     this._emojiService,
-    // TODO: Persist category choice to disk and load that before the
-    // cubit, then we can request correct category right away.
-  ) : super(EmojiState.initial()) {
+    this._settingsService,
+  ) : super(EmojiState.initial(_settingsService.recentEmojis())) {
     emojiCubit = this;
-    setCategory(EmojiCategory.all);
+
+    /// If there were no recent emojis we start with the 'All' category.
+    /// We call [setCategory] in the constructor so the emoji list can be built.
+    if (state.emojis.isEmpty) setCategory(EmojiCategory.all);
   }
 
   /// Sets the list of loaded emojis to the requested [category].
   void setCategory(EmojiCategory category) {
     List<Emoji> emojis;
-    if (category == EmojiCategory.all) {
-      emojis = _emojiService.allEmojis();
-    } else {
-      emojis = _emojiService.emojisByCategory(category);
+    switch (category) {
+      case EmojiCategory.recent:
+        emojis = _settingsService.recentEmojis();
+        break;
+      case EmojiCategory.all:
+        emojis = _emojiService.allEmojis();
+        break;
+      default:
+        emojis = _emojiService.emojisByCategory(category);
     }
-    emit(EmojiState(
+    emit(state.copyWith(
       category: category,
       emojis: emojis,
     ));
+  }
+
+  /// The user has clicked or tapped an emoji to be copied.
+  Future<void> userSelectedEmoji(Emoji emoji) async {
+    await _clipboardService.setClipboardContents(emoji.emoji);
+    // Trigger copy notification.
+    emit(state.copyWith(copiedEmoji: emoji.emoji));
+    await _settingsService.saveRecentEmoji(emoji);
   }
 }

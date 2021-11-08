@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:collection/collection.dart';
+
 import 'emoji.dart';
 import 'emoji_category.dart';
 
@@ -32,5 +34,17 @@ class EmojiService {
     return _allEmojis!
         .where((emoji) => emoji.category == category.value)
         .toList();
+  }
+
+  /// Returns an [Emoji] object representation of the [emojiString] passed in.
+  /// If the [emojiString] doesn't match any emojis the return is null.
+  ///
+  /// Example: pass in 🌅 and return is an [Emoji] object whose [Emoji.emoji] is 🌅.
+  Emoji? emojiObjectFromString(String emojiString) {
+    allEmojis(); // Ensure the emoji list has populated.
+    final matchingEmoji = _allEmojis!.firstWhereOrNull(
+      (element) => element.emoji == emojiString,
+    );
+    return matchingEmoji;
   }
 }
