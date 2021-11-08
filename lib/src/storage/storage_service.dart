@@ -28,14 +28,11 @@ class StorageService {
     _generalBox = await Hive.openBox('general');
   }
 
-  /// Persist a string to local disk storage.
-  void setString({required String key, required String value}) {
-    _generalBox!.put(key, value);
+  /// Persist a value to local disk storage.
+  Future<void> saveValue({required String key, required dynamic value}) async {
+    await _generalBox!.put(key, value);
   }
 
-  /// Get a string from local disk storage.
-  String? getString(String key) {
-    final String? unboxedValue = _generalBox!.get(key);
-    return unboxedValue;
-  }
+  /// Get a value from local disk storage.
+  dynamic getValue(String key) => _generalBox!.get(key);
 }
