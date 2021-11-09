@@ -6,6 +6,7 @@ import 'cubit/emoji_cubit.dart';
 import 'emoji.dart';
 import 'emoji_category.dart';
 import 'styles.dart';
+import 'widgets/emoji_tile.dart';
 
 /// The app's primary page, containing the category buttons & emoji grid.
 class EmojiPage extends StatelessWidget {
@@ -21,6 +22,8 @@ class EmojiPage extends StatelessWidget {
       appBar: AppBar(
         actions: [
           IconButton(
+            // Keyboard navigation shouldn't focus settings button.
+            focusNode: FocusNode(skipTraversal: true),
             onPressed: () {
               Navigator.restorablePushNamed(context, SettingsPage.routeName);
             },
@@ -132,29 +135,7 @@ class EmojiGridView extends StatelessWidget {
                 itemBuilder: (context, index) {
                   final Emoji emoji = state.emojis[index];
 
-                  return Center(
-                    child: Tooltip(
-                      waitDuration: const Duration(milliseconds: 400),
-                      richMessage: TextSpan(
-                        text: emoji.description,
-                        style: const TextStyle(fontSize: 12),
-                      ),
-                      child: InkWell(
-                        hoverColor: Colors.lightBlue,
-                        onTap: () async {
-                          await emojiCubit.userSelectedEmoji(emoji);
-                        },
-                        radius: 50,
-                        child: Text(
-                          emoji.emoji,
-                          style: const TextStyle(
-                            fontSize: 35,
-                            fontFamily: emojiFont,
-                          ),
-                        ),
-                      ),
-                    ),
-                  );
+                  return EmojiTile(emoji, index);
                 },
               );
             },
