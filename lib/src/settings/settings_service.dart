@@ -31,7 +31,11 @@ class SettingsService {
 
   /// Updates the list of recent emojis in storage.
   Future<void> saveRecentEmoji(Emoji emoji) async {
-    if (_recentEmojis.contains(emoji)) return; // Don't add duplicates.
+    if (_recentEmojis.contains(emoji)) {
+      // Don't add duplicates.
+      // Remove & re-add so it becomes the most recent.
+      _recentEmojis.remove(emoji);
+    }
     if (_recentEmojis.length == 20) _recentEmojis.removeLast();
     _recentEmojis.insert(0, emoji);
     final emojiStringList = _recentEmojis.map((e) => e.emoji).toList();
