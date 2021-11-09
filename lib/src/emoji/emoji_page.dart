@@ -65,6 +65,7 @@ class CategoryListView extends StatelessWidget {
               } else {
                 return ListTile(
                   title: Center(child: Text(category.value)),
+                  selected: (state.category == category),
                   onTap: () => emojiCubit.setCategory(category),
                 );
               }
