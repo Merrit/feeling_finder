@@ -1,4 +1,8 @@
+import 'dart:developer';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../settings/settings_page.dart';
@@ -18,24 +22,35 @@ class EmojiPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        actions: [
-          IconButton(
-            // Keyboard navigation shouldn't focus settings button.
-            focusNode: FocusNode(skipTraversal: true),
-            onPressed: () {
-              Navigator.restorablePushNamed(context, SettingsPage.routeName);
-            },
-            icon: const Icon(Icons.settings),
-          ),
-        ],
-      ),
-      body: Row(
-        children: const [
-          CategoryListView(),
-          EmojiGridView(),
-        ],
+    return FocusScope(
+      // Exit app if user presses escape.
+      onKey: (FocusNode node, RawKeyEvent event) {
+        if (event.isKeyPressed(LogicalKeyboardKey.escape)) {
+          log('Escape pressed, exiting.');
+          exit(0);
+        } else {
+          return KeyEventResult.ignored;
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          actions: [
+            IconButton(
+              // Keyboard navigation shouldn't focus settings button.
+              focusNode: FocusNode(skipTraversal: true),
+              onPressed: () {
+                Navigator.restorablePushNamed(context, SettingsPage.routeName);
+              },
+              icon: const Icon(Icons.settings),
+            ),
+          ],
+        ),
+        body: Row(
+          children: const [
+            CategoryListView(),
+            EmojiGridView(),
+          ],
+        ),
       ),
     );
   }
