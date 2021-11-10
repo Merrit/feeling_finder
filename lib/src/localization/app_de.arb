@@ -1,5 +1,6 @@
 {
   "appTitle": "Feeling Finder",
+  "searchHintText": "Suche..",
   "settings": "Einstellungen",
   "exitAfterCopy": "Beenden nach dem Kopieren",
   "theme": "Thema",

@@ -10,7 +10,7 @@ import 'cubit/emoji_cubit.dart';
 import 'emoji.dart';
 import 'emoji_category.dart';
 import 'styles.dart';
-import 'widgets/emoji_tile.dart';
+import 'widgets/widgets.dart';
 
 /// The app's primary page, containing the category buttons & emoji grid.
 class EmojiPage extends StatelessWidget {
@@ -22,18 +22,16 @@ class EmojiPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final searchBoxFocusNode = FocusNode();
+
     return FocusScope(
-      // Exit app if user presses escape.
       onKey: (FocusNode node, RawKeyEvent event) {
-        if (event.isKeyPressed(LogicalKeyboardKey.escape)) {
-          log('Escape pressed, exiting.');
-          exit(0);
-        } else {
-          return KeyEventResult.ignored;
-        }
+        return handleShortcuts(event, searchBoxFocusNode);
       },
       child: Scaffold(
         appBar: AppBar(
+          centerTitle: true,
+          title: SearchBox(focusNode: searchBoxFocusNode),
           actions: [
             IconButton(
               // Keyboard navigation shouldn't focus settings button.
@@ -53,6 +51,37 @@ class EmojiPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  /// Decides what to do when keystrokes are detected.
+  KeyEventResult handleShortcuts(
+      RawKeyEvent event, FocusNode searchBoxFocusNode) {
+    const navigationKeys = <LogicalKeyboardKey>[
+      LogicalKeyboardKey.escape,
+      LogicalKeyboardKey.tab,
+      LogicalKeyboardKey.arrowUp,
+      LogicalKeyboardKey.arrowDown,
+      LogicalKeyboardKey.arrowLeft,
+      LogicalKeyboardKey.arrowRight,
+    ];
+
+    final isNavigationKeys = navigationKeys.contains(event.logicalKey);
+
+    // If the key is not for navigating, start searching.
+    if (!isNavigationKeys) {
+      searchBoxFocusNode.requestFocus();
+      return KeyEventResult.ignored;
+    }
+
+    final isEscapeKey = event.isKeyPressed(LogicalKeyboardKey.escape);
+
+    // Exit app if user presses escape.
+    if (isEscapeKey) {
+      log('Escape pressed, exiting.');
+      exit(0);
+    } else {
+      return KeyEventResult.ignored;
+    }
   }
 }
 

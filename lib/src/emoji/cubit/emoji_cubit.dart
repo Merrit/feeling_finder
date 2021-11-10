@@ -39,6 +39,28 @@ class EmojiCubit extends Cubit<EmojiState> {
     if (state.emojis.isEmpty) setCategory(EmojiCategory.all);
   }
 
+  /// Search and filter for an emoji that matches [searchString].
+  void search(String searchString) {
+    // TODO: This is a terrible way to search.
+    final allEmojis = _emojiService.allEmojis();
+    final filteredEmojis = <Emoji>[];
+    for (var emoji in allEmojis) {
+      final haveDescriptionMatch = emoji.description.contains(searchString);
+      final haveAliasMatch = emoji.aliases.any(
+        (element) => element.contains(searchString),
+      );
+      final haveTagMatch = emoji.aliases.any(
+        (element) => element.contains(searchString),
+      );
+      final haveMatch = haveDescriptionMatch || haveAliasMatch || haveTagMatch;
+      if (haveMatch) filteredEmojis.add(emoji);
+    }
+    emit(state.copyWith(
+      category: EmojiCategory.all,
+      emojis: filteredEmojis,
+    ));
+  }
+
   /// Sets the list of loaded emojis to the requested [category].
   void setCategory(EmojiCategory category) {
     List<Emoji> emojis;
