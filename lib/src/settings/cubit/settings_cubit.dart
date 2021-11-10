@@ -20,9 +20,18 @@ class SettingsCubit extends Cubit<SettingsState> {
   SettingsCubit(
     this._settingsService,
   ) : super(
-          SettingsState(themeMode: _settingsService.themeMode()),
+          SettingsState(
+            exitOnCopy: _settingsService.exitOnCopy(),
+            themeMode: _settingsService.themeMode(),
+          ),
         ) {
     settingsCubit = this;
+  }
+
+  /// Update and persist whether the app should exit after copy.
+  Future<void> updateExitOnCopy(bool value) async {
+    emit(state.copyWith(exitOnCopy: value));
+    await _settingsService.saveExitOnCopy(value);
   }
 
   /// Update and persist the ThemeMode based on the user's selection.

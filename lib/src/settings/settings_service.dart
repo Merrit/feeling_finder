@@ -11,6 +11,15 @@ class SettingsService {
 
   SettingsService(this._emojiService, this._storageService);
 
+  bool exitOnCopy() {
+    final shouldExit = _storageService.getValue('exitOnCopy') as bool?;
+    return shouldExit ?? false;
+  }
+
+  Future<void> saveExitOnCopy(bool value) async {
+    await _storageService.saveValue(key: 'exitOnCopy', value: value);
+  }
+
   /// In-memory variable for the recent emojis list.
   final List<Emoji> _recentEmojis = [];
 

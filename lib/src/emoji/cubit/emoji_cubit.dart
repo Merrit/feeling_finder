@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 
 import '../../clipboard/clipboard_service.dart';
+import '../../settings/cubit/settings_cubit.dart';
 import '../../settings/settings_service.dart';
 import '../emoji.dart';
 import '../emoji_category.dart';
@@ -57,9 +60,22 @@ class EmojiCubit extends Cubit<EmojiState> {
 
   /// The user has clicked or tapped an emoji to be copied.
   Future<void> userSelectedEmoji(Emoji emoji) async {
+    // Copy emoji to clipboard.
     await _clipboardService.setClipboardContents(emoji.emoji);
-    // Trigger copy notification.
-    emit(state.copyWith(copiedEmoji: emoji.emoji));
+
+    // Check if the preference to exit on copy is set.
+    final shouldExitApp = settingsCubit.state.exitOnCopy;
+
+    if (!shouldExitApp) {
+      // Trigger copy notification.
+      // We don't want to bother if the app will be closing immediately.
+      emit(state.copyWith(copiedEmoji: emoji.emoji));
+    }
+
+    // Update the list of recent emojis.
     await _settingsService.saveRecentEmoji(emoji);
+
+    // Exit the app if the preference for that is true.
+    if (shouldExitApp) exit(0);
   }
 }
