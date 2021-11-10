@@ -1,36 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'emoji/emoji_page.dart';
-import 'settings/settings_controller.dart';
+import 'settings/cubit/settings_cubit.dart';
 import 'settings/settings_page.dart';
 
 /// The base widget that configures the application.
 class App extends StatelessWidget {
-  final SettingsController settingsController;
-
   const App({
     Key? key,
-    required this.settingsController,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    // Glue the SettingsController to the MaterialApp.
-    //
-    // The AnimatedBuilder Widget listens to the SettingsController for changes.
-    // Whenever the user updates their settings, the MaterialApp is rebuilt.
-    return AnimatedBuilder(
-      animation: settingsController,
-      builder: (BuildContext context, Widget? child) {
+    // The BlocBuilder widget will rebuild the
+    // MaterialApp whenever the ThemeMode is changed.
+    return BlocBuilder<SettingsCubit, SettingsState>(
+      buildWhen: (previous, current) => previous.themeMode != current.themeMode,
+      builder: (context, state) {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
 
           // Providing a restorationScopeId allows the Navigator built by the
           // MaterialApp to restore the navigation stack when a user leaves and
           // returns to the app after it has been killed while running in the
-          // background.
+          // background. This is a setting relevent to mobile devices.
           restorationScopeId: 'app',
 
           // Provide the generated AppLocalizations to the MaterialApp. This
@@ -57,10 +53,10 @@ class App extends StatelessWidget {
 
           // Define a light and dark color theme. Then, read the user's
           // preferred ThemeMode (light, dark, or system default) from the
-          // SettingsController to display the correct theme.
+          // SettingsCubit's state to display the correct theme.
           theme: ThemeData(),
           darkTheme: ThemeData.dark(),
-          themeMode: settingsController.themeMode,
+          themeMode: state.themeMode,
 
           // Define a function to handle named routes in order to support
           // Flutter web url navigation and deep linking.
@@ -70,7 +66,7 @@ class App extends StatelessWidget {
               builder: (BuildContext context) {
                 switch (routeSettings.name) {
                   case SettingsPage.routeName:
-                    return SettingsPage(controller: settingsController);
+                    return const SettingsPage();
                   default:
                     return const EmojiPage();
                 }

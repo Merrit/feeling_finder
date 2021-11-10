@@ -46,7 +46,7 @@ class SettingsService {
   }
 
   /// Loads the user's preferred ThemeMode from storage.
-  Future<ThemeMode> themeMode() async {
+  ThemeMode themeMode() {
     final theme = _storageService.getValue('ThemeMode');
     switch (theme) {
       case 'ThemeMode.dark':
