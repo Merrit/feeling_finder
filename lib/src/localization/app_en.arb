@@ -4,6 +4,8 @@
     "description": "The title of the application"
   },
   "settings": "Settings",
+  "exitAfterCopy": "Exit after copying",
+  "theme": "Theme",
   "systemTheme": "System Theme",
   "lightTheme": "Light Theme",
   "darkTheme": "Dark Theme"

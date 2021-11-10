@@ -21,18 +21,20 @@ class SettingsPage extends StatelessWidget {
       ),
       body: Center(
         child: SizedBox(
-          width: 350,
+          width: 450,
           child: Column(
             children: [
-              Padding(
-                padding: const EdgeInsets.all(16),
-                // Glue the SettingsController to the theme selection DropdownButton.
-                //
-                // When a user selects a theme from the dropdown list, the
-                // SettingsController is updated, which rebuilds the MaterialApp.
-                child: BlocBuilder<SettingsCubit, SettingsState>(
-                  builder: (context, state) {
-                    return DropdownButton<ThemeMode>(
+              const SizedBox(height: 50),
+
+              // Glue the SettingsCubit to the theme selection DropdownButton.
+              //
+              // When a user selects a theme from the dropdown list, the
+              // SettingsCubit is updated, which rebuilds the MaterialApp.
+              BlocBuilder<SettingsCubit, SettingsState>(
+                builder: (context, state) {
+                  return ListTile(
+                    title: Text(AppLocalizations.of(context)!.theme),
+                    trailing: DropdownButton<ThemeMode>(
                       // Read the selected themeMode from the controller
                       value: state.themeMode,
                       // Call the updateThemeMode method any time the user selects a theme.
@@ -53,14 +55,17 @@ class SettingsPage extends StatelessWidget {
                           child: Text(AppLocalizations.of(context)!.darkTheme),
                         )
                       ],
-                    );
-                  },
-                ),
+                    ),
+                  );
+                },
               ),
+
+              const Divider(),
+
               BlocBuilder<SettingsCubit, SettingsState>(
                 builder: (context, state) {
                   return SwitchListTile(
-                    title: const Text('Exit after copying to clipboard'),
+                    title: Text(AppLocalizations.of(context)!.exitAfterCopy),
                     value: state.exitOnCopy,
                     onChanged: (value) => settingsCubit.updateExitOnCopy(value),
                   );

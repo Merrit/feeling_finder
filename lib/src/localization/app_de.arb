@@ -1,6 +1,8 @@
 {
   "appTitle": "Feeling Finder",
   "settings": "Einstellungen",
+  "exitAfterCopy": "Beenden nach dem Kopieren",
+  "theme": "Thema",
   "systemTheme": "Systemthema",
   "lightTheme": "Lichtthema",
   "darkTheme": "Dunkles Thema"
