@@ -1,3 +1,4 @@
+import 'package:feeling_finder/src/style/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -54,8 +55,8 @@ class App extends StatelessWidget {
           // Define a light and dark color theme. Then, read the user's
           // preferred ThemeMode (light, dark, or system default) from the
           // SettingsCubit's state to display the correct theme.
-          theme: ThemeData(),
-          darkTheme: ThemeData.dark(),
+          theme: AppTheme().themeData,
+          darkTheme: AppTheme().darkThemeData,
           themeMode: state.themeMode,
 
           // Define a function to handle named routes in order to support
