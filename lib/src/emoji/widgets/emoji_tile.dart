@@ -25,19 +25,23 @@ class EmojiTile extends StatelessWidget {
           text: emoji.description,
           style: const TextStyle(fontSize: 12),
         ),
-        child: InkWell(
-          focusNode: focusNode,
-          autofocus: (index == 0) ? true : false,
-          focusColor: Colors.lightBlue,
-          onHover: (value) => focusNode.requestFocus(),
-          onTap: () async {
-            await emojiCubit.userSelectedEmoji(emoji);
-          },
-          child: Text(
-            emoji.emoji,
-            style: const TextStyle(
-              fontSize: 35,
-              fontFamily: emojiFont,
+        child: MouseRegion(
+          onEnter: (_) => focusNode.requestFocus(),
+          onExit: (_) => focusNode.unfocus(),
+          child: InkWell(
+            focusNode: focusNode,
+            autofocus: (index == 0) ? true : false,
+            focusColor: Colors.lightBlue,
+            onTap: () async {
+              await emojiCubit.userSelectedEmoji(emoji);
+              focusNode.unfocus();
+            },
+            child: Text(
+              emoji.emoji,
+              style: const TextStyle(
+                fontSize: 35,
+                fontFamily: emojiFont,
+              ),
             ),
           ),
         ),
