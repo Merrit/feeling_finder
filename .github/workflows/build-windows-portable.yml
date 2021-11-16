@@ -1,0 +1,32 @@
+name: Build Windows
+
+on:
+  workflow_dispatch:
+  pull_request:
+  release:
+    types:
+      - created
+
+jobs:
+  build_and_preview:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: subosito/flutter-action@v1
+        with:
+          channel: beta
+      - name: Build Windows portable
+        run: |
+          flutter config --enable-windows-desktop
+          flutter pub get
+          flutter build windows
+
+          move build\windows\runner\Release build\feeling_finder
+
+          xcopy C:\Windows\System32\msvcp140.dll build\feeling_finder
+          xcopy C:\Windows\System32\vcruntime140.dll build\feeling_finder
+          xcopy C:\Windows\System32\vcruntime140_1.dll build\feeling_finder
+      - uses: actions/upload-artifact@v2
+        with:
+          name: feeling_finder-windows-portable
+          path: build\feeling_finder
