@@ -1,11 +1,12 @@
 name: Run tests
+
 on:
-  push:
-  pull_request:
   workflow_dispatch:
-  release:
-    types:
-      - created
+  pull_request:
+  push:
+    branches:
+      - master
+
 jobs:
   flutter_test:
     runs-on: ubuntu-latest
