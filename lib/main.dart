@@ -6,6 +6,7 @@ import 'src/app.dart';
 import 'src/emoji/cubit/emoji_cubit.dart';
 import 'src/emoji/emoji.json.dart';
 import 'src/emoji/emoji_service.dart';
+import 'src/helpers/helpers.dart';
 import 'src/settings/cubit/settings_cubit.dart';
 import 'src/settings/settings_service.dart';
 import 'src/storage/storage_service.dart';
@@ -53,5 +54,8 @@ void main() async {
   /// taking launch arguments to set a custom size / position / etc of
   /// the window before showing it, allowing the picker to appear
   /// in any custom manner desired.
-  window_size.setWindowVisibility(visible: true);
+  if (platformIsDesktop()) {
+    // Skip on non-desktop platforms as they have no windows to manage.
+    window_size.setWindowVisibility(visible: true);
+  }
 }

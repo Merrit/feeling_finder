@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -22,9 +23,12 @@ class StorageService {
   /// Initialize the storage access.
   /// Needs to be initialized only once, in the `main()` function.
   Future<void> init() async {
-    final dir = await getApplicationSupportDirectory();
-    // Defaults to ~/.local/share/feeling_finder/storage
-    Hive.init(dir.path + '/storage');
+    /// Hive needs to initialize, but not if we are running on web.
+    if (!kIsWeb) {
+      final dir = await getApplicationSupportDirectory();
+      // Defaults to ~/.local/share/feeling_finder/storage
+      Hive.init(dir.path + '/storage');
+    }
     _generalBox = await Hive.openBox('general');
   }
 
