@@ -1,0 +1,20 @@
+name: Build and publish web
+
+on:
+  workflow_dispatch:
+  release:
+    types:
+      - created
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2 # Only works with v2
+      - uses: subosito/flutter-action@v1
+        with:
+          channel: beta
+      - uses: bluefireteam/flutter-gh-pages@v7
+        with:
+          baseHref: /feeling_finder/
