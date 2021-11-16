@@ -13,7 +13,7 @@ import 'styles.dart';
 import 'widgets/widgets.dart';
 
 /// The app's primary page, containing the category buttons & emoji grid.
-class EmojiPage extends StatelessWidget {
+class EmojiPage extends StatefulWidget {
   static const routeName = '/';
 
   const EmojiPage({
@@ -21,9 +21,22 @@ class EmojiPage extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    final searchBoxFocusNode = FocusNode();
+  State<EmojiPage> createState() => _EmojiPageState();
+}
 
+class _EmojiPageState extends State<EmojiPage> {
+  late FocusScopeNode gridViewFocusNode;
+  late FocusNode searchBoxFocusNode;
+
+  @override
+  void initState() {
+    gridViewFocusNode = FocusScopeNode(debugLabel: 'gridViewFocusNode');
+    searchBoxFocusNode = FocusNode(debugLabel: 'searchBoxFocusNode');
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return FocusScope(
       onKey: (FocusNode node, RawKeyEvent event) {
         return handleShortcuts(event, searchBoxFocusNode);
@@ -44,9 +57,9 @@ class EmojiPage extends StatelessWidget {
           ],
         ),
         body: Row(
-          children: const [
-            CategoryListView(),
-            EmojiGridView(),
+          children: [
+            const CategoryListView(),
+            EmojiGridView(gridViewFocusNode),
           ],
         ),
       ),
@@ -55,7 +68,9 @@ class EmojiPage extends StatelessWidget {
 
   /// Decides what to do when keystrokes are detected.
   KeyEventResult handleShortcuts(
-      RawKeyEvent event, FocusNode searchBoxFocusNode) {
+    RawKeyEvent event,
+    FocusNode searchBoxFocusNode,
+  ) {
     const navigationKeys = <LogicalKeyboardKey>[
       LogicalKeyboardKey.escape,
       LogicalKeyboardKey.tab,
@@ -65,12 +80,19 @@ class EmojiPage extends StatelessWidget {
       LogicalKeyboardKey.arrowRight,
     ];
 
-    final isNavigationKeys = navigationKeys.contains(event.logicalKey);
+    final isNavigationKey = navigationKeys.contains(event.logicalKey);
 
     // If the key is not for navigating, start searching.
-    if (!isNavigationKeys) {
+    if (!isNavigationKey) {
       searchBoxFocusNode.requestFocus();
       return KeyEventResult.ignored;
+    }
+
+    // Navigation keys switch from search bar to results.
+    final searchHasFocus = searchBoxFocusNode.hasFocus;
+    if (searchHasFocus && isNavigationKey) {
+      gridViewFocusNode.requestFocus();
+      gridViewFocusNode.nextFocus(); // Skip focus to first result item.
     }
 
     final isEscapeKey = event.isKeyPressed(LogicalKeyboardKey.escape);
@@ -82,6 +104,13 @@ class EmojiPage extends StatelessWidget {
     } else {
       return KeyEventResult.ignored;
     }
+  }
+
+  @override
+  void dispose() {
+    gridViewFocusNode.dispose();
+    searchBoxFocusNode.dispose();
+    super.dispose();
   }
 }
 
@@ -126,7 +155,10 @@ class CategoryListView extends StatelessWidget {
 
 /// A GridView that displays the emojis as clickable buttons.
 class EmojiGridView extends StatelessWidget {
-  const EmojiGridView({
+  final FocusScopeNode gridViewFocusNode;
+
+  const EmojiGridView(
+    this.gridViewFocusNode, {
     Key? key,
   }) : super(key: key);
 
@@ -162,25 +194,28 @@ class EmojiGridView extends StatelessWidget {
           },
           child: BlocBuilder<EmojiCubit, EmojiState>(
             builder: (context, state) {
-              return GridView.builder(
-                // Key is required for scroll position to be reset when
-                // the emoji category is changed.
-                key: ValueKey(state.category),
-                controller: gridviewScrollController,
-                padding: const EdgeInsets.only(
-                  top: 10,
-                  right: 20,
-                  bottom: 10,
-                ),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 8,
-                ),
-                itemCount: state.emojis.length,
-                itemBuilder: (context, index) {
-                  final Emoji emoji = state.emojis[index];
+              return FocusScope(
+                node: gridViewFocusNode,
+                child: GridView.builder(
+                  // Key is required for scroll position to be reset when
+                  // the emoji category is changed.
+                  key: ValueKey(state.category),
+                  controller: gridviewScrollController,
+                  padding: const EdgeInsets.only(
+                    top: 10,
+                    right: 20,
+                    bottom: 10,
+                  ),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 8,
+                  ),
+                  itemCount: state.emojis.length,
+                  itemBuilder: (context, index) {
+                    final Emoji emoji = state.emojis[index];
 
-                  return EmojiTile(emoji, index);
-                },
+                    return EmojiTile(emoji, index);
+                  },
+                ),
               );
             },
           ),
