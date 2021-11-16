@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'src/app.dart';
-import 'src/clipboard/clipboard_service.dart';
 import 'src/emoji/cubit/emoji_cubit.dart';
 import 'src/emoji/emoji.json.dart';
 import 'src/emoji/emoji_service.dart';
@@ -34,7 +33,6 @@ void main() async {
       providers: [
         BlocProvider(
           create: (context) => EmojiCubit(
-            ClipboardService(),
             emojiService,
             settingsService,
           ),

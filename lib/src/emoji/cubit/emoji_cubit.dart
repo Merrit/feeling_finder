@@ -3,8 +3,8 @@ import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 
-import '../../clipboard/clipboard_service.dart';
 import '../../settings/cubit/settings_cubit.dart';
 import '../../settings/settings_service.dart';
 import '../emoji.dart';
@@ -23,12 +23,10 @@ late EmojiCubit emojiCubit;
 /// Controls the state of [EmojiPage] and connects the
 /// view to the [EmojiService].
 class EmojiCubit extends Cubit<EmojiState> {
-  final ClipboardService _clipboardService;
   final EmojiService _emojiService;
   final SettingsService _settingsService;
 
   EmojiCubit(
-    this._clipboardService,
     this._emojiService,
     this._settingsService,
   ) : super(EmojiState.initial(_settingsService.recentEmojis())) {
@@ -83,7 +81,8 @@ class EmojiCubit extends Cubit<EmojiState> {
   /// The user has clicked or tapped an emoji to be copied.
   Future<void> userSelectedEmoji(Emoji emoji) async {
     // Copy emoji to clipboard.
-    await _clipboardService.setClipboardContents(emoji.emoji);
+    final clipboardData = ClipboardData(text: emoji.emoji);
+    await Clipboard.setData(clipboardData);
 
     // Check if the preference to exit on copy is set.
     final shouldExitApp = settingsCubit.state.exitOnCopy;
