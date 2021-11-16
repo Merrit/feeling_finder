@@ -11,6 +11,8 @@ import 'src/settings/cubit/settings_cubit.dart';
 import 'src/settings/settings_service.dart';
 import 'src/storage/storage_service.dart';
 
+import 'package:window_size/window_size.dart' as window_size;
+
 void main() async {
   // Initialize the storage service.
   final storageService = StorageService();
@@ -46,4 +48,12 @@ void main() async {
       child: const App(),
     ),
   );
+
+  /// Now that the app has been initialized fully we show the window.
+  ///
+  /// This is where, before showing the window we could do things like
+  /// taking launch arguments to set a custom size / position / etc of
+  /// the window before showing it, allowing the picker to appear
+  /// in any custom manner desired.
+  window_size.setWindowVisibility(visible: true);
 }
