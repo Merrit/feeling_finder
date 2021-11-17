@@ -10,7 +10,6 @@ environment:
   sdk: ">=2.15.0-178.1.beta <3.0.0"
 
 dependencies:
-  dbus: ^0.6.3
   equatable: ^2.0.3
   flutter:
     sdk: flutter
@@ -18,6 +17,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   hive: ^2.0.4
+  hive_flutter: ^1.1.0
   mocktail: ^0.2.0
   path_provider: ^2.0.6
   window_size:

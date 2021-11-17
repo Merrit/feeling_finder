@@ -1,6 +1,7 @@
-import 'package:flutter/foundation.dart' show kIsWeb;
-import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart';
+
+import '../helpers/helpers.dart';
 
 /// Interfaces with the host OS to store & retrieve data from disk.
 class StorageService {
@@ -23,11 +24,14 @@ class StorageService {
   /// Initialize the storage access.
   /// Needs to be initialized only once, in the `main()` function.
   Future<void> init() async {
-    /// Hive needs to initialize, but not if we are running on web.
-    if (!kIsWeb) {
+    /// On desktop platforms initialize to a specific directory.
+    if (platformIsDesktop()) {
       final dir = await getApplicationSupportDirectory();
       // Defaults to ~/.local/share/feeling_finder/storage
       Hive.init(dir.path + '/storage');
+    } else {
+      // On mobile web, initialize to default location.
+      await Hive.initFlutter();
     }
     _generalBox = await Hive.openBox('general');
   }
