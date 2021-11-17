@@ -56,9 +56,14 @@ class _EmojiPageState extends State<EmojiPage> {
             ),
           ],
         ),
+        drawer: (Platform.isAndroid && Platform.isIOS)
+            ? const Drawer(child: CategoryListView())
+            : null,
         body: Row(
           children: [
-            const CategoryListView(),
+            // Category buttons shown in a drawer on mobile.
+            if (!Platform.isAndroid && !Platform.isIOS)
+              const CategoryListView(),
             EmojiGridView(gridViewFocusNode),
           ],
         ),
@@ -142,7 +147,11 @@ class CategoryListView extends StatelessWidget {
                 return ListTile(
                   title: Center(child: Text(category.value)),
                   selected: (state.category == category),
-                  onTap: () => emojiCubit.setCategory(category),
+                  onTap: () {
+                    emojiCubit.setCategory(category);
+                    // Dismiss the drawer if present.
+                    Navigator.popUntil(context, ModalRoute.withName('/'));
+                  },
                 );
               }
             },
