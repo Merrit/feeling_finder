@@ -1,4 +1,3 @@
-import 'package:feeling_finder/src/style/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -7,6 +6,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'emoji/emoji_page.dart';
 import 'settings/cubit/settings_cubit.dart';
 import 'settings/settings_page.dart';
+import 'style/theme.dart';
 
 /// The base widget that configures the application.
 class App extends StatelessWidget {
