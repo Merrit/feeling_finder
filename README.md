@@ -6,7 +6,23 @@ A fast and beautiful app to help convey emotion in text communication.
 ![](screenshots/screenshot.png)
 
 
-# Building
+## Features
+
+- Emojis from the Unicode spec
+- Browse emoji categories
+- Hover emoji for description
+- Start typing to search
+- Select emoji with arrow keys
+- Press `Enter` or click/tap an emoji to copy to clipboard
+- Option to quit after copying to clipboard
+- Light & dark theme
+
+
+<br>
+
+
+
+## Building
 
 #### Requirements
 - A working installation of
