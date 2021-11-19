@@ -63,7 +63,7 @@ class _EmojiPageState extends State<EmojiPage> {
         body: Row(
           children: [
             // Category buttons shown in a drawer on mobile.
-            if (platformIsMobile()) const CategoryListView(),
+            if (!platformIsMobile()) const CategoryListView(),
             EmojiGridView(gridViewFocusNode),
           ],
         ),
