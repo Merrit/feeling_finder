@@ -21,6 +21,15 @@ A fast and beautiful app to help convey emotion in text communication.
 <br>
 
 
+## Download
+
+- [Linux](https://github.com/Merrit/feeling_finder/releases/latest/download/feeling_finder-linux-portable.zip)
+- [Windows](https://github.com/Merrit/feeling_finder/releases/latest/download/feeling_finder-windows-portable.zip)
+- [Android](https://github.com/Merrit/feeling_finder/releases/latest/download/feeling_finder-android.apk.zip)
+
+
+<br>
+
 
 ## Building
 
