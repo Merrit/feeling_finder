@@ -29,3 +29,6 @@ bool platformIsDesktop() {
   }
   return platformIsDesktop;
 }
+
+/// Convenience function to check if the app is running on a mobile device.
+bool platformIsMobile() => (!platformIsDesktop() && !kIsWeb) ? true : false;

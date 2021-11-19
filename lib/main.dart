@@ -1,4 +1,5 @@
 /// A fast and beautiful app to help convey emotion in text communication.
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

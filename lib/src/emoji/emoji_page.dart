@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../helpers/helpers.dart';
 import '../settings/settings_page.dart';
 import 'cubit/emoji_cubit.dart';
 import 'emoji.dart';
@@ -56,14 +57,13 @@ class _EmojiPageState extends State<EmojiPage> {
             ),
           ],
         ),
-        drawer: (Platform.isAndroid && Platform.isIOS)
+        drawer: (platformIsMobile())
             ? const Drawer(child: CategoryListView())
             : null,
         body: Row(
           children: [
             // Category buttons shown in a drawer on mobile.
-            if (!Platform.isAndroid && !Platform.isIOS)
-              const CategoryListView(),
+            if (platformIsMobile()) const CategoryListView(),
             EmojiGridView(gridViewFocusNode),
           ],
         ),
