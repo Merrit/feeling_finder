@@ -32,6 +32,7 @@ dev_dependencies:
     sdk: flutter
   integration_test:
     sdk: flutter
+  msix: ^3.0.0-dev.9
 
 flutter:
   uses-material-design: true
@@ -42,3 +43,12 @@ flutter:
   assets:
     # Add assets from the images directory to the application.
     - assets/images/
+
+# Config for the msix Windows installer.
+msix_config:
+  display_name: Feeling Finder
+  publisher_display_name: Kristen McWilliam
+  identity_name: codes.merritt.feelingfinder
+  msix_version: 1.0.0.0
+  logo_path: assets\images\icon.png
+  capabilities: ""
