@@ -106,13 +106,18 @@ jobs:
       - name: Assign version variable on Linux
         if: matrix.target == 'Linux'
         run: |
-          VER=$(yq -r .version < pubspec.yaml)
+          VER=$(yq .version < pubspec.yaml | cut -d+ -f1)
           echo "VERSION=$VER" >> $GITHUB_ENV
 
       - name: Assign version variable on Windows
         if: matrix.target == 'Windows'
         run: |
+          # Pull version from pubspec.
           $VER = yq e .version pubspec.yaml
+          # Strip the end of the line with the +androidBuildNumber.
+          $pos = $VER.IndexOf("+")
+          $VER = $VER.Substring(0, $pos)
+          # Assign to environment variable.
           echo "VERSION=$VER" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf-8 -Append
 
       - name: Verify pubspec version has been updated to match tag for release
