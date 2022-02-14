@@ -1,20 +1,43 @@
 name: Build and publish web
 
 on:
+  # Enable manual run
   workflow_dispatch:
+  # Verify build succeeds on pull requests
+  pull_request:
+  # Verify build succeeds for tag events matching v*, i.e. v1.0.0, v20.15.10
+  push:
+    tags:
+      - "v*"
+  # Build & deploy for published releases
   release:
     types:
-      - created
+      - published
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2 # Only works with v2
-      - uses: subosito/flutter-action@v1
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v1
         with:
           channel: beta
-      - uses: bluefireteam/flutter-gh-pages@v7
+
+      - name: Get packages
+        run: |
+          flutter pub get
+
+      - name: Test build succeeds
+        if: github.event.action != 'published'
+        run: |
+          flutter build -v web --release
+
+      - name: Build and publish web version to GitHub Pages
+        if: github.event_name == 'release' && github.event.action == 'published'
+        uses: bluefireteam/flutter-gh-pages@v7
         with:
           baseHref: /feeling_finder/

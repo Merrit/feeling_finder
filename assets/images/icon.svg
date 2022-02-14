@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="512"
+   height="512"
+   viewBox="0 0 512 512"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20)"
+   sodipodi:docname="icon.svg"
+   inkscape:export-filename="/home/merritt/icon.png"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#505050"
+     bordercolor="#eeeeee"
+     borderopacity="1"
+     inkscape:pageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:document-units="px"
+     showgrid="false"
+     inkscape:zoom="0.70710678"
+     inkscape:cx="144.24978"
+     inkscape:cy="316.78384"
+     inkscape:window-width="1920"
+     inkscape:window-height="1007"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs2" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <circle
+       style="fill:#ffdd55;stroke-width:1.15217"
+       id="path53"
+       cx="257.91599"
+       cy="261.35861"
+       r="232.3026" />
+    <ellipse
+       style="fill:#1a1a1a;stroke-width:0.775353"
+       id="path179"
+       cx="320.46964"
+       cy="218.32764"
+       rx="26.809601"
+       ry="66.981789" />
+    <ellipse
+       style="fill:#1a1a1a;stroke-width:1.15056"
+       id="path283"
+       cx="-75.770744"
+       cy="245.3076"
+       rx="17.044123"
+       ry="53.620377"
+       transform="matrix(0.01039199,-0.999946,0.80589417,0.59205962,0,0)" />
+    <path
+       id="path514"
+       style="fill:#1a1a1a"
+       d="m 356.26891,385.57144 c 0,31.67952 -42.64459,57.36084 -95.24935,57.36084 -52.60476,0 -95.24935,-25.68132 -95.24935,-57.36084 0,-31.67952 26.2489,16.39693 95.11843,16.39693 68.86953,0 95.38027,-48.07645 95.38027,-16.39693 z"
+       sodipodi:nodetypes="ssszs" />
+  </g>
+</svg>
