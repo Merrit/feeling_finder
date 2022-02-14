@@ -106,7 +106,7 @@ jobs:
       - name: Assign version variable on Linux
         if: matrix.target == 'Linux'
         run: |
-          VER=$(yq .version < pubspec.yaml | cut -d+ -f1)
+          VER=$(yq .version < pubspec.yaml | xargs | cut -d+ -f1)
           echo "VERSION=$VER" >> $GITHUB_ENV
 
       - name: Assign version variable on Windows
