@@ -8,7 +8,10 @@
             "name": "debug",
             "request": "launch",
             "type": "dart",
-            "program": "lib/main.dart"
+            "program": "lib/main.dart",
+            "args": [
+                // "-v", // Verbose output.
+            ]
         },
         {
             "name": "profile mode",
