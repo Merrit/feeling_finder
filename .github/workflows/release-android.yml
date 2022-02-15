@@ -28,5 +28,5 @@ jobs:
         with:
           serviceAccountJson: google_play_api.json
           packageName: codes.merritt.FeelingFinder
-          releaseFiles: *.aab
+          releaseFiles: FeelingFinder-Android.aab
           track: production
