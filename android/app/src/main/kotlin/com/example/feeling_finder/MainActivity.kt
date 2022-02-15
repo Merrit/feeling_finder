@@ -1,4 +1,4 @@
-package com.example.feeling_finder
+package codes.merritt.FeelingFinder
 
 import io.flutter.embedding.android.FlutterActivity
 
