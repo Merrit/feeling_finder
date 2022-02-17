@@ -11,6 +11,7 @@
     <name>Feeling Finder</name>
     <summary>A fast and beautiful emoji picker</summary>
     <developer_name>Kristen McWilliam</developer_name>
+    <url type="homepage">https://github.com/Merrit/feeling_finder</url>
 
     <metadata_license>MIT</metadata_license>
     <project_license>GPL-3.0-or-later</project_license>
@@ -49,4 +50,8 @@
     </screenshots>
 
     <content_rating type="oars-1.1" />
+
+    <releases>
+        <release version="0.2.2" date="2022-02-17" />
+    </releases>
 </component>
