@@ -185,6 +185,7 @@ jobs:
         run: |
           touch PORTABLE
           tar czf ${{ env.project-name }}-${{ matrix.target }}-Portable.tar.gz *
+          sha256sum *.tar.gz > ${{ github.workspace }}/output/${{ env.project-name }}-${{ matrix.target }}-Portable.sha256sum
           mv *.tar.gz ${{ github.workspace }}/output/
           rm PORTABLE
         working-directory: ${{ matrix.build_path }}
