@@ -3,8 +3,6 @@
 projectName=FeelingFinder
 projectId=codes.merritt.FeelingFinder
 executableName=feeling_finder
-# projectName=feeling_finder
-# projectAssetName=FeelingFinder
 
 # This script is triggered by the json manifest.
 # It can also be run manually: flatpak-builder build-dir $projectName.json
