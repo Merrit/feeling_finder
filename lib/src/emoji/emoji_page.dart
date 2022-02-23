@@ -1,6 +1,3 @@
-import 'dart:developer';
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -40,7 +37,7 @@ class _EmojiPageState extends State<EmojiPage> {
   Widget build(BuildContext context) {
     return FocusScope(
       onKey: (FocusNode node, RawKeyEvent event) {
-        return handleShortcuts(event, searchBoxFocusNode);
+        return _redirectSearchKeys(event, searchBoxFocusNode);
       },
       child: Scaffold(
         appBar: AppBar(
@@ -71,13 +68,12 @@ class _EmojiPageState extends State<EmojiPage> {
     );
   }
 
-  /// Decides what to do when keystrokes are detected.
-  KeyEventResult handleShortcuts(
+  /// Automatically focuses the search field when the user types.
+  KeyEventResult _redirectSearchKeys(
     RawKeyEvent event,
     FocusNode searchBoxFocusNode,
   ) {
     const navigationKeys = <LogicalKeyboardKey>[
-      LogicalKeyboardKey.escape,
       LogicalKeyboardKey.tab,
       LogicalKeyboardKey.arrowUp,
       LogicalKeyboardKey.arrowDown,
@@ -98,17 +94,10 @@ class _EmojiPageState extends State<EmojiPage> {
     if (searchHasFocus && isNavigationKey) {
       gridViewFocusNode.requestFocus();
       gridViewFocusNode.nextFocus(); // Skip focus to first result item.
+      return KeyEventResult.handled;
     }
 
-    final isEscapeKey = event.isKeyPressed(LogicalKeyboardKey.escape);
-
-    // Exit app if user presses escape.
-    if (isEscapeKey) {
-      log('Escape pressed, exiting.');
-      exit(0);
-    } else {
-      return KeyEventResult.ignored;
-    }
+    return KeyEventResult.ignored;
   }
 
   @override
@@ -180,7 +169,7 @@ class EmojiGridView extends StatelessWidget {
     return Expanded(
       child: Scrollbar(
         controller: gridviewScrollController,
-        isAlwaysShown: true,
+        thumbVisibility: true,
         child: BlocListener<EmojiCubit, EmojiState>(
           listenWhen: (previous, current) =>
               previous.copiedEmoji != current.copiedEmoji,
