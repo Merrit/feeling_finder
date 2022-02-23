@@ -16,8 +16,19 @@ env:
   enable-appimage: "disabled"
 
 jobs:
+  create-draft-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create draft release if semver tag was pushed
+        if: ${{ github.event_name == 'push' }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.RELEASES_TOKEN }}
+          VERSION: ${{ github.ref_name }}
+        run: gh release create ${{ env.VERSION }} --draft --generate-notes
+
   # --------------------------------- Configure -------------------------------- #
   create-build:
+    needs: create-draft-release
     name: Create ${{ matrix.target }} build
     runs-on: ${{ matrix.os }}
     strategy:
@@ -228,17 +239,13 @@ jobs:
       #     mv *.zsync ${{ github.workspace }}/output/${{ env.project-name }}-Linux.AppImage.zsync
 
       # ---------------------------------- Upload ---------------------------------- #
-      # Upload artifacts to draft release.
-      - name: Upload artifacts to draft release
-        if: ${{ github.event_name != 'pull_request' }}
-        uses: softprops/action-gh-release@v1
-        with:
-          draft: true
-          prerelease: false
-          fail_on_unmatched_files: false
-          name: ${{ github.ref_name }}
-          files: |
-            output/*
+      - name: Upload artifacts to draft release if semver tag was pushed
+        if: ${{ github.event_name == 'push' }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.RELEASES_TOKEN }}
+          VERSION: ${{ github.ref_name }}
+          FILES: output/*
+        run: gh release upload --clobber $${{ env.VERSION }} ${{ env.FILES }}
 
       - name: Upload artifacts to workflow
         uses: actions/upload-artifact@v2
