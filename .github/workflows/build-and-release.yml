@@ -18,9 +18,12 @@ env:
 jobs:
   create-draft-release:
     runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'push' }}
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
       - name: Create draft release if semver tag was pushed
-        if: ${{ github.event_name == 'push' }}
         env:
           GITHUB_TOKEN: ${{ secrets.RELEASES_TOKEN }}
           VERSION: ${{ github.ref_name }}
