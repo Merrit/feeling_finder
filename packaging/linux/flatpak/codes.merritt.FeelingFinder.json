@@ -40,10 +40,6 @@
           "url": "https://github.com/Merrit/feeling_finder.git",
           "sha256": null,
           "tag": "v0.2.2"
-        },
-        {
-          "type": "dir",
-          "path": "."
         }
       ]
     }
