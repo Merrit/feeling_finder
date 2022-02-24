@@ -31,7 +31,6 @@ jobs:
 
   # --------------------------------- Configure -------------------------------- #
   create-build:
-    needs: create-draft-release
     name: Create ${{ matrix.target }} build
     runs-on: ${{ matrix.os }}
     strategy:
