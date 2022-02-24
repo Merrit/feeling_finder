@@ -23,12 +23,17 @@ jobs:
         with:
           path: code
 
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y appstream-util flatpak-builder
+
       - name: Setup Dart SDK
         uses: dart-lang/setup-dart@v1.3
         with:
           sdk: beta
 
-      - name: Install dependencies
+      - name: pub get
         working-directory: ${{ github.workspace }}/code/packaging/linux/flatpak/update_flatpak_recipe
         run: dart pub get
 
