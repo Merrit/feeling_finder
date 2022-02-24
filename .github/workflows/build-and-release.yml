@@ -248,7 +248,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.RELEASES_TOKEN }}
           VERSION: ${{ github.ref_name }}
           FILES: output/*
-        run: gh release upload --clobber $${{ env.VERSION }} ${{ env.FILES }}
+        run: gh release upload $${{ env.VERSION }} ${{ env.FILES }} --clobber
 
       - name: Upload artifacts to workflow
         uses: actions/upload-artifact@v2
