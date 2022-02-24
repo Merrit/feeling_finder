@@ -64,8 +64,8 @@ jobs:
           cd ${{ github.workspace }}/flathub
           pwd
           ls -l
-          cp -r code/packaging/linux/flatpak/${{ env.project-id }}.json .
-          cp -r code/packaging/linux/flatpak/${{ env.project-id }}.metainfo.xml .
+          cp -r ${{ github.workspace }}/code/packaging/linux/flatpak/${{ env.project-id }}.json .
+          cp -r ${{ github.workspace }}/code/packaging/linux/flatpak/${{ env.project-id }}.metainfo.xml .
           git status
           git config --local user.name "Kristen McWilliam"
           git config --local user.email "9575627+Merrit@users.noreply.github.com"
