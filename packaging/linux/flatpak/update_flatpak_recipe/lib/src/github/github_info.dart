@@ -37,7 +37,7 @@ class GitHubInfo {
   /// The sha256sum for the Linux portable asset.
   Future<String> linuxAssetHash() async {
     final asset = latestRelease.assets?.firstWhereOrNull(
-      (element) => element.name == 'sha256sums.txt',
+      (element) => element.name!.contains('-Linux-Portable.sha256sum'),
     );
     if (asset == null) {
       throw Exception('sha256sum not found in release.');
