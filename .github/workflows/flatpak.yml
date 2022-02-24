@@ -48,10 +48,7 @@ jobs:
           cp -r ${{ github.workspace }}/code/packaging/linux/flatpak/${{ env.project-id }}.metainfo.xml .
 
       - name: Verify Flatpak builds successfully
-        uses: bilelmoussaoui/flatpak-github-actions/flatpak-builder@v4
-        with:
-          bundle: artifact.flatpak
-          manifest-path: ${{ env.project-id }}.json
+        run: flatpak-builder --force-clean build-dir ${{ env.project-id }}.json
 
       - name: Checkout flathub repository
         uses: actions/checkout@v2
