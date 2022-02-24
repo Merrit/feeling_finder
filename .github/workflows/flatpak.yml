@@ -17,9 +17,6 @@ jobs:
   update-recipe:
     name: Update Flatpak recipe files
     runs-on: ubuntu-latest
-    container:
-      image: bilelmoussaoui/flatpak-github-actions:org.freedesktop.Platform-21.08
-      options: --privileged
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
