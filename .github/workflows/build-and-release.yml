@@ -246,7 +246,7 @@ jobs:
         if: ${{ github.event_name == 'push' }}
         env:
           GITHUB_TOKEN: ${{ secrets.RELEASES_TOKEN }}
-          VERSION: ${{ github.ref_name }}
+          VERSION: github.ref_name
           FILES: output/*
         run: gh release upload $${{ env.VERSION }} ${{ env.FILES }} --clobber
 
