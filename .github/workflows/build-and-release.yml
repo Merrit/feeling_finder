@@ -252,7 +252,8 @@ jobs:
         if: github.event_name == 'push' && matrix.target == 'Windows'
         env:
           GITHUB_TOKEN: ${{ secrets.RELEASES_TOKEN }}
-        run: gh release upload ${{ github.ref_name }} ${{ github.workspace }}\output\* --clobber
+        # (get-item) is needed because `gh` does not auto-expand wildcards.
+        run: gh release upload ${{ github.ref_name }} (get-item .\output\*) --clobber
 
       - name: Upload artifacts to workflow
         uses: actions/upload-artifact@v2
