@@ -241,7 +241,7 @@ jobs:
       #     mv *.zsync ${{ github.workspace }}/output/${{ env.project-name }}-Linux.AppImage.zsync
       # ---------------------------------- Upload ---------------------------------- #
       - name: Upload artifacts to draft release if semver tag was pushed
-        if: ${{ github.event_name == 'push' }} && ${{ matrix.target != 'Windows' }}
+        if: fromJSON( ${{ github.event_name == 'push' && matrix.target != 'Windows' }} )
         env:
           GITHUB_TOKEN: ${{ secrets.RELEASES_TOKEN }}
         run: gh release upload ${{ github.ref_name }} output/* --clobber
@@ -249,7 +249,7 @@ jobs:
         # Special version, just for Windows. Because Windows doesn't
         # understand forward slash for paths, and dies otherwise.
       - name: Upload artifacts to draft release if semver tag was pushed
-        if: ${{ github.event_name == 'push' }} && ${{ matrix.target == 'Windows' }}
+        if: fromJSON( ${{ github.event_name == 'push' && matrix.target == 'Windows' }} )
         env:
           GITHUB_TOKEN: ${{ secrets.RELEASES_TOKEN }}
         run: gh release upload ${{ github.ref_name }} output\* --clobber
