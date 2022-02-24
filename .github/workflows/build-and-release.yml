@@ -234,20 +234,25 @@ jobs:
       #   with:
       #     entrypoint: appimage-builder
       #     args: --recipe packaging/linux/appimage/AppImageBuilder.yml --skip-test
-
       # - name: Package AppImage
       #   if: ${{ success() && matrix.target == 'Linux' && env.enable-appimage == 'enabled' }}
       #   run: |
       #     mv *.AppImage ${{ github.workspace }}/output/${{ env.project-name }}-Linux.AppImage
       #     mv *.zsync ${{ github.workspace }}/output/${{ env.project-name }}-Linux.AppImage.zsync
-
       # ---------------------------------- Upload ---------------------------------- #
       - name: Upload artifacts to draft release if semver tag was pushed
-        if: ${{ github.event_name == 'push' }}
+        if: ${{ github.event_name == 'push' }} && matrix.target == 'Linux'
         env:
           GITHUB_TOKEN: ${{ secrets.RELEASES_TOKEN }}
-        run: gh release upload ${{ github.ref_name }} * --clobber
-        working-directory: ${{ github.workspace }}
+        run: gh release upload ${{ github.ref_name }} output/* --clobber
+
+        # Special version, just for Windows. Because Windows doesn't
+        # understand forward slash for paths, and dies otherwise.
+      - name: Upload artifacts to draft release if semver tag was pushed
+        if: ${{ github.event_name == 'push' }} && matrix.target == 'Windows'
+        env:
+          GITHUB_TOKEN: ${{ secrets.RELEASES_TOKEN }}
+        run: gh release upload ${{ github.ref_name }} output\* --clobber
 
       - name: Upload artifacts to workflow
         uses: actions/upload-artifact@v2
