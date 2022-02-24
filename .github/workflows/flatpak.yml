@@ -28,20 +28,25 @@ jobs:
         with:
           sdk: beta
 
-      - name: Change to flatpak directory
-        run: cd code/packaging/linux/flatpak
-
       - name: Install dependencies
-        run: dart pub get --directory=update_flatpak_recipe/
+        working-directory: ${{ github.workspace }}/code/packaging/linux/flatpak/update_flatpak_recipe
+        run: dart pub get
 
       - name: Update recipe files
+        working-directory: ${{ github.workspace }}/code/packaging/linux/flatpak
         run: bash update-flatpak-recipe.sh
+
+      - name: Bring flatpak recipe files to root directory
+        working-directory: ${{ github.workspace }}
+        run: |
+          cp -r ${{ github.workspace }}/code/packaging/linux/flatpak/${{ env.project-id }}.json .
+          cp -r ${{ github.workspace }}/code/packaging/linux/flatpak/${{ env.project-id }}.metainfo.xml .
 
       - name: Verify Flatpak builds successfully
         uses: bilelmoussaoui/flatpak-github-actions/flatpak-builder@v4
         with:
           bundle: artifact.flatpak
-          manifest-path: ${{ env.project-id }}.yml
+          manifest-path: ${{ env.project-id }}.json
 
       - name: Checkout flathub repository
         uses: actions/checkout@v2
@@ -51,11 +56,11 @@ jobs:
           token: ${{ secrets.FLATHUB_TOKEN }}
 
       - name: Push updated recipe to Flathub
+        working-directory: ${{ github.workspace }}
         env:
           REPO_KEY: ${{ secrets.FLATHUB_TOKEN }}
           USERNAME: merrit
         run: |
-          cd ${{ github.workspace }}
           cp -r code/packaging/linux/flatpak/${{ env.project-id }}.json flathub/
           cp -r code/packaging/linux/flatpak/${{ env.project-id }}.metainfo.xml flathub/
           cd flathub
