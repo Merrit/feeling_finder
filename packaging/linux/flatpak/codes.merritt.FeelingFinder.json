@@ -22,7 +22,6 @@
       ],
       "build-commands": [
         "cp -r packaging/linux/flatpak/build-flatpak.sh .",
-        "cp -r packaging/linux/flatpak/codes.merritt.FeelingFinder.metainfo.xml .",
         "cp -r packaging/linux/codes.merritt.FeelingFinder.desktop .",
         "cp -r assets/images/icon.svg .",
         "cp -r packaging/linux/flatpak/build-flatpak.sh .",
@@ -40,6 +39,10 @@
           "url": "https://github.com/Merrit/feeling_finder.git",
           "sha256": null,
           "tag": "v0.2.2"
+        },
+        {
+          "type": "file",
+          "path": "codes.merritt.FeelingFinder.metainfo.xml"
         }
       ]
     }
