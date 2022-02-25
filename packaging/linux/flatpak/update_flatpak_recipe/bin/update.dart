@@ -42,6 +42,10 @@ Future<void> updateManifest(String projectId, GitHubInfo githubInfo) async {
       url: githubInfo.repo.cloneUrl,
       tag: githubInfo.latestRelease.tagName,
     ),
+    Source(
+      type: 'file',
+      path: projectId + '.metainfo.xml',
+    ),
   ];
 
   manifestJson = manifest.toJson();
