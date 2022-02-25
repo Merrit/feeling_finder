@@ -4,7 +4,7 @@ description: A fast and beautiful app to help convey emotion in text communicati
 # Prevent accidental publishing to pub.dev.
 publish_to: "none"
 
-version: 0.3.1+6
+version: 0.3.2+7
 
 environment:
   sdk: ">=2.15.0-178.1.beta <3.0.0"
