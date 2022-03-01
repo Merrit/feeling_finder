@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:feeling_finder/src/emoji/emoji.dart';
+import 'package:feeling_finder/src/emoji/emoji_category.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 const emojiJson = '''
@@ -29,7 +30,7 @@ void main() {
     // Verify properties translated correctly.
     expect(emoji.emoji, '😀');
     expect(emoji.description, 'grinning face');
-    expect(emoji.category, 'Smileys & Emotion');
+    expect(emoji.category, EmojiCategory.smileys);
     expect(emoji.aliases, <String>['grinning']);
     expect(emoji.tags, ['smile', 'happy']);
     expect(emoji.unicodeVersion, '6.1');

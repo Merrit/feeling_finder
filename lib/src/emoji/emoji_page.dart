@@ -134,7 +134,9 @@ class CategoryListView extends StatelessWidget {
                 return const SizedBox();
               } else {
                 return ListTile(
-                  title: Center(child: Text(category.value)),
+                  title: Center(
+                    child: Text(category.localizedName(context)),
+                  ),
                   selected: (state.category == category),
                   onTap: () {
                     emojiCubit.setCategory(category);
