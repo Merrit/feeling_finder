@@ -1,17 +1,16 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 
 import '../emoji/emoji.dart';
-import '../emoji/emoji_service.dart';
 import '../storage/storage_service.dart';
 
 /// Stores and retrieves user settings.
 class SettingsService {
-  final EmojiService _emojiService;
   final StorageService _storageService;
 
-  SettingsService(this._emojiService, this._storageService);
+  SettingsService(this._storageService);
 
   bool exitOnCopy() {
     final shouldExit = _storageService.getValue('exitOnCopy') as bool?;
@@ -28,14 +27,19 @@ class SettingsService {
   /// Loads the list of recent emojis from storage.
   List<Emoji> recentEmojis() {
     if (_recentEmojis.isNotEmpty) return _recentEmojis;
-    final List<String>? emojiStringList = _storageService.getValue(
+    final emojiStringList = _storageService.getValue(
       'recentEmojis',
-    );
-    if (emojiStringList == null) return [];
+    ) as List<dynamic>;
     if (emojiStringList.isEmpty) return [];
-    for (var emoji in emojiStringList) {
-      final emojiObject = _emojiService.emojiObjectFromString(emoji);
-      if (emojiObject != null) _recentEmojis.add(emojiObject);
+    for (var emojiJson in emojiStringList) {
+      try {
+        final emojiMap = json.decode(emojiJson);
+        final emoji = Emoji.fromJson(emojiMap);
+        _recentEmojis.add(emoji);
+      } catch (e) {
+        debugPrint('Recent emoji from storage not valid: $e');
+        clearRecentEmojis();
+      }
     }
     return _recentEmojis;
   }
@@ -49,11 +53,16 @@ class SettingsService {
     }
     if (_recentEmojis.length == 20) _recentEmojis.removeLast();
     _recentEmojis.insert(0, emoji);
-    final emojiStringList = _recentEmojis.map((e) => e.emoji).toList();
+    final emojiStringList = _recentEmojis.map((e) => e.toJson()).toList();
     await _storageService.saveValue(
       key: 'recentEmojis',
       value: emojiStringList,
     );
+  }
+
+  /// Remove all emojis from the recents list.
+  Future<void> clearRecentEmojis() async {
+    await _storageService.saveValue(key: 'recentEmojis', value: []);
   }
 
   /// Loads the user's preferred ThemeMode from storage.

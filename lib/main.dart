@@ -27,7 +27,7 @@ void main() async {
   final emojiService = EmojiService(emojiJson);
 
   // Initialize the settings service.
-  final settingsService = SettingsService(emojiService, storageService);
+  final settingsService = SettingsService(storageService);
 
   // Run the app and pass in the state controllers.
   runApp(

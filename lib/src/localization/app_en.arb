@@ -9,5 +9,17 @@
   "theme": "Theme",
   "systemTheme": "System Theme",
   "lightTheme": "Light Theme",
-  "darkTheme": "Dark Theme"
+  "darkTheme": "Dark Theme",
+
+  "emojiCategoryRecent": "Recent",
+  "emojiCategoryAll": "All",
+  "emojiCategorySmileys": "Smileys & Emotion",
+  "emojiCategoryPeopleAndBody": "People & Body",
+  "emojiCategoryAnimalsAndNature": "Animals & Nature",
+  "emojiCategoryFoodAndDrink": "Food & Drink",
+  "emojiCategoryTravelAndPlaces": "Travel & Places",
+  "emojiCategoryActivities": "Activities",
+  "emojiCategoryObjects": "Objects",
+  "emojiCategorySymbols": "Symbols",
+  "emojiCategoryFlags": "Flags"
 }

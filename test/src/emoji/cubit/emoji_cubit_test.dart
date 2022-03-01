@@ -26,12 +26,12 @@ void main() {
     expect(emojiCubit.state.emojis, isNotEmpty);
   });
 
-  test('emojiState initial category is All', () {
-    expect(emojiCubit.state.category, EmojiCategory.all);
+  test('emojiState initial category is Smileys & Emotion', () {
+    expect(emojiCubit.state.category, EmojiCategory.smileys);
   });
 
   test('setCategory(), then emojiState category has changed', () {
-    expect(emojiCubit.state.category, EmojiCategory.all);
+    expect(emojiCubit.state.category, EmojiCategory.smileys);
     emojiCubit.setCategory(EmojiCategory.foodAndDrink);
     expect(emojiCubit.state.category, EmojiCategory.foodAndDrink);
   });

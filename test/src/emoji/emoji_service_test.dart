@@ -1,39 +1,54 @@
+import 'package:feeling_finder/src/emoji/emoji.dart';
 import 'package:feeling_finder/src/emoji/emoji.json.dart';
 import 'package:feeling_finder/src/emoji/emoji_category.dart';
 import 'package:feeling_finder/src/emoji/emoji_service.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  late EmojiService emojiService;
+  group('EmojiService: ', () {
+    final emojiService = EmojiService(emojiJson);
 
-  setUpAll(() {
-    emojiService = EmojiService(emojiJson);
-  });
+    test('allEmojis has 9 categories', () {
+      expect(emojiService.allEmojis.length, 9);
+    });
 
-  test('allEmojis() returns a list of all emojis', () {
-    // Get the list of emojis.
-    final emojis = emojiService.allEmojis();
+    test(
+        'emojisByCategory() returns only emojis belonging to requested category',
+        () {
+      // Get the list of emojis.
+      final emojis = emojiService.emojisByCategory(EmojiCategory.foodAndDrink);
 
-    // Verify it has returned all emojis.
-    //
-    // At least approximately all of them -- we don't want to hard-code an
-    // absolute number, so when new emojis are added the test will still pass.
-    expect(emojis.length, greaterThan(1800));
-  });
+      // Verify the list was populated.
+      expect(emojis.length, greaterThan(100));
 
-  test('emojisByCategory() returns only emojis belonging to requested category',
-      () {
-    // Get the list of emojis.
-    final emojis = emojiService.emojisByCategory(EmojiCategory.foodAndDrink);
+      // Verify it contains only emojis from the Food & Drink category.
+      final otherCategoryEmojis = emojis
+          .where((element) => element.category != EmojiCategory.foodAndDrink)
+          .toList();
+      expect(otherCategoryEmojis, isEmpty);
+    });
 
-    // Verify the list was populated.
-    expect(emojis.length, greaterThan(100));
+    test('search() finds apropriate emojis', () {
+      final matches = emojiService.search('wave');
 
-    // Verify it contains only emojis from the Food & Drink category.
-    final otherCategoryEmojis = emojis
-        .where(
-            (element) => element.category != EmojiCategory.foodAndDrink.value)
-        .toList();
-    expect(otherCategoryEmojis, isEmpty);
+      expect(matches, [
+        const Emoji(
+          emoji: '👋',
+          description: 'waving hand',
+          category: EmojiCategory.peopleAndBody,
+          aliases: ['wave'],
+          tags: ['goodbye'],
+          unicodeVersion: '6.0',
+        ),
+        const Emoji(
+          emoji: '🌊',
+          description: 'water wave',
+          category: EmojiCategory.travelAndPlaces,
+          aliases: ['ocean'],
+          tags: ['sea'],
+          unicodeVersion: '6.0',
+        ),
+      ]);
+    });
   });
 }
