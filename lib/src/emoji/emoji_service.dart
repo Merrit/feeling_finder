@@ -1,50 +1,48 @@
 import 'dart:convert';
 
-import 'package:collection/collection.dart';
-
 import 'emoji.dart';
 import 'emoji_category.dart';
 
 /// Builds the emoji objects for the app to use.
 class EmojiService {
-  /// The emoji objects are built from the supplied json.
-  final String _emojiJson;
+  /// All of the emojis, ordered by category.
+  final Map<EmojiCategory, List<Emoji>> allEmojis;
 
-  EmojiService(this._emojiJson);
+  const EmojiService._(this.allEmojis);
 
-  List<Emoji>? _allEmojis;
+  /// Builds the emoji set from the supplied json.
+  factory EmojiService(String emojiJson) {
+    final emojiListData = json.decode(emojiJson) as List<dynamic>;
 
-  /// Returns every emoji from all categories.
-  List<Emoji> allEmojis() {
-    if (_allEmojis != null) return _allEmojis!;
-    final rawEmojiList = json.decode(_emojiJson) as List;
-    final emojiList = <Emoji>[];
-    for (final emoji in rawEmojiList) {
-      final convertedEmoji = Emoji.fromJson(emoji as Map<String, dynamic>);
-      emojiList.add(convertedEmoji);
+    // ignore: prefer_for_elements_to_map_fromiterable
+    final emojiMap = Map<EmojiCategory, List<Emoji>>.fromIterable(
+      EmojiCategory.values,
+      key: (category) => category,
+      value: (_) => <Emoji>[],
+    )..remove(EmojiCategory.recent);
+
+    for (final emojiData in emojiListData) {
+      final emoji = Emoji.fromJson(emojiData);
+      emojiMap[emoji.category]!.add(emoji);
     }
-    _allEmojis = emojiList;
-    return emojiList;
+
+    return EmojiService._(emojiMap);
   }
 
-  /// Returns the emoji belonging to [category].
-  List<Emoji> emojisByCategory(EmojiCategory category) {
-    allEmojis(); // Ensure the emoji list has populated.
-    assert(_allEmojis != null);
-    return _allEmojis!
-        .where((emoji) => emoji.category == category.value)
-        .toList();
-  }
+  /// Returns the `Emoji` belonging to [category].
+  List<Emoji> emojisByCategory(EmojiCategory category) => allEmojis[category]!;
 
-  /// Returns an [Emoji] object representation of the [emojiString] passed in.
-  /// If the [emojiString] doesn't match any emojis the return is null.
-  ///
-  /// Example: pass in 🌅 and return is an [Emoji] object whose [Emoji.emoji] is 🌅.
-  Emoji? emojiObjectFromString(String emojiString) {
-    allEmojis(); // Ensure the emoji list has populated.
-    final matchingEmoji = _allEmojis!.firstWhereOrNull(
-      (element) => element.emoji == emojiString,
-    );
-    return matchingEmoji;
+  /// Returns all emojis whos description, aliases or tags match [searchString].
+  List<Emoji> search(String searchString) {
+    final matches = <Emoji>[];
+    for (var category in allEmojis.values) {
+      matches.addAll(category
+          .where((emoji) =>
+              emoji.description.contains(searchString) ||
+              emoji.aliases.contains(searchString) ||
+              emoji.tags.contains(searchString))
+          .toList());
+    }
+    return matches;
   }
 }

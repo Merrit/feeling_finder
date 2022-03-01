@@ -22,12 +22,11 @@ class EmojiState extends Equatable {
     this.haveRecentEmojis = false,
   });
 
-  factory EmojiState.initial(List<Emoji> recentEmojis) {
+  factory EmojiState.initial(List<Emoji> recentEmojis, List<Emoji> smileys) {
     final haveRecents = (recentEmojis.isNotEmpty);
-    final category = (haveRecents) ? EmojiCategory.recent : EmojiCategory.all;
     return EmojiState(
-      category: category,
-      emojis: (haveRecents) ? recentEmojis : const [],
+      category: (haveRecents) ? EmojiCategory.recent : EmojiCategory.smileys,
+      emojis: (haveRecents) ? recentEmojis : smileys,
       haveRecentEmojis: haveRecents,
     );
   }

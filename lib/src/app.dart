@@ -6,6 +6,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'emoji/emoji_page.dart';
 import 'settings/cubit/settings_cubit.dart';
 import 'settings/settings_page.dart';
+import 'shortcuts/app_shortcuts.dart';
 import 'style/theme.dart';
 
 /// The base widget that configures the application.
@@ -68,9 +69,9 @@ class App extends StatelessWidget {
               builder: (BuildContext context) {
                 switch (routeSettings.name) {
                   case SettingsPage.routeName:
-                    return const SettingsPage();
+                    return AppShortcuts(child: const SettingsPage());
                   default:
-                    return const EmojiPage();
+                    return AppShortcuts(child: const EmojiPage());
                 }
               },
             );

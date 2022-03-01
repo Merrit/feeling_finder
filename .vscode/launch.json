@@ -19,6 +19,11 @@
             "type": "dart",
             "flutterMode": "profile",
             "program": "lib/main.dart"
+        },
+        {
+            "name": "debug current file",
+            "type": "dart",
+            "request": "launch"
         }
     ]
 }

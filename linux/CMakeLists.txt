@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.10)
 project(runner LANGUAGES CXX)
 
 set(BINARY_NAME "feeling_finder")
-set(APPLICATION_ID "com.example.feeling_finder")
+set(APPLICATION_ID "codes.merritt.FeelingFinder")
 
 cmake_policy(SET CMP0063 NEW)
 
