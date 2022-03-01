@@ -10,4 +10,16 @@
   "systemTheme": "Tema di sistema",
   "lightTheme": "Tema Chiaro",
   "darkTheme": "Tema Scuro"
+
+  "emojiCategoryRecent": "Recente",
+  "emojiCategoryAll": "Tutto",
+  "emojiCategorySmileys": "Faccine & Emotion",
+  "emojiCategoryPeopleAndBody": "Persone & Corpo",
+  "emojiCategoryAnimalsAndNature": "Animali & Natura",
+  "emojiCategoryFoodAndDrink": "Cibo & Bevande",
+  "emojiCategoryTravelAndPlaces": "Viaggi & Luoghi",
+  "emojiCategoryActivities": "Attività",
+  "emojiCategoryObjects": "Oggetti",
+  "emojiCategorySymbols": "Simboli",
+  "emojiCategoryFlags": "Bandiere"
 }
