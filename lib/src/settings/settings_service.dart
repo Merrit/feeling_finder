@@ -29,9 +29,10 @@ class SettingsService {
     if (_recentEmojis.isNotEmpty) return _recentEmojis;
     final emojiStringList = _storageService.getValue(
       'recentEmojis',
-    ) as List<dynamic>;
+    );
+    if (emojiStringList == null) return [];
     if (emojiStringList.isEmpty) return [];
-    for (var emojiJson in emojiStringList) {
+    for (var emojiJson in emojiStringList as List<dynamic>) {
       try {
         final emojiMap = json.decode(emojiJson);
         final emoji = Emoji.fromJson(emojiMap);
