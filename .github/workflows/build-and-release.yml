@@ -113,7 +113,6 @@ jobs:
       - name: Create missing platforms & get packages
         run: |
           flutter upgrade
-          flutter create .
           flutter pub get
 
       - name: Assign version variable on Linux
