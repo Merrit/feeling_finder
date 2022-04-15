@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 
@@ -76,12 +75,7 @@ class SettingsService {
         return ThemeMode.light;
       default:
         // If the user has not made a choice we follow system theme.
-
-        // Flatpak doesn't detect system theme properly, so we check.
-        final flatpakId = Platform.environment['FLATPAK_ID'];
-        final runningAsFlatpak = flatpakId != null;
-
-        return (runningAsFlatpak) ? ThemeMode.dark : ThemeMode.system;
+        return ThemeMode.system;
     }
   }
 
