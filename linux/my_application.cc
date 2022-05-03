@@ -7,6 +7,8 @@
 
 #include "flutter/generated_plugin_registrant.h"
 
+const char *WINDOW_TITLE = "Feeling Finder";
+
 struct _MyApplication {
   GtkApplication parent_instance;
   char** dart_entrypoint_arguments;
@@ -40,20 +42,20 @@ static void my_application_activate(GApplication* application) {
   if (use_header_bar) {
     GtkHeaderBar* header_bar = GTK_HEADER_BAR(gtk_header_bar_new());
     gtk_widget_show(GTK_WIDGET(header_bar));
-    gtk_header_bar_set_title(header_bar, "feeling_finder");
+    gtk_header_bar_set_title(header_bar, WINDOW_TITLE);
     gtk_header_bar_set_show_close_button(header_bar, TRUE);
     gtk_window_set_titlebar(window, GTK_WIDGET(header_bar));
   } else {
-    gtk_window_set_title(window, "feeling_finder");
+    gtk_window_set_title(window, WINDOW_TITLE);
   }
 
   gtk_window_set_default_size(window, 620, 590);
-  
+
   /* --------------------------------- Custom --------------------------------- */
-  /// Hide window by default so we can manipulate size, frame, etc and 
+  /// Hide window by default so we can manipulate size, frame, etc and
   /// then show the window when we are ready.
   ///
-  /// `gtk_widget_realize` will create the window without showing it, 
+  /// `gtk_widget_realize` will create the window without showing it,
   /// then the Dart code can call `window_size.setWindowVisibility(visible: true);`.
   // gtk_widget_show(GTK_WIDGET(window));   <-- Previous implementation.
   gtk_widget_realize(GTK_WIDGET(window));
