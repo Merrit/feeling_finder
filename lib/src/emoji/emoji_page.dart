@@ -134,11 +134,9 @@ class CategoryListView extends StatelessWidget {
                 return const SizedBox();
               } else {
                 return ListTile(
-                  title: Center(
-                    child: Text(
-                      category.localizedName(context),
-                      textAlign: TextAlign.center,
-                    ),
+                  title: Text(
+                    category.localizedName(context),
+                    textAlign: TextAlign.center,
                   ),
                   selected: (state.category == category),
                   onTap: () {
