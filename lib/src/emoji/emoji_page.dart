@@ -201,10 +201,9 @@ class EmojiGridView extends StatelessWidget {
                   // the emoji category is changed.
                   key: ValueKey(state.category),
                   controller: gridviewScrollController,
-                  padding: const EdgeInsets.only(
-                    top: 10,
-                    right: 20,
-                    bottom: 10,
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 10,
+                    horizontal: 20,
                   ),
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 8,
