@@ -135,7 +135,10 @@ class CategoryListView extends StatelessWidget {
               } else {
                 return ListTile(
                   title: Center(
-                    child: Text(category.localizedName(context)),
+                    child: Text(
+                      category.localizedName(context),
+                      textAlign: TextAlign.center,
+                    ),
                   ),
                   selected: (state.category == category),
                   onTap: () {
