@@ -95,7 +95,7 @@ BEGIN
             VALUE "InternalName", "feeling_finder" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2021 com.example. All rights reserved." "\0"
             VALUE "OriginalFilename", "feeling_finder.exe" "\0"
-            VALUE "ProductName", "feeling_finder" "\0"
+            VALUE "ProductName", "Feeling Finder" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END
