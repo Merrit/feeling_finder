@@ -70,7 +70,13 @@ android {
    
    buildTypes {
        release {
-           signingConfig signingConfigs.release
+           // If keystore is missing (for example, a PR in a GitHub workflow),
+           // we use debug signing so the workflow can verify build success.
+           if (keystoreProperties['keyAlias'] == null) {
+               signingConfig signingConfigs.debug
+           } else {
+               signingConfig signingConfigs.release
+           }
 
            ndk {
                debugSymbolLevel 'SYMBOL_TABLE'
