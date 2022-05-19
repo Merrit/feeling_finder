@@ -17,15 +17,21 @@ late SettingsCubit settingsCubit;
 class SettingsCubit extends Cubit<SettingsState> {
   final SettingsService _settingsService;
 
-  SettingsCubit(
-    this._settingsService,
-  ) : super(
+  SettingsCubit._(this._settingsService, {required ThemeMode themeMode})
+      : super(
           SettingsState(
             exitOnCopy: _settingsService.exitOnCopy(),
-            themeMode: _settingsService.themeMode(),
+            themeMode: themeMode,
           ),
         ) {
     settingsCubit = this;
+  }
+
+  static Future<SettingsCubit> init(SettingsService settingsService) async {
+    return SettingsCubit._(
+      settingsService,
+      themeMode: await settingsService.themeMode(),
+    );
   }
 
   /// Update and persist whether the app should exit after copy.
