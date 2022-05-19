@@ -28,6 +28,7 @@ void main() async {
 
   // Initialize the settings service.
   final settingsService = SettingsService(storageService);
+  final _settingsCubit = await SettingsCubit.init(settingsService);
 
   // Run the app and pass in the state controllers.
   runApp(
@@ -40,10 +41,7 @@ void main() async {
           ),
           lazy: false,
         ),
-        BlocProvider(
-          create: (context) => SettingsCubit(settingsService),
-          lazy: false,
-        ),
+        BlocProvider.value(value: _settingsCubit),
       ],
       child: const App(),
     ),
