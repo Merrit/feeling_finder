@@ -16,8 +16,6 @@ jobs:
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v1
-        with:
-          channel: beta
 
       - name: Flutter pub get
         run: flutter pub get
