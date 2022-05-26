@@ -1,3 +1,6 @@
+import 'dart:io' show FileSystemException;
+
+import 'package:flutter/foundation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -33,7 +36,17 @@ class StorageService {
       // On mobile web, initialize to default location.
       await Hive.initFlutter();
     }
-    _generalBox = await Hive.openBox('general');
+
+    try {
+      _generalBox = await Hive.openBox('general');
+    } on FileSystemException catch (e) {
+      debugPrint('''
+Feeling Finder: Exception opening storage:
+
+$e
+
+Possible another instance is already running?''');
+    }
   }
 
   /// Persist a value to local disk storage.

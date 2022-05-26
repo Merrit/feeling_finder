@@ -36,7 +36,7 @@ class SettingsPage extends StatelessWidget {
                     title: Text(AppLocalizations.of(context)!.theme),
                     trailing: DropdownButton<ThemeMode>(
                       // Read the selected themeMode from the controller
-                      value: state.themeMode,
+                      value: state.userThemePreference,
                       // Call the updateThemeMode method any time the user selects a theme.
                       onChanged: settingsCubit.updateThemeMode,
                       items: [

@@ -17,6 +17,7 @@ dependencies:
   flutter_flatpak:
     git:
       url: https://github.com/Merrit/flutter_flatpak.git
+      ref: d443e0fcb8f74f844cb39f822a0193ec43e64a4f
   flutter_localizations:
     sdk: flutter
   hive: ^2.0.4

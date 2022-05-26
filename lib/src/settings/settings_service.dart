@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_flatpak/flutter_flatpak.dart';
 
 import '../emoji/emoji.dart';
 import '../storage/storage_service.dart';
@@ -68,27 +67,14 @@ class SettingsService {
 
   /// Loads the user's preferred ThemeMode from storage.
   Future<ThemeMode> themeMode() async {
-    final theme = _storageService.getValue('ThemeMode');
+    final theme = _storageService.getValue('ThemeMode') as String?;
     switch (theme) {
       case 'ThemeMode.dark':
         return ThemeMode.dark;
       case 'ThemeMode.light':
         return ThemeMode.light;
       default:
-        final Flatpak? flatpak = await Flatpak.init();
-
-        ThemeMode themeMode;
-        if (flatpak != null) {
-          /// If the app is running in Flatpak we check the system theme
-          /// through the `flutter_flatpak` package.
-          themeMode = flatpak.themeMode;
-        } else {
-          /// If the user has not specified a specific theme for
-          /// the app we follow the system theme.
-          themeMode = ThemeMode.system;
-        }
-
-        return themeMode;
+        return ThemeMode.system;
     }
   }
 
