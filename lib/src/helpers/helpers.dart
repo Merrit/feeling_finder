@@ -2,6 +2,8 @@ import 'dart:io' show Platform;
 
 import 'package:flutter/foundation.dart' show kIsWeb;
 
+export 'close_exiting_sessions.dart';
+
 /// Convenience function to check if the app is running on a desktop computer.
 ///
 /// If the currently running platform is one of Linux, Windows, or MacOS

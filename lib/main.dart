@@ -15,6 +15,8 @@ import 'src/storage/storage_service.dart';
 import 'package:window_size/window_size.dart' as window_size;
 
 void main() async {
+  await closeExistingSessions();
+
   // Initialize the storage service.
   final storageService = StorageService();
 
