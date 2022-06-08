@@ -57,6 +57,11 @@ class EmojiCubit extends Cubit<EmojiState> {
     final clipboardData = ClipboardData(text: emoji.emoji);
     await Clipboard.setData(clipboardData);
 
+    ClipboardData? updatedClipboard = await Clipboard.getData('text/plain');
+    if (updatedClipboard == null || updatedClipboard.text != emoji.emoji) {
+      debugPrint('userSelectedEmoji: failed to copy to clipboard.');
+    }
+
     // Check if the preference to exit on copy is set.
     final shouldExitApp = settingsCubit.state.exitOnCopy;
 
