@@ -9,30 +9,32 @@ import 'package:mocktail/mocktail.dart';
 class MockSettingsService extends Mock implements SettingsService {}
 
 void main() {
-  final settingsService = MockSettingsService();
+  MockSettingsService settingsService = MockSettingsService();
 
   late EmojiCubit emojiCubit;
 
-  setUpAll(() {
-    // Return no recent emojis.
-    when(settingsService.recentEmojis).thenReturn([]);
-    final emojiService = EmojiService(emojiJson);
-    emojiCubit = EmojiCubit(
-      emojiService,
-      settingsService,
-    );
-  });
-  test('emojiState has populated emojis', () {
-    expect(emojiCubit.state.emojis, isNotEmpty);
-  });
+  group('EmojiCubit', () {
+    setUp(() {
+      // Return no recent emojis.
+      when(settingsService.recentEmojis).thenReturn([]);
+      final emojiService = EmojiService(emojiJson);
+      emojiCubit = EmojiCubit(
+        emojiService,
+        settingsService,
+      );
+    });
+    test('has emojis', () {
+      expect(emojiCubit.state.emojis, isNotEmpty);
+    });
 
-  test('emojiState initial category is Smileys & Emotion', () {
-    expect(emojiCubit.state.category, EmojiCategory.smileys);
-  });
+    test('initial category is Smileys & Emotion', () {
+      expect(emojiCubit.state.category, EmojiCategory.smileys);
+    });
 
-  test('setCategory(), then emojiState category has changed', () {
-    expect(emojiCubit.state.category, EmojiCategory.smileys);
-    emojiCubit.setCategory(EmojiCategory.foodAndDrink);
-    expect(emojiCubit.state.category, EmojiCategory.foodAndDrink);
+    test('setCategory(), then category has changed', () {
+      expect(emojiCubit.state.category, EmojiCategory.smileys);
+      emojiCubit.setCategory(EmojiCategory.foodAndDrink);
+      expect(emojiCubit.state.category, EmojiCategory.foodAndDrink);
+    });
   });
 }
