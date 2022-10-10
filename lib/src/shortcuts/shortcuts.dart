@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 
 /// A ShortcutManager that logs all keys that it handles.
 class LoggingShortcutManager extends ShortcutManager {
+  LoggingShortcutManager({required super.shortcuts});
+
   @override
   KeyEventResult handleKeypress(BuildContext context, RawKeyEvent event) {
     final KeyEventResult result = super.handleKeypress(context, event);
