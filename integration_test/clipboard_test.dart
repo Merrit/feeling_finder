@@ -1,12 +1,18 @@
+import 'package:flutter_test/flutter_test.dart';
+
 /// Disabling because:
-/// 
+///
 /// 1. Keeps throwing an exception:
 /// ```
-/// _AssertionError ('dart:ui/painting.dart': Failed assertion: line 50 pos 10: 
+/// _AssertionError ('dart:ui/painting.dart': Failed assertion: line 50 pos 10:
 /// '<optimized out>': Matrix4 entries must be finite.)
 /// ```
-/// 
+///
 /// 2. Integration tests don't work on headless (GitHub) testing environments.
+
+void main() {
+  test('disabledIntegrationTest', () {});
+}
 
 // import 'package:flutter/material.dart';
 // import 'package:flutter_test/flutter_test.dart';
