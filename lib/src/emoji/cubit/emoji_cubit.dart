@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/services.dart';
+import 'package:rich_clipboard/rich_clipboard.dart';
 
 import '../../settings/cubit/settings_cubit.dart';
 import '../../settings/settings_service.dart';
@@ -54,11 +54,11 @@ class EmojiCubit extends Cubit<EmojiState> {
   /// The user has clicked or tapped an emoji to be copied.
   Future<void> userSelectedEmoji(Emoji emoji) async {
     // Copy emoji to clipboard.
-    final clipboardData = ClipboardData(text: emoji.emoji);
-    await Clipboard.setData(clipboardData);
+    final clipboardData = RichClipboardData(text: emoji.emoji);
+    await RichClipboard.setData(clipboardData);
 
-    ClipboardData? updatedClipboard = await Clipboard.getData('text/plain');
-    if (updatedClipboard == null || updatedClipboard.text != emoji.emoji) {
+    RichClipboardData updatedClipboard = await RichClipboard.getData();
+    if (updatedClipboard.text != emoji.emoji) {
       debugPrint('userSelectedEmoji: failed to copy to clipboard.');
     }
 
