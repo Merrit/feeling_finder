@@ -48,6 +48,7 @@ flutter:
 
   assets:
     # Add assets from the images directory to the application.
+    - assets/icon/
     - assets/images/
 
 # To generate icons run:
@@ -55,7 +56,7 @@ flutter:
 flutter_icons:
   android: true
   ios: false
-  image_path: "assets/images/icon.png"
+  image_path: "assets/icon/icon.png"
 
 # Config for the msix Windows installer.
 msix_config:
@@ -63,5 +64,5 @@ msix_config:
   publisher_display_name: Kristen McWilliam
   identity_name: codes.merritt.feelingfinder
   msix_version: 1.0.0.0
-  logo_path: assets\images\icon.png
+  logo_path: assets\icon\icon.png
   capabilities: ""
