@@ -21,7 +21,7 @@ jobs:
     if: ${{ github.event_name == 'push' }}
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Create draft release if semver tag was pushed
         env:
@@ -106,7 +106,7 @@ jobs:
           flutter config --enable-windows-desktop
 
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Create missing platforms & get packages
         run: |
