@@ -13,6 +13,17 @@
                 // "-v", // Verbose output.
             ]
         },
+        // Debug with verbose logging
+        {
+            "name": "Debug with verbose logging",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "debug",
+            "program": "lib/main.dart",
+            "env": {
+                "VERBOSE": "true"
+            }
+        },
         {
             "name": "profile mode",
             "request": "launch",
