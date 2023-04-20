@@ -1,5 +1,7 @@
 /// A fast and beautiful app to help convey emotion in text communication.
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -8,14 +10,20 @@ import 'src/emoji/cubit/emoji_cubit.dart';
 import 'src/emoji/emoji.json.dart';
 import 'src/emoji/emoji_service.dart';
 import 'src/helpers/helpers.dart';
+import 'src/logs/logging_manager.dart';
 import 'src/settings/cubit/settings_cubit.dart';
 import 'src/settings/settings_service.dart';
 import 'src/storage/storage_service.dart';
 
 import 'package:window_size/window_size.dart' as window_size;
 
-void main() async {
+void main(List<String> args) async {
   await closeExistingSessions();
+
+  final bool verbose = args.contains('-v') || //
+      Platform.environment['VERBOSE'] == 'true';
+
+  await LoggingManager.initialize(verbose: verbose);
 
   // Initialize the storage service.
   final storageService = StorageService();
