@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:flutter/foundation.dart';
+import '../logs/logging_manager.dart';
 
 /// An issue was raised where the error indicated the app couldn't
 /// launch because the hive database was already locked, so we will
@@ -21,7 +21,7 @@ Future<void> _closeOnLinux() async {
     final process = _LinuxProcessResult.fromTerminalOutput(processLine);
     if (process.pid == pid) continue;
     if (process.executableName != 'feeling_finder') continue;
-    debugPrint('Closing existing instance with pid ${process.pid}');
+    log.i('Closing existing instance with pid ${process.pid}');
     Process.killPid(process.pid);
   }
 }
