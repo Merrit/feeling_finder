@@ -57,5 +57,9 @@ class LoggingManager {
   Future<String> getLogs() async => await _logFile.readAsString();
 
   /// Close the logger and release resources.
-  void close() => log.close();
+  Future<void> close() async {
+    // Small delay to allow the logger to finish writing to the file.
+    await Future.delayed(const Duration(milliseconds: 100));
+    log.close();
+  }
 }

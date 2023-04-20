@@ -14,16 +14,20 @@ import 'src/logs/logging_manager.dart';
 import 'src/settings/cubit/settings_cubit.dart';
 import 'src/settings/settings_service.dart';
 import 'src/storage/storage_service.dart';
+import 'src/window/app_window.dart';
 
 import 'package:window_size/window_size.dart' as window_size;
 
 void main(List<String> args) async {
+  WidgetsFlutterBinding.ensureInitialized();
+
   await closeExistingSessions();
 
   final bool verbose = args.contains('-v') || //
       Platform.environment['VERBOSE'] == 'true';
 
   await LoggingManager.initialize(verbose: verbose);
+  await AppWindow.initialize();
 
   // Initialize the storage service.
   final storageService = StorageService();

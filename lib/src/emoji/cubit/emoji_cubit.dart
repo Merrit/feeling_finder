@@ -1,9 +1,10 @@
 import 'dart:io';
 
 import 'package:equatable/equatable.dart';
+import 'package:feeling_finder/src/window/app_window.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:rich_clipboard/rich_clipboard.dart';
 
 import '../../logs/logging_manager.dart';
 import '../../settings/cubit/settings_cubit.dart';
@@ -55,12 +56,15 @@ class EmojiCubit extends Cubit<EmojiState> {
   /// The user has clicked or tapped an emoji to be copied.
   Future<void> userSelectedEmoji(Emoji emoji) async {
     // Copy emoji to clipboard.
-    final clipboardData = RichClipboardData(text: emoji.emoji);
-    await RichClipboard.setData(clipboardData);
+    final clipboardData = ClipboardData(text: emoji.emoji);
+    await Clipboard.setData(clipboardData);
+    log.i('Copied emoji to clipboard: ${emoji.emoji}');
 
-    RichClipboardData updatedClipboard = await RichClipboard.getData();
-    if (updatedClipboard.text != emoji.emoji) {
-      log.e('userSelectedEmoji: failed to copy to clipboard.');
+    final updatedClipboard = await Clipboard.getData(Clipboard.kTextPlain);
+    if (updatedClipboard == null || updatedClipboard.text != emoji.emoji) {
+      log.e('Failed to copy to clipboard.\n'
+          'Expected: ${emoji.emoji}\n'
+          'Actual: ${updatedClipboard?.text}');
     }
 
     // Check if the preference to exit on copy is set.
@@ -76,6 +80,13 @@ class EmojiCubit extends Cubit<EmojiState> {
     await _settingsService.saveRecentEmoji(emoji);
 
     // Exit the app if the preference for that is true.
-    if (shouldExitApp) exit(0);
+    if (shouldExitApp) {
+      // Hide the window because it has a small delay before closing to
+      // allow the logger to finish writing to the file.
+      await AppWindow.instance.hide();
+      log.i('Exiting app after copying emoji');
+      await LoggingManager.instance.close();
+      exit(0);
+    }
   }
 }
