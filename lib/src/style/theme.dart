@@ -12,6 +12,7 @@ class AppTheme {
 
   ThemeData get darkThemeData {
     return _darkTheme.copyWith(
+      // ignore: deprecated_member_use
       toggleableActiveColor: toggleableActiveColor,
     );
   }

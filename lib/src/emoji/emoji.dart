@@ -42,14 +42,14 @@ class Emoji extends Equatable {
 
   /// Builds an Emoji from the provided [json].
   factory Emoji.fromJson(Map<String, dynamic> json) {
-    EmojiCategory _emojiCategory = emojiCategoryFromString(
+    EmojiCategory emojiCategory = emojiCategoryFromString(
       json['category'] as String,
     );
 
     return Emoji(
       emoji: json['emoji'] as String,
       description: json['description'] as String,
-      category: _emojiCategory,
+      category: emojiCategory,
       aliases: json['aliases'].cast<String>(),
       tags: json['tags'].cast<String>(),
       unicodeVersion: json['unicode_version'] as String,
