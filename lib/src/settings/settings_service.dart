@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 
 import '../emoji/emoji.dart';
+import '../logs/logging_manager.dart';
 import '../storage/storage_service.dart';
 
 /// Stores and retrieves user settings.
@@ -37,7 +38,7 @@ class SettingsService {
         final emoji = Emoji.fromJson(emojiMap);
         _recentEmojis.add(emoji);
       } catch (e) {
-        debugPrint('Recent emoji from storage not valid: $e');
+        log.e('Recent emoji from storage not valid', e);
         clearRecentEmojis();
       }
     }

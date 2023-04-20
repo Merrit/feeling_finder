@@ -5,6 +5,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:rich_clipboard/rich_clipboard.dart';
 
+import '../../logs/logging_manager.dart';
 import '../../settings/cubit/settings_cubit.dart';
 import '../../settings/settings_service.dart';
 import '../emoji.dart';
@@ -59,7 +60,7 @@ class EmojiCubit extends Cubit<EmojiState> {
 
     RichClipboardData updatedClipboard = await RichClipboard.getData();
     if (updatedClipboard.text != emoji.emoji) {
-      debugPrint('userSelectedEmoji: failed to copy to clipboard.');
+      log.e('userSelectedEmoji: failed to copy to clipboard.');
     }
 
     // Check if the preference to exit on copy is set.
