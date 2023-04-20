@@ -31,7 +31,7 @@ class StorageService {
     if (platformIsDesktop()) {
       final dir = await getApplicationSupportDirectory();
       // Defaults to ~/.local/share/feeling_finder/storage
-      Hive.init(dir.path + '/storage');
+      Hive.init('${dir.path}/storage');
     } else {
       // On mobile web, initialize to default location.
       await Hive.initFlutter();
