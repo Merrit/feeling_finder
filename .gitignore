@@ -1,7 +1,27 @@
-# Custom
-#flatpak
-.flatpak-builder
-build-dir
+# ---------------------------------------------------------------------------- #
+#                                    Custom                                    #
+# ---------------------------------------------------------------------------- #
+
+# Flatpak
+.flatpak-builder/
+build-dir/
+
+
+# Freezed
+*.freezed.dart
+*.g.dart
+
+# Generated code
+generated*
+Generated*
+
+# Test coverage
+lcov.info
+
+
+# ---------------------------------------------------------------------------- #
+#                                    Default                                   #
+# ---------------------------------------------------------------------------- #
 
 # Miscellaneous
 *.class
