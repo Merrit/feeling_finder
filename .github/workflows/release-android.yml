@@ -1,32 +1,44 @@
-name: Release Android to Google Play
+# name: Publish Android build to Google Play
 
-on:
-  # Enable manual run
-  workflow_dispatch:
-  # Build & deploy for published releases
-  release:
-    types:
-      - published
+# on:
+#   # Enable manual run
+#   workflow_dispatch:
+#   # Build & deploy for published releases
+#   release:
+#     types:
+#       - published
 
-jobs:
-  release:
-    runs-on: ubuntu-latest
+# env:
+#   appname-without-spaces: "FeelingFinder"
+#   packageName: "codes.merritt.FeelingFinder"
+#   repository: "merrit/feeling_finder"
+#   repositoryUrl: https://github.com/Merrit/feeling_finder
 
-    steps:
-      - name: Download .aab artifact
-        run: |
-          wget https://github.com/Merrit/feeling_finder/releases/latest/download/FeelingFinder-Android.aab
+# jobs:
+#   release:
+#     runs-on: ubuntu-latest
 
-      - name: Access Google Play API key
-        env:
-          GOOGLE_PLAY_API_JSON: ${{ secrets.GOOGLE_PLAY_API_JSON }}
-        run: |
-          echo "$GOOGLE_PLAY_API_JSON" | base64 --decode > google_play_api.json
+#     steps:
+#       - name: Download .aab artifact
+#         run: wget ${{env.repositoryUrl}}/releases/latest/download/${{env.appname-without-spaces}}-Android.aab
 
-      - name: Release Android build on Google Play
-        uses: r0adkll/upload-google-play@v1.0.15
-        with:
-          serviceAccountJson: google_play_api.json
-          packageName: codes.merritt.FeelingFinder
-          releaseFiles: FeelingFinder-Android.aab
-          track: production
+#         # Works with the r0adkll/upload-google-play action.
+#       - name: Download changelog
+#         run: |
+#           mkdir whatsNewDirectory
+#           gh release view --json body --jq .body --repo ${{env.repository}} >> whatsNewDirectory/whatsnew-en-US
+#         env:
+#           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+#       - name: Access Google Play API key
+#         env:
+#           GOOGLE_PLAY_API_JSON: ${{ secrets.GOOGLE_PLAY_API_JSON }}
+#         run: echo "$GOOGLE_PLAY_API_JSON" | base64 --decode > google_play_api.json
+
+#       - name: Release Android build on Google Play
+#         uses: r0adkll/upload-google-play@v1.0.15
+#         with:
+#           serviceAccountJson: google_play_api.json
+#           packageName: ${{env.packageName}}
+#           releaseFiles: ${{env.appname-without-spaces}}-Android.aab
+#           track: production
