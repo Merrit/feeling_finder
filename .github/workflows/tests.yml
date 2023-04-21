@@ -1,24 +1,26 @@
 name: Run tests
 
 on:
+  # Allow being called by other workflows
+  workflow_call:
+  # Allow being called manually
   workflow_dispatch:
-  pull_request:
-  push:
-    branches:
-      - main
 
 jobs:
-  run-tests:
+  flutter_test:
+    name: Run Tests
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2.10.0
 
-      - name: Setup Flutter
-        uses: subosito/flutter-action@v1
+      - name: Setup
+        run: |
+          flutter upgrade
+          flutter pub get
 
-      - name: Flutter pub get
-        run: flutter pub get
+      - name: Run code generation
+        run: flutter pub run build_runner build --delete-conflicting-outputs
 
-      - name: Unit tests
+      - name: Run tests
         run: flutter test

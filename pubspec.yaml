@@ -49,7 +49,7 @@ flutter:
 
   assets:
     # Add assets from the images directory to the application.
-    - assets/icon/
+    - assets/icons/
     - assets/images/
 
 # To generate icons run:
@@ -57,13 +57,13 @@ flutter:
 flutter_icons:
   android: true
   ios: false
-  image_path: "assets/icon/icon.png"
+  image_path: "assets/icons/codes.merritt.FeelingFinder.png"
 
-# Config for the msix Windows installer.
-msix_config:
-  display_name: Feeling Finder
-  publisher_display_name: Kristen McWilliam
-  identity_name: codes.merritt.feelingfinder
-  msix_version: 1.0.0.0
-  logo_path: assets\icon\icon.png
-  capabilities: ""
+flutter_app_builder:
+  app_display_name: "Feeling Finder"
+  author: "Merritt Codes"
+  identifier: codes.merritt.FeelingFinder
+  msix_identity_name: codes.merritt.FeelingFinder
+  msix_publisher: CN=0AA9BC0E-36DF-4B4F-BFF4-E300B746CB9D
+  msix_icon_path: assets\icons\codes.merritt.FeelingFinder.png
+  msix_capabilities: internetClient

@@ -1,0 +1,71 @@
+name: Build Android
+on:
+  # Enable manual run
+  workflow_dispatch:
+  # Allow being called by other workflows
+  workflow_call:
+    inputs:
+      pre-release:
+        description: "Whether the build is for a pre-release"
+        required: false
+        default: false
+        type: boolean
+
+env:
+  app-display-name: "Feeling Finder"
+  author: "Merritt Codes"
+  identifier: "codes.merritt.FeelingFinder"
+
+jobs:
+  build-android:
+    name: Build Android
+    runs-on: ubuntu-latest
+
+    # ----------------------------------- Setup ------------------------------ #
+
+    steps:
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2.10.0
+
+      - name: Install Android dependencies
+        uses: actions/setup-java@v3
+        with:
+          distribution: "zulu"
+          java-version: "12.x"
+
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Configure Keystore for Android
+        run: |
+          echo "$PLAY_STORE_UPLOAD_KEY" | base64 --decode > app/upload-keystore.jks
+          echo "storeFile=upload-keystore.jks" >> key.properties
+          echo "keyAlias=$KEYSTORE_KEY_ALIAS" >> key.properties
+          echo "storePassword=$KEYSTORE_STORE_PASSWORD" >> key.properties
+          echo "keyPassword=$KEYSTORE_KEY_PASSWORD" >> key.properties
+        env:
+          PLAY_STORE_UPLOAD_KEY: ${{ secrets.PLAY_STORE_UPLOAD_KEY }}
+          KEYSTORE_KEY_ALIAS: ${{ secrets.KEYSTORE_KEY_ALIAS }}
+          KEYSTORE_KEY_PASSWORD: ${{ secrets.KEYSTORE_KEY_PASSWORD }}
+          KEYSTORE_STORE_PASSWORD: ${{ secrets.KEYSTORE_STORE_PASSWORD }}
+        working-directory: android
+
+      - name: Prepare for build
+        run: |
+          flutter upgrade
+          flutter pub get
+
+      # ----------------------------------- Build ---------------------------- #
+
+      - name: Run build script
+        env:
+          GITHUB_TOKEN: ${{ secrets.RELEASES_TOKEN }}
+        run: flutter pub run flutter_app_builder -v --platforms=android
+
+      # ---------------------------------- Upload ---------------------------- #
+
+      - name: Upload artifacts to workflow
+        uses: actions/upload-artifact@v3
+        with:
+          name: android-artifacts
+          path: output/*
