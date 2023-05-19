@@ -4,37 +4,78 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
+        // Debug
         {
-            "name": "debug",
+            "name": "Debug",
             "request": "launch",
             "type": "dart",
             "program": "lib/main.dart",
-            "args": [
-                // "-v", // Verbose output.
-            ]
+            "preLaunchTask": "${defaultBuildTask}",
+            "flutterMode": "debug",
         },
         // Debug with verbose logging
         {
-            "name": "Debug with verbose logging",
+            "name": "Debug verbose",
             "request": "launch",
             "type": "dart",
             "flutterMode": "debug",
             "program": "lib/main.dart",
-            "env": {
-                "VERBOSE": "true"
-            }
+            "preLaunchTask": "${defaultBuildTask}",
+            "toolArgs": [
+                "--dart-define",
+                "VERBOSE=true"
+            ]
         },
+        // Debug with verbose logging and verbose Flutter logging
         {
-            "name": "profile mode",
+            "name": "Debug verbose: App + Flutter",
             "request": "launch",
             "type": "dart",
-            "flutterMode": "profile",
-            "program": "lib/main.dart"
+            "flutterMode": "debug",
+            "program": "lib/main.dart",
+            "preLaunchTask": "${defaultBuildTask}",
+            "args": [
+                "--dart-entrypoint-args",
+                "--verbose",
+            ],
         },
+        // Debug with arguments
         {
-            "name": "debug current file",
+            "name": "Debug with arguments",
+            "request": "launch",
             "type": "dart",
-            "request": "launch"
+            "flutterMode": "debug",
+            "program": "lib/main.dart",
+            "preLaunchTask": "${defaultBuildTask}",
+            // "args": [
+            //     "--dart-entrypoint-args",
+            //     "--toggle,--verbose",
+            // ],
+        },
+        // Profile
+        {
+            "name": "Profile",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main.dart",
+            "preLaunchTask": "${defaultBuildTask}",
+            "flutterMode": "profile",
+        },
+        // Release
+        {
+            "name": "Release",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main.dart",
+            "preLaunchTask": "${defaultBuildTask}",
+            "flutterMode": "release",
+        },
+        // Test current file
+        {
+            "name": "Test current file",
+            "type": "dart",
+            "request": "launch",
+            "program": "${file}"
         }
     ]
 }
