@@ -7,7 +7,7 @@ import 'emoji/emoji_page.dart';
 import 'settings/cubit/settings_cubit.dart';
 import 'settings/settings_page.dart';
 import 'shortcuts/app_shortcuts.dart';
-import 'style/theme.dart';
+import 'theme/app_theme.dart';
 
 /// The base widget that configures the application.
 class App extends StatelessWidget {
@@ -58,8 +58,8 @@ class App extends StatelessWidget {
           // Define a light and dark color theme. Then, read the user's
           // preferred ThemeMode (light, dark, or system default) from the
           // SettingsCubit's state to display the correct theme.
-          theme: AppTheme().themeData,
-          darkTheme: AppTheme().darkThemeData,
+          theme: lightTheme,
+          darkTheme: darkTheme,
           themeMode: state.themeMode,
 
           // Define a function to handle named routes in order to support
