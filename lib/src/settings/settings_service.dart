@@ -74,7 +74,7 @@ class SettingsService {
 
   /// Remove all emojis from the recents list.
   Future<void> clearRecentEmojis() async {
-    await _storageService.saveValue(key: 'recentEmojis', value: []);
+    await _storageService.deleteValue('recentEmojis');
   }
 
   /// Loads the user's preferred ThemeMode from storage.
