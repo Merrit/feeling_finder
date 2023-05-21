@@ -74,6 +74,7 @@ class _EmojiPageState extends State<EmojiPage> {
     FocusNode searchBoxFocusNode,
   ) {
     const navigationKeys = <LogicalKeyboardKey>[
+      LogicalKeyboardKey.altLeft,
       LogicalKeyboardKey.tab,
       LogicalKeyboardKey.arrowUp,
       LogicalKeyboardKey.arrowDown,
