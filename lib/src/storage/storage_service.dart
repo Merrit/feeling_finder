@@ -44,6 +44,11 @@ class StorageService {
     }
   }
 
+  /// Delete a value from local disk storage.
+  Future<void> deleteValue(String key) async {
+    await _generalBox!.delete(key);
+  }
+
   /// Persist a value to local disk storage.
   Future<void> saveValue({required String key, required dynamic value}) async {
     await _generalBox!.put(key, value);
