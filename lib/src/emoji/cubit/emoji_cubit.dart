@@ -15,13 +15,6 @@ import '../emoji_service.dart';
 
 part 'emoji_state.dart';
 
-/// Convenient global access to the EmojiCubit.
-///
-/// There is only ever 1 instance of this cubit, and having this variable
-/// means not having to do `context.read<EmojiCubit>()` to access it every time,
-/// as well as making it available without a BuildContext.
-late EmojiCubit emojiCubit;
-
 /// Controls the state of [EmojiPage] and connects the
 /// view to the [EmojiService].
 class EmojiCubit extends Cubit<EmojiState> {
@@ -35,8 +28,11 @@ class EmojiCubit extends Cubit<EmojiState> {
           _settingsService.recentEmojis(),
           _emojiService.emojisByCategory(EmojiCategory.smileys),
         )) {
-    emojiCubit = this;
+    instance = this;
   }
+
+  /// Singleton instance of the EmojiCubit.
+  static late EmojiCubit instance;
 
   /// Search and filter for all emojis that match [searchString].
   Future<void> search(String keyword) async {
