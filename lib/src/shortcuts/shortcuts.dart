@@ -51,7 +51,7 @@ class NextCategoryAction extends Action<NextCategoryIntent> {
   @override
   Object? invoke(NextCategoryIntent intent) {
     log.v('Next category requested.');
-    emojiCubit.nextCategory();
+    EmojiCubit.instance.nextCategory();
     return null;
   }
 }
@@ -66,7 +66,7 @@ class PreviousCategoryAction extends Action<PreviousCategoryIntent> {
   @override
   Object? invoke(PreviousCategoryIntent intent) {
     log.v('Previous category requested.');
-    emojiCubit.previousCategory();
+    EmojiCubit.instance.previousCategory();
     return null;
   }
 }

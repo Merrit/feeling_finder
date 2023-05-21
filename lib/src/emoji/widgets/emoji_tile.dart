@@ -34,7 +34,7 @@ class _EmojiTileState extends State<EmojiTile> {
   Widget build(BuildContext context) {
     final bool hasVariants = widget.emoji.variants != null &&
         widget.emoji.variants!.isNotEmpty &&
-        emojiCubit.state.category != EmojiCategory.recent;
+        EmojiCubit.instance.state.category != EmojiCategory.recent;
 
     final Decoration? hasVariantsIndicator = (hasVariants) //
         ? _TriangleDecoration()
@@ -67,7 +67,7 @@ class _EmojiTileState extends State<EmojiTile> {
                 autofocus: (widget.index == 0) ? true : false,
                 focusColor: Colors.lightBlue,
                 onTap: () async {
-                  await emojiCubit.userSelectedEmoji(widget.emoji);
+                  await EmojiCubit.instance.userSelectedEmoji(widget.emoji);
                   focusNode.unfocus();
                 },
                 onLongPress: () => _showVariantsPopup(),
@@ -91,7 +91,7 @@ class _EmojiTileState extends State<EmojiTile> {
   Future<void> _showVariantsPopup() async {
     if (widget.emoji.variants == null ||
         widget.emoji.variants!.isEmpty ||
-        emojiCubit.state.category == EmojiCategory.recent) {
+        EmojiCubit.instance.state.category == EmojiCategory.recent) {
       return;
     }
 
@@ -131,7 +131,7 @@ class _EmojiTileState extends State<EmojiTile> {
       final selectedEmoji = widget.emoji.variants!.firstWhere(
         (variant) => variant.emoji == selectedValue,
       );
-      emojiCubit.userSelectedEmoji(selectedEmoji);
+      EmojiCubit.instance.userSelectedEmoji(selectedEmoji);
     }
   }
 }

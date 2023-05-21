@@ -141,7 +141,7 @@ class CategoryListView extends StatelessWidget {
                   ),
                   selected: (state.category == category),
                   onTap: () {
-                    emojiCubit.setCategory(category);
+                    EmojiCubit.instance.setCategory(category);
                     // Dismiss the drawer if present.
                     Navigator.popUntil(context, ModalRoute.withName('/'));
                   },

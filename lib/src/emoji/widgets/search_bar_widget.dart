@@ -29,7 +29,7 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
       icon: const Icon(Icons.close),
       onPressed: () {
         searchTextController.clear();
-        emojiCubit.search('');
+        EmojiCubit.instance.search('');
         setState(() {});
       },
     );
@@ -47,7 +47,7 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
 
         widget.searchBarFocusNode.unfocus();
         searchTextController.clear();
-        emojiCubit.search('');
+        EmojiCubit.instance.search('');
         setState(() {});
         return KeyEventResult.handled;
       },
@@ -65,7 +65,7 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
           }
 
           setState(() {});
-          await emojiCubit.search(value);
+          await EmojiCubit.instance.search(value);
         },
         trailing: trailing,
       ),
