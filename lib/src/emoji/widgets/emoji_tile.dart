@@ -77,7 +77,7 @@ class _EmojiTileState extends State<EmojiTile> {
   }
 
   /// Shows a popup menu with the variants of the selected emoji.
-  void _showVariantsPopup() {
+  Future<void> _showVariantsPopup() async {
     if (widget.emoji.variants == null ||
         widget.emoji.variants!.isEmpty ||
         emojiCubit.state.category == EmojiCategory.recent) {
@@ -96,22 +96,10 @@ class _EmojiTileState extends State<EmojiTile> {
       Offset.zero & overlay.size,
     );
 
-    showMenu(
+    final selectedValue = await showMenu(
       context: context,
       position: position,
       items: [
-        PopupMenuItem(
-          value: widget.emoji.emoji,
-          child: Center(
-            child: Text(
-              widget.emoji.emoji,
-              style: const TextStyle(
-                fontSize: 35,
-                fontFamily: emojiFont,
-              ),
-            ),
-          ),
-        ),
         for (final variant in widget.emoji.variants!)
           PopupMenuItem(
             value: variant.emoji,
@@ -126,14 +114,14 @@ class _EmojiTileState extends State<EmojiTile> {
             ),
           ),
       ],
-    ).then((selectedValue) {
-      if (selectedValue != null) {
-        final selectedEmoji = widget.emoji.variants!.firstWhere(
-          (variant) => variant.emoji == selectedValue,
-        );
-        emojiCubit.userSelectedEmoji(selectedEmoji);
-      }
-    });
+    );
+
+    if (selectedValue != null) {
+      final selectedEmoji = widget.emoji.variants!.firstWhere(
+        (variant) => variant.emoji == selectedValue,
+      );
+      emojiCubit.userSelectedEmoji(selectedEmoji);
+    }
   }
 }
 
