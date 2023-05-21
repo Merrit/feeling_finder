@@ -1,5 +1,4 @@
 import 'package:feeling_finder/src/emoji/cubit/emoji_cubit.dart';
-import 'package:feeling_finder/src/emoji/emoji.json.dart';
 import 'package:feeling_finder/src/emoji/emoji_category.dart';
 import 'package:feeling_finder/src/emoji/emoji_service.dart';
 import 'package:feeling_finder/src/settings/settings_service.dart';
@@ -17,7 +16,7 @@ void main() {
     setUp(() {
       // Return no recent emojis.
       when(settingsService.recentEmojis).thenReturn([]);
-      final emojiService = EmojiService(emojiJson);
+      final emojiService = EmojiService();
       emojiCubit = EmojiCubit(
         emojiService,
         settingsService,

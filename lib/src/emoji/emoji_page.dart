@@ -42,7 +42,7 @@ class _EmojiPageState extends State<EmojiPage> {
       child: Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: SearchBox(focusNode: searchBoxFocusNode),
+          title: SearchBarWidget(searchBoxFocusNode),
           actions: [
             IconButton(
               // Keyboard navigation shouldn't focus settings button.

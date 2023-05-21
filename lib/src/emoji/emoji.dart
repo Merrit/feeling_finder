@@ -33,6 +33,9 @@ class Emoji with _$Emoji {
     /// The emoji's version per the unicode spec.
     /// Example: "6.0".
     required String unicodeVersion,
+
+    /// A list of other emojis that are variations of this emoji.
+    List<Emoji>? variants,
   }) = _Emoji;
 
   factory Emoji.fromJson(Map<String, dynamic> json) => _$EmojiFromJson(json);

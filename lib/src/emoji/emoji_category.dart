@@ -7,7 +7,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 enum EmojiCategory {
   recent,
   smileys,
-  peopleAndBody,
   animalsAndNature,
   foodAndDrink,
   travelAndPlaces,
@@ -21,7 +20,6 @@ enum EmojiCategory {
 const emojiCategoryMap = <String, EmojiCategory>{
   'Recent': EmojiCategory.recent,
   'Smileys & Emotion': EmojiCategory.smileys,
-  'People & Body': EmojiCategory.peopleAndBody,
   'Animals & Nature': EmojiCategory.animalsAndNature,
   'Food & Drink': EmojiCategory.foodAndDrink,
   'Travel & Places': EmojiCategory.travelAndPlaces,
@@ -50,9 +48,6 @@ extension EmojiCategoryHelper on EmojiCategory {
         break;
       case EmojiCategory.smileys:
         name = AppLocalizations.of(context)!.emojiCategorySmileys;
-        break;
-      case EmojiCategory.peopleAndBody:
-        name = AppLocalizations.of(context)!.emojiCategoryPeopleAndBody;
         break;
       case EmojiCategory.animalsAndNature:
         name = AppLocalizations.of(context)!.emojiCategoryAnimalsAndNature;
