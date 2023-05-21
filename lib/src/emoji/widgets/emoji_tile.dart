@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../cubit/emoji_cubit.dart';
 import '../emoji.dart';
@@ -31,14 +32,13 @@ class _EmojiTileState extends State<EmojiTile> {
 
   @override
   Widget build(BuildContext context) {
-    final Decoration? hasVariantsIndicator;
-    if (widget.emoji.variants != null &&
+    final bool hasVariants = widget.emoji.variants != null &&
         widget.emoji.variants!.isNotEmpty &&
-        emojiCubit.state.category != EmojiCategory.recent) {
-      hasVariantsIndicator = _TriangleDecoration();
-    } else {
-      hasVariantsIndicator = null;
-    }
+        emojiCubit.state.category != EmojiCategory.recent;
+
+    final Decoration? hasVariantsIndicator = (hasVariants) //
+        ? _TriangleDecoration()
+        : null;
 
     return Center(
       child: Container(
@@ -52,21 +52,32 @@ class _EmojiTileState extends State<EmojiTile> {
           child: MouseRegion(
             onEnter: (_) => focusNode.requestFocus(),
             onExit: (_) => focusNode.unfocus(),
-            child: InkWell(
-              focusNode: focusNode,
-              autofocus: (widget.index == 0) ? true : false,
-              focusColor: Colors.lightBlue,
-              onTap: () async {
-                await emojiCubit.userSelectedEmoji(widget.emoji);
-                focusNode.unfocus();
+            child: Focus(
+              onKey: (FocusNode focusNode, RawKeyEvent event) {
+                if (event.logicalKey == LogicalKeyboardKey.contextMenu &&
+                    hasVariants) {
+                  _showVariantsPopup();
+                  return KeyEventResult.handled;
+                } else {
+                  return KeyEventResult.ignored;
+                }
               },
-              onLongPress: () => _showVariantsPopup(),
-              onSecondaryTap: () => _showVariantsPopup(),
-              child: Text(
-                widget.emoji.emoji,
-                style: const TextStyle(
-                  fontSize: 35,
-                  fontFamily: emojiFont,
+              child: InkWell(
+                focusNode: focusNode,
+                autofocus: (widget.index == 0) ? true : false,
+                focusColor: Colors.lightBlue,
+                onTap: () async {
+                  await emojiCubit.userSelectedEmoji(widget.emoji);
+                  focusNode.unfocus();
+                },
+                onLongPress: () => _showVariantsPopup(),
+                onSecondaryTap: () => _showVariantsPopup(),
+                child: Text(
+                  widget.emoji.emoji,
+                  style: const TextStyle(
+                    fontSize: 35,
+                    fontFamily: emojiFont,
+                  ),
                 ),
               ),
             ),
