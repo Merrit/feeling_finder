@@ -62,6 +62,35 @@ class EmojiCubit extends Cubit<EmojiState> {
     ));
   }
 
+  /// Sets the category to the next one in the list.
+  ///
+  /// If the current category is the last one, it will loop back to the first.
+  void nextCategory() {
+    // If _settingsService.recentEmojis() is empty, then the recent category
+    // will not be shown, so we need to offset the index by 1.
+    final bool haveRecentEmojis = _settingsService.recentEmojis().isNotEmpty;
+    int nextCategoryIndex = state.category.index + 1;
+    if (nextCategoryIndex >= EmojiCategory.values.length) {
+      nextCategoryIndex = (haveRecentEmojis) ? 0 : 1;
+    }
+    setCategory(EmojiCategory.values[nextCategoryIndex]);
+  }
+
+  /// Sets the category to the previous one in the list.
+  ///
+  /// If the current category is the first one, it will loop back to the last.
+  void previousCategory() {
+    // If _settingsService.recentEmojis() is empty, then the recent category
+    // will not be shown, so we need to offset the index by 1.
+    final bool haveRecentEmojis = _settingsService.recentEmojis().isNotEmpty;
+    int previousCategoryIndex = state.category.index - 1;
+    if (previousCategoryIndex == 0 && !haveRecentEmojis ||
+        previousCategoryIndex < 0) {
+      previousCategoryIndex = EmojiCategory.values.length - 1;
+    }
+    setCategory(EmojiCategory.values[previousCategoryIndex]);
+  }
+
   /// The user has clicked or tapped an emoji to be copied.
   Future<void> userSelectedEmoji(Emoji emoji) async {
     // Copy emoji to clipboard.

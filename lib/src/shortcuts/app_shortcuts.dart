@@ -14,7 +14,15 @@ class AppShortcuts extends StatelessWidget {
     required this.child,
   }) : super(key: key);
 
-  final _shortcuts = <LogicalKeySet, Intent>{
+  final _shortcuts = <ShortcutActivator, Intent>{
+    const SingleActivator(
+      LogicalKeyboardKey.arrowUp,
+      alt: true,
+    ): const PreviousCategoryIntent(),
+    const SingleActivator(
+      LogicalKeyboardKey.arrowDown,
+      alt: true,
+    ): const NextCategoryIntent(),
     LogicalKeySet(
       LogicalKeyboardKey.control,
       LogicalKeyboardKey.keyQ,
@@ -26,6 +34,8 @@ class AppShortcuts extends StatelessWidget {
   };
 
   final _actions = <Type, Action<Intent>>{
+    NextCategoryIntent: NextCategoryAction(),
+    PreviousCategoryIntent: PreviousCategoryAction(),
     QuitIntent: QuitAction(),
   };
 
