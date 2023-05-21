@@ -1,2 +1,2 @@
 export 'emoji_tile.dart';
-export 'search_box.dart';
+export 'search_bar_widget.dart';

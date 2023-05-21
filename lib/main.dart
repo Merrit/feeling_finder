@@ -7,7 +7,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'src/app.dart';
 import 'src/emoji/cubit/emoji_cubit.dart';
-import 'src/emoji/emoji.json.dart';
 import 'src/emoji/emoji_service.dart';
 import 'src/helpers/helpers.dart';
 import 'src/logs/logging_manager.dart';
@@ -37,8 +36,7 @@ void main(List<String> args) async {
   // and prevents unsightly things like the theme suddenly changing when loaded.
   await storageService.init();
 
-  // Prepare the source of emojis.
-  final emojiService = EmojiService(emojiJson);
+  final emojiService = EmojiService();
 
   // Initialize the settings service.
   final settingsService = SettingsService(storageService);

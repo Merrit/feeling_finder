@@ -1,15 +1,14 @@
 import 'package:feeling_finder/src/emoji/emoji.dart';
-import 'package:feeling_finder/src/emoji/emoji.json.dart';
 import 'package:feeling_finder/src/emoji/emoji_category.dart';
 import 'package:feeling_finder/src/emoji/emoji_service.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('EmojiService: ', () {
-    final emojiService = EmojiService(emojiJson);
+    final emojiService = EmojiService();
 
-    test('allEmojis has 9 categories', () {
-      expect(emojiService.allEmojis.length, 9);
+    test('allEmojis has 8 categories', () {
+      expect(emojiService.allEmojis.length, 8);
     });
 
     test(
@@ -28,25 +27,68 @@ void main() {
       expect(otherCategoryEmojis, isEmpty);
     });
 
-    test('search() finds apropriate emojis', () {
-      final matches = emojiService.search('wave');
+    test('search() finds apropriate emojis', () async {
+      final matches = await emojiService.search('wav');
 
       expect(matches, [
         const Emoji(
           emoji: '👋',
-          description: 'waving hand',
-          category: EmojiCategory.peopleAndBody,
-          aliases: ['wave'],
-          tags: ['goodbye'],
-          unicodeVersion: '6.0',
+          description: '',
+          category: EmojiCategory.smileys,
+          aliases: [],
+          tags: [],
+          unicodeVersion: '',
+          variants: [
+            Emoji(
+              emoji: '👋🏻',
+              description: '',
+              category: EmojiCategory.smileys,
+              aliases: [],
+              tags: [],
+              unicodeVersion: '',
+            ),
+            Emoji(
+              emoji: '👋🏼',
+              description: '',
+              category: EmojiCategory.smileys,
+              aliases: [],
+              tags: [],
+              unicodeVersion: '',
+            ),
+            Emoji(
+              emoji: '👋🏽',
+              description: '',
+              category: EmojiCategory.smileys,
+              aliases: [],
+              tags: [],
+              unicodeVersion: '',
+            ),
+            Emoji(
+              emoji: '👋🏾',
+              description: '',
+              category: EmojiCategory.smileys,
+              aliases: [],
+              tags: [],
+              unicodeVersion: '',
+            ),
+            Emoji(
+              emoji: '👋🏿',
+              description: '',
+              category: EmojiCategory.smileys,
+              aliases: [],
+              tags: [],
+              unicodeVersion: '',
+            ),
+          ],
         ),
         const Emoji(
           emoji: '🌊',
-          description: 'water wave',
-          category: EmojiCategory.travelAndPlaces,
-          aliases: ['ocean'],
-          tags: ['sea'],
-          unicodeVersion: '6.0',
+          description: '',
+          category: EmojiCategory.animalsAndNature,
+          aliases: [],
+          tags: [],
+          unicodeVersion: '',
+          variants: null,
         ),
       ]);
     });

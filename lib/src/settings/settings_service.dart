@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 
 import '../emoji/emoji.dart';
+import '../emoji/emoji_service.dart';
 import '../logs/logging_manager.dart';
 import '../storage/storage_service.dart';
 
@@ -27,15 +28,25 @@ class SettingsService {
   /// Loads the list of recent emojis from storage.
   List<Emoji> recentEmojis() {
     if (_recentEmojis.isNotEmpty) return _recentEmojis;
-    final emojiStringList = _storageService.getValue(
-      'recentEmojis',
-    );
-    if (emojiStringList == null) return [];
-    if (emojiStringList.isEmpty) return [];
-    for (var emojiJson in emojiStringList as List<dynamic>) {
+
+    final emojisJsonString = _storageService.getValue('recentEmojis');
+
+    if (emojisJsonString == null) return [];
+
+    if (emojisJsonString is! String) {
+      log.e('Recent emojis from storage not valid');
+      clearRecentEmojis();
+      return [];
+    }
+
+    final emojiMapsList = jsonDecode(emojisJsonString) as List<dynamic>;
+
+    for (var emojiJson in emojiMapsList) {
       try {
-        final emojiMap = json.decode(emojiJson);
-        final emoji = Emoji.fromJson(emojiMap);
+        Emoji emoji = Emoji.fromJson(emojiJson);
+        emoji = emoji.copyWith(
+          variants: buildVariants(emoji: emoji, category: emoji.category),
+        );
         _recentEmojis.add(emoji);
       } catch (e) {
         log.e('Recent emoji from storage not valid', e);
@@ -57,7 +68,7 @@ class SettingsService {
     final emojiStringList = _recentEmojis.map((e) => e.toJson()).toList();
     await _storageService.saveValue(
       key: 'recentEmojis',
-      value: emojiStringList,
+      value: jsonEncode(emojiStringList),
     );
   }
 
