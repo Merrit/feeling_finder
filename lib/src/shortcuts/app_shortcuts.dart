@@ -16,9 +16,6 @@ class AppShortcuts extends StatelessWidget {
 
   final _shortcuts = <LogicalKeySet, Intent>{
     LogicalKeySet(
-      LogicalKeyboardKey.escape,
-    ): const QuitIntent(),
-    LogicalKeySet(
       LogicalKeyboardKey.control,
       LogicalKeyboardKey.keyQ,
     ): const QuitIntent(),
