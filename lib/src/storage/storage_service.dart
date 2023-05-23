@@ -8,18 +8,12 @@ import '../logs/logging_manager.dart';
 
 /// Interfaces with the host OS to store & retrieve data from disk.
 class StorageService {
-  /// This class is a singleton.
-  /// This variable holds the instance once created.
-  static StorageService? _instance;
-
-  /// Private singleton constructor.
-  StorageService._singleton();
-
-  /// Factory ensures only one instance is ever created.
-  factory StorageService() {
-    if (_instance != null) return _instance!;
-    return StorageService._singleton();
+  StorageService() {
+    instance = this;
   }
+
+  /// Singleton instance.
+  static late StorageService instance;
 
   /// A generic storage pool, anything large should make its own box.
   Box? _generalBox;
