@@ -33,7 +33,7 @@ class EmojiService {
         aliases: [],
         category: category,
         emoji: emoji.emoji,
-        description: '',
+        description: emoji.name,
         tags: [],
         unicodeVersion: '',
         variants: _buildVariantsFromPicker(emoji, category),
@@ -65,7 +65,7 @@ Map<EmojiCategory, List<Emoji>> _buildEmojisFromPickerPackage() {
           aliases: [],
           category: category,
           emoji: emoji.emoji,
-          description: '',
+          description: emoji.name,
           tags: [],
           unicodeVersion: '',
           variants: variants,
@@ -122,7 +122,7 @@ List<Emoji>? _buildVariantsFromPicker(
             emoji: emoji_picker.EmojiPickerUtils()
                 .applySkinTone(emoji, skinTone)
                 .emoji,
-            description: '',
+            description: emoji.name,
             tags: [],
             unicodeVersion: '',
           ))
