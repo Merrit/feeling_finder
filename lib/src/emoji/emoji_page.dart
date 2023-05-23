@@ -36,6 +36,7 @@ class _EmojiPageState extends State<EmojiPage> {
   @override
   Widget build(BuildContext context) {
     return FocusScope(
+      debugLabel: 'emojiPageFocusScope',
       onKey: (FocusNode node, RawKeyEvent event) {
         return _redirectSearchKeys(event, searchBoxFocusNode);
       },
@@ -46,7 +47,10 @@ class _EmojiPageState extends State<EmojiPage> {
           actions: [
             IconButton(
               // Keyboard navigation shouldn't focus settings button.
-              focusNode: FocusNode(skipTraversal: true),
+              focusNode: FocusNode(
+                debugLabel: 'settingsButtonFocusNode',
+                skipTraversal: true,
+              ),
               onPressed: () {
                 Navigator.restorablePushNamed(context, SettingsPage.routeName);
               },

@@ -19,7 +19,9 @@ class SearchBarWidget extends StatefulWidget {
 
 class _SearchBarWidgetState extends State<SearchBarWidget> {
   final TextEditingController searchTextController = TextEditingController();
-  final FocusNode shortcutFocusNode = FocusNode();
+  final FocusNode shortcutFocusNode = FocusNode(
+    debugLabel: 'searchBarEscapeShortcutFocusNode',
+  );
 
   @override
   Widget build(BuildContext context) {

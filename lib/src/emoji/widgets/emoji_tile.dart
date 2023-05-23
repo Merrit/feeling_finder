@@ -22,7 +22,7 @@ class EmojiTile extends StatefulWidget {
 }
 
 class _EmojiTileState extends State<EmojiTile> {
-  final focusNode = FocusNode();
+  final focusNode = FocusNode(debugLabel: 'emojiTileFocusNode');
 
   @override
   void dispose() {
@@ -53,6 +53,8 @@ class _EmojiTileState extends State<EmojiTile> {
             onEnter: (_) => focusNode.requestFocus(),
             onExit: (_) => focusNode.unfocus(),
             child: Focus(
+              debugLabel: 'emojiTileShortcutFocusNode',
+              canRequestFocus: false,
               onKey: (FocusNode focusNode, RawKeyEvent event) {
                 if (event.logicalKey == LogicalKeyboardKey.contextMenu &&
                     hasVariants) {
