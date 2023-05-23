@@ -3,18 +3,25 @@
 A fast and beautiful app to help convey emotion in text communication.
 
 
-![](screenshots/screenshot-desktop-dark.png)
+![Screenshot](https://github.com/Merrit/feeling_finder/assets/9575627/c060b90a-eee7-49cb-a352-0113084ad858)
+
+![Variants](https://github.com/Merrit/feeling_finder/assets/9575627/bda1bb27-27ee-4e57-b344-cc753f7cb4a0)
 
 
 ## Features
 
 - Emojis from the Unicode spec
+- Variants / skin tones
 - Browse emoji categories
 - Hover emoji for description
-- Start typing to search
-- Select emoji with arrow keys
-- Press `Enter` or click/tap an emoji to copy to clipboard
+- Keyboard shortcuts
+  - Start typing to search
+  - Select emoji with arrow keys
+  - Press `Enter` or click/tap an emoji to copy to clipboard
+  - Right-click or `Menu` key to show variant / skin tone menu
+  - `Alt` + `Arrow Up` / `Arrow Down` to change category
 - Option to quit after copying to clipboard
+- Right-click or long-press Recent to clear
 - Light & dark theme
 
 
