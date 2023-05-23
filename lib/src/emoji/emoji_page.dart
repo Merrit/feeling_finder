@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:helpers/helpers.dart';
 
+import '../app/app.dart';
+import '../core/core.dart';
 import '../helpers/helpers.dart';
 import '../settings/settings_page.dart';
 import 'cubit/emoji_cubit.dart';
@@ -35,38 +38,46 @@ class _EmojiPageState extends State<EmojiPage> {
 
   @override
   Widget build(BuildContext context) {
-    return FocusScope(
-      debugLabel: 'emojiPageFocusScope',
-      onKey: (FocusNode node, RawKeyEvent event) {
-        return _redirectSearchKeys(event, searchBoxFocusNode);
+    return BlocListener<AppCubit, AppState>(
+      listener: (context, state) {
+        if (state.releaseNotes != null) {
+          _showReleaseNotesDialog(context, state.releaseNotes!);
+        }
       },
-      child: Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          title: SearchBarWidget(searchBoxFocusNode),
-          actions: [
-            IconButton(
-              // Keyboard navigation shouldn't focus settings button.
-              focusNode: FocusNode(
-                debugLabel: 'settingsButtonFocusNode',
-                skipTraversal: true,
+      child: FocusScope(
+        debugLabel: 'emojiPageFocusScope',
+        onKey: (FocusNode node, RawKeyEvent event) {
+          return _redirectSearchKeys(event, searchBoxFocusNode);
+        },
+        child: Scaffold(
+          appBar: AppBar(
+            centerTitle: true,
+            title: SearchBarWidget(searchBoxFocusNode),
+            actions: [
+              IconButton(
+                // Keyboard navigation shouldn't focus settings button.
+                focusNode: FocusNode(
+                  debugLabel: 'settingsButtonFocusNode',
+                  skipTraversal: true,
+                ),
+                onPressed: () {
+                  Navigator.restorablePushNamed(
+                      context, SettingsPage.routeName);
+                },
+                icon: const Icon(Icons.settings),
               ),
-              onPressed: () {
-                Navigator.restorablePushNamed(context, SettingsPage.routeName);
-              },
-              icon: const Icon(Icons.settings),
-            ),
-          ],
-        ),
-        drawer: (platformIsMobile())
-            ? const Drawer(child: CategoryListView())
-            : null,
-        body: Row(
-          children: [
-            // Category buttons shown in a drawer on mobile.
-            if (!platformIsMobile()) const CategoryListView(),
-            EmojiGridView(gridViewFocusNode),
-          ],
+            ],
+          ),
+          drawer: (platformIsMobile())
+              ? const Drawer(child: CategoryListView())
+              : null,
+          body: Row(
+            children: [
+              // Category buttons shown in a drawer on mobile.
+              if (!platformIsMobile()) const CategoryListView(),
+              EmojiGridView(gridViewFocusNode),
+            ],
+          ),
         ),
       ),
     );
@@ -103,6 +114,21 @@ class _EmojiPageState extends State<EmojiPage> {
     }
 
     return KeyEventResult.ignored;
+  }
+
+  Future<void> _showReleaseNotesDialog(
+    BuildContext context,
+    ReleaseNotes releaseNotes,
+  ) {
+    return showDialog(
+      context: context,
+      builder: (context) => ReleaseNotesDialog(
+        releaseNotes: releaseNotes,
+        donateCallback: () => AppCubit.instance.launchURL(donateUrl),
+        launchURL: (url) => AppCubit.instance.launchURL(url),
+        onClose: () => Navigator.pop(context),
+      ),
+    );
   }
 
   @override

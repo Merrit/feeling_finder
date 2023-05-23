@@ -1,10 +1,27 @@
 part of 'app_cubit.dart';
 
-abstract class AppState extends Equatable {
-  const AppState();
+@freezed
+class AppState with _$AppState {
+  const factory AppState({
+    /// True if this is the first run of the app.
+    required bool firstRun,
+    required String runningVersion,
+    required String? updateVersion,
+    required bool updateAvailable,
+    required bool showUpdateButton,
 
-  @override
-  List<Object> get props => [];
+    /// Release notes for the current version.
+    required ReleaseNotes? releaseNotes,
+  }) = _AppState;
+
+  factory AppState.initial() {
+    return const AppState(
+      firstRun: false,
+      runningVersion: '',
+      updateVersion: null,
+      updateAvailable: false,
+      showUpdateButton: false,
+      releaseNotes: null,
+    );
+  }
 }
-
-class AppInitial extends AppState {}
