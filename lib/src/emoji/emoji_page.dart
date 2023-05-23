@@ -164,16 +164,46 @@ class CategoryListView extends StatelessWidget {
                 // Only show recent category if we have any recents.
                 return const SizedBox();
               } else {
-                return ListTile(
+                final listTile = ListTile(
                   title: Text(
                     category.localizedName(context),
                     textAlign: TextAlign.center,
                   ),
                   selected: (state.category == category),
-                  onTap: () {
-                    EmojiCubit.instance.setCategory(category);
-                    // Dismiss the drawer if present.
-                    Navigator.popUntil(context, ModalRoute.withName('/'));
+                );
+
+                return MenuAnchor(
+                  anchorTapClosesMenu: true,
+                  menuChildren: [
+                    /// If the category is [EmojiCategory.recent], show a
+                    /// button to clear the recent emojis.
+                    if (category == EmojiCategory.recent)
+                      MenuItemButton(
+                        trailingIcon: const Icon(Icons.delete),
+                        onPressed: () {
+                          EmojiCubit.instance.clearRecentEmojis();
+                        },
+                        child: const Text('Clear recent emojis'),
+                      ),
+                  ],
+                  style: Theme.of(context).menuTheme.style?.copyWith(
+                        alignment: Alignment.centerRight,
+                      ),
+                  builder: (context, controller, child) {
+                    return GestureDetector(
+                      onLongPressEnd: (details) => controller.open(
+                        position: details.localPosition,
+                      ),
+                      onSecondaryTapDown: (details) => controller.open(
+                        position: details.localPosition,
+                      ),
+                      onTap: () {
+                        EmojiCubit.instance.setCategory(category);
+                        // Dismiss the drawer if present.
+                        Navigator.popUntil(context, ModalRoute.withName('/'));
+                      },
+                      child: listTile,
+                    );
                   },
                 );
               }
