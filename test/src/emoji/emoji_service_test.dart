@@ -33,7 +33,7 @@ void main() {
       expect(matches, [
         const Emoji(
           emoji: '👋',
-          description: '',
+          description: 'Waving Hand',
           category: EmojiCategory.smileys,
           aliases: [],
           tags: [],
@@ -41,7 +41,7 @@ void main() {
           variants: [
             Emoji(
               emoji: '👋🏻',
-              description: '',
+              description: 'Waving Hand',
               category: EmojiCategory.smileys,
               aliases: [],
               tags: [],
@@ -49,7 +49,7 @@ void main() {
             ),
             Emoji(
               emoji: '👋🏼',
-              description: '',
+              description: 'Waving Hand',
               category: EmojiCategory.smileys,
               aliases: [],
               tags: [],
@@ -57,7 +57,7 @@ void main() {
             ),
             Emoji(
               emoji: '👋🏽',
-              description: '',
+              description: 'Waving Hand',
               category: EmojiCategory.smileys,
               aliases: [],
               tags: [],
@@ -65,7 +65,7 @@ void main() {
             ),
             Emoji(
               emoji: '👋🏾',
-              description: '',
+              description: 'Waving Hand',
               category: EmojiCategory.smileys,
               aliases: [],
               tags: [],
@@ -73,7 +73,7 @@ void main() {
             ),
             Emoji(
               emoji: '👋🏿',
-              description: '',
+              description: 'Waving Hand',
               category: EmojiCategory.smileys,
               aliases: [],
               tags: [],
@@ -83,7 +83,7 @@ void main() {
         ),
         const Emoji(
           emoji: '🌊',
-          description: '',
+          description: 'Water Wave',
           category: EmojiCategory.animalsAndNature,
           aliases: [],
           tags: [],
