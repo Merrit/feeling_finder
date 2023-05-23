@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+import 'package:helpers/helpers.dart';
 import 'package:window_manager/window_manager.dart';
 
 class AppWindow {
@@ -6,6 +8,7 @@ class AppWindow {
   static late AppWindow instance;
 
   static Future<void> initialize() async {
+    if (!defaultTargetPlatform.isDesktop) return;
     await windowManager.ensureInitialized();
     instance = AppWindow._();
   }
