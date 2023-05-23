@@ -34,6 +34,19 @@ class EmojiCubit extends Cubit<EmojiState> {
   /// Singleton instance of the EmojiCubit.
   static late EmojiCubit instance;
 
+  /// Clear the list of recent emojis.
+  Future<void> clearRecentEmojis() async {
+    await _settingsService.clearRecentEmojis();
+
+    if (state.category == EmojiCategory.recent) {
+      setCategory(EmojiCategory.smileys);
+    }
+
+    emit(state.copyWith(
+      haveRecentEmojis: false,
+    ));
+  }
+
   /// Search and filter for all emojis that match [searchString].
   Future<void> search(String keyword) async {
     if (keyword.isEmpty) {
