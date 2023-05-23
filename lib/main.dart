@@ -4,8 +4,11 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:helpers/helpers.dart';
+import 'package:http/http.dart' as http;
 
 import 'src/app.dart';
+import 'src/app/app.dart';
 import 'src/emoji/cubit/emoji_cubit.dart';
 import 'src/emoji/emoji_service.dart';
 import 'src/helpers/helpers.dart';
@@ -13,6 +16,7 @@ import 'src/logs/logging_manager.dart';
 import 'src/settings/cubit/settings_cubit.dart';
 import 'src/settings/settings_service.dart';
 import 'src/storage/storage_service.dart';
+import 'src/updates/updates.dart';
 import 'src/window/app_window.dart';
 
 import 'package:window_size/window_size.dart' as window_size;
@@ -38,6 +42,14 @@ void main(List<String> args) async {
 
   final emojiService = EmojiService();
 
+  final appCubit = AppCubit(
+    releaseNotesService: ReleaseNotesService(
+      client: http.Client(),
+      repository: 'merrit/feeling_finder',
+    ),
+    updateService: UpdateService(),
+  );
+
   // Initialize the settings service.
   final settingsService = SettingsService(storageService);
   final settingsCubit = await SettingsCubit.init(settingsService);
@@ -46,6 +58,7 @@ void main(List<String> args) async {
   runApp(
     MultiBlocProvider(
       providers: [
+        BlocProvider.value(value: appCubit),
         BlocProvider(
           create: (context) => EmojiCubit(
             emojiService,
