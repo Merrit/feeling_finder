@@ -11,7 +11,12 @@ import '../storage/storage_service.dart';
 class SettingsService {
   final StorageService _storageService;
 
-  SettingsService(this._storageService);
+  SettingsService(this._storageService) {
+    instance = this;
+  }
+
+  /// Singleton instance of the SettingsService.
+  static late SettingsService instance;
 
   bool exitOnCopy() {
     final shouldExit = _storageService.getValue('exitOnCopy') as bool?;
@@ -74,6 +79,7 @@ class SettingsService {
 
   /// Remove all emojis from the recents list.
   Future<void> clearRecentEmojis() async {
+    _recentEmojis.clear();
     await _storageService.deleteValue('recentEmojis');
   }
 
