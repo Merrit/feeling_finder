@@ -24,16 +24,11 @@
       <li>Variants / skin tones</li>
       <li>Browse emoji categories</li>
       <li>Hover emoji for description</li>
-      <li>
-        Keyboard shortcuts
-        <ul>
-          <li>Start typing to search</li>
-          <li>Select emoji with arrow keys</li>
-          <li>Press Enter or click/tap an emoji to copy to clipboard</li>
-          <li>Right-click or Menu key to show variant / skin tone menu</li>
-          <li>Alt + Arrow Up / Arrow Down to change category</li>
-        </ul>
-      </li>
+      <li>Type to search</li>
+      <li>Select emoji with arrow keys</li>
+      <li>Press Enter or click/tap an emoji to copy to clipboard</li>
+      <li>Right-click or Menu key to show variant / skin tone menu</li>
+      <li>Alt + Arrow Up / Arrow Down to change category</li>
       <li>Option to quit after copying to clipboard</li>
       <li>Right-click or long-press Recent to clear</li>
       <li>Light &amp; dark theme</li>
