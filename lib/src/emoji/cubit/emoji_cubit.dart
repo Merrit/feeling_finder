@@ -1,10 +1,10 @@
 import 'dart:io';
 
-import 'package:equatable/equatable.dart';
 import 'package:feeling_finder/src/window/app_window.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../logs/logging_manager.dart';
 import '../../settings/cubit/settings_cubit.dart';
@@ -14,6 +14,7 @@ import '../emoji_category.dart';
 import '../emoji_service.dart';
 
 part 'emoji_state.dart';
+part 'emoji_cubit.freezed.dart';
 
 /// Controls the state of [EmojiPage] and connects the
 /// view to the [EmojiService].
@@ -53,11 +54,13 @@ class EmojiCubit extends Cubit<EmojiState> {
       // Keyword is empty when the user clears the search field, so we
       // reset the list of emojis to the current category.
       setCategory(state.category);
+      emit(state.copyWith(isSearching: false));
       return;
     }
 
     emit(state.copyWith(
       emojis: _emojiService.search(keyword),
+      isSearching: true,
     ));
   }
 

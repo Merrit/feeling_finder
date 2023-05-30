@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../cubit/emoji_cubit.dart';
 import '../emoji.dart';
@@ -32,71 +33,80 @@ class _EmojiTileState extends State<EmojiTile> {
 
   @override
   Widget build(BuildContext context) {
-    final bool hasVariants = widget.emoji.variants != null &&
-        widget.emoji.variants!.isNotEmpty &&
-        EmojiCubit.instance.state.category != EmojiCategory.recent;
+    return BlocBuilder<EmojiCubit, EmojiState>(
+      builder: (context, state) {
+        final bool hasVariants = widget.emoji.variants?.isNotEmpty == true;
 
-    final Decoration? hasVariantsIndicator = (hasVariants) //
-        ? _TriangleDecoration()
-        : null;
+        final bool categoryIsRecent =
+            EmojiCubit.instance.state.category == EmojiCategory.recent;
 
-    return Center(
-      child: Container(
-        decoration: hasVariantsIndicator,
-        child: Tooltip(
-          waitDuration: const Duration(milliseconds: 400),
-          richMessage: TextSpan(
-            text: widget.emoji.name,
-            style: const TextStyle(fontSize: 12),
-          ),
-          child: MouseRegion(
-            onEnter: (_) => focusNode.requestFocus(),
-            onExit: (_) => focusNode.unfocus(),
-            child: Focus(
-              debugLabel: 'emojiTileShortcutFocusNode',
-              canRequestFocus: false,
-              onKey: (FocusNode focusNode, RawKeyEvent event) {
-                if (event.logicalKey == LogicalKeyboardKey.contextMenu &&
-                    hasVariants) {
-                  _showVariantsPopup();
-                  return KeyEventResult.handled;
-                } else {
-                  return KeyEventResult.ignored;
-                }
-              },
-              child: InkWell(
-                focusNode: focusNode,
-                autofocus: (widget.index == 0) ? true : false,
-                focusColor: Colors.lightBlue,
-                onTap: () async {
-                  await EmojiCubit.instance.userSelectedEmoji(widget.emoji);
-                  focusNode.unfocus();
-                },
-                onLongPress: () => _showVariantsPopup(),
-                onSecondaryTap: () => _showVariantsPopup(),
-                child: Text(
-                  widget.emoji.emoji,
-                  style: const TextStyle(
-                    fontSize: 35,
-                    fontFamily: emojiFont,
+        final bool showVariantIndicator =
+            hasVariants && (!categoryIsRecent || state.isSearching);
+
+        final Decoration? hasVariantsIndicator;
+        if (showVariantIndicator) {
+          hasVariantsIndicator = _TriangleDecoration();
+        } else {
+          hasVariantsIndicator = null;
+        }
+
+        return Center(
+          child: Container(
+            decoration: hasVariantsIndicator,
+            child: Tooltip(
+              waitDuration: const Duration(milliseconds: 400),
+              richMessage: TextSpan(
+                text: widget.emoji.name,
+                style: const TextStyle(fontSize: 12),
+              ),
+              child: MouseRegion(
+                onEnter: (_) => focusNode.requestFocus(),
+                onExit: (_) => focusNode.unfocus(),
+                child: Focus(
+                  debugLabel: 'emojiTileShortcutFocusNode',
+                  canRequestFocus: false,
+                  onKey: (FocusNode focusNode, RawKeyEvent event) {
+                    if (event.logicalKey == LogicalKeyboardKey.contextMenu &&
+                        hasVariants) {
+                      _showVariantsPopup();
+                      return KeyEventResult.handled;
+                    } else {
+                      return KeyEventResult.ignored;
+                    }
+                  },
+                  child: InkWell(
+                    focusNode: focusNode,
+                    autofocus: (widget.index == 0) ? true : false,
+                    focusColor: Colors.lightBlue,
+                    onTap: () async {
+                      await EmojiCubit.instance.userSelectedEmoji(widget.emoji);
+                      focusNode.unfocus();
+                    },
+                    onLongPress: (showVariantIndicator)
+                        ? () => _showVariantsPopup()
+                        : null,
+                    onSecondaryTap: (showVariantIndicator)
+                        ? () => _showVariantsPopup()
+                        : null,
+                    child: Text(
+                      widget.emoji.emoji,
+                      style: const TextStyle(
+                        fontSize: 35,
+                        fontFamily: emojiFont,
+                      ),
+                    ),
                   ),
                 ),
               ),
             ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 
   /// Shows a popup menu with the variants of the selected emoji.
   Future<void> _showVariantsPopup() async {
-    if (widget.emoji.variants == null ||
-        widget.emoji.variants!.isEmpty ||
-        EmojiCubit.instance.state.category == EmojiCategory.recent) {
-      return;
-    }
-
     final RenderBox button = context.findRenderObject() as RenderBox;
     final RenderBox overlay =
         Overlay.of(context).context.findRenderObject() as RenderBox;
