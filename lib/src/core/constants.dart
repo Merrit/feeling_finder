@@ -1,2 +1,2 @@
-const String websiteUrl = 'https://merritt.codes/adventurelist/';
-const String donateUrl = 'https://merritt.codes/support/';
+const String kWebsiteUrl = 'https://github.com/Merrit/feeling_finder';
+const String kDonateUrl = 'https://merritt.codes/support/';
