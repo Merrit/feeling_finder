@@ -3,14 +3,13 @@
   "@appTitle": {
     "description": "The title of the application"
   },
-  "searchHintText": "Search..",
+  "searchHintText": "Type to search",
   "settings": "Settings",
   "exitAfterCopy": "Exit after copying",
   "theme": "Theme",
   "systemTheme": "System Theme",
   "lightTheme": "Light Theme",
   "darkTheme": "Dark Theme",
-
   "emojiCategoryRecent": "Recent",
   "emojiCategoryAll": "All",
   "emojiCategorySmileys": "Smileys & Emotion",
