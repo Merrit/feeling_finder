@@ -1,26 +1,24 @@
 part of 'emoji_cubit.dart';
 
 /// Represents the state of the main emoji page.
-@immutable
-class EmojiState extends Equatable {
-  /// The currently selected emoji category.
-  final EmojiCategory category;
+@freezed
+class EmojiState with _$EmojiState {
+  const factory EmojiState({
+    /// The currently selected emoji category.
+    required EmojiCategory category,
 
-  /// Set when an emoji is copied to clipboard to trigger notification.
-  final String? copiedEmoji;
+    /// Set when an emoji is copied to clipboard to trigger notification.
+    String? copiedEmoji,
 
-  /// The list of currently loaded emojis, based on the selected category.
-  final List<Emoji> emojis;
+    /// The list of currently loaded emojis, based on the selected category.
+    required List<Emoji> emojis,
 
-  /// True if a list of recent emojis was loaded from storage.
-  final bool haveRecentEmojis;
+    /// True if a list of recent emojis was loaded from storage.
+    required bool haveRecentEmojis,
 
-  const EmojiState({
-    required this.category,
-    this.copiedEmoji,
-    required this.emojis,
-    this.haveRecentEmojis = false,
-  });
+    /// True if a search is currently active.
+    required bool isSearching,
+  }) = _EmojiState;
 
   factory EmojiState.initial(List<Emoji> recentEmojis, List<Emoji> smileys) {
     final haveRecents = (recentEmojis.isNotEmpty);
@@ -28,28 +26,7 @@ class EmojiState extends Equatable {
       category: (haveRecents) ? EmojiCategory.recent : EmojiCategory.smileys,
       emojis: (haveRecents) ? recentEmojis : smileys,
       haveRecentEmojis: haveRecents,
-    );
-  }
-
-  @override
-  List<Object?> get props => [
-        category,
-        copiedEmoji,
-        emojis,
-        haveRecentEmojis,
-      ];
-
-  EmojiState copyWith({
-    EmojiCategory? category,
-    String? copiedEmoji,
-    List<Emoji>? emojis,
-    bool? haveRecentEmojis,
-  }) {
-    return EmojiState(
-      category: category ?? this.category,
-      copiedEmoji: copiedEmoji ?? this.copiedEmoji,
-      emojis: emojis ?? this.emojis,
-      haveRecentEmojis: haveRecentEmojis ?? this.haveRecentEmojis,
+      isSearching: false,
     );
   }
 }
