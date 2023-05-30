@@ -233,14 +233,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.4.1"
-  emoji_picker_flutter:
-    dependency: "direct main"
-    description:
-      name: emoji_picker_flutter
-      sha256: "8df438aea87d9b5db470867960d56e2c3f86840222336a133b97040aaec1b53f"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.5.3"
   equatable:
     dependency: "direct main"
     description:
@@ -405,10 +397,10 @@ packages:
     dependency: "direct main"
     description:
       name: google_fonts
-      sha256: "6b6f10f0ce3c42f6552d1c70d2c28d764cf22bb487f50f66cca31dcd5194f4d6"
+      sha256: "2776c66b3e97c6cdd58d1bd3281548b074b64f1fd5c8f82391f7456e38849567"
       url: "https://pub.dev"
     source: hosted
-    version: "4.0.4"
+    version: "4.0.5"
   graphs:
     dependency: transitive
     description:
@@ -421,8 +413,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: be754e0b6b23625bd83e60a2fb4f1e0939218632
-      resolved-ref: be754e0b6b23625bd83e60a2fb4f1e0939218632
+      ref: cf08d198e9cefe6556ffb5d389e29ca14d32408a
+      resolved-ref: cf08d198e9cefe6556ffb5d389e29ca14d32408a
       url: "https://github.com/Merrit/helpers.git"
     source: git
     version: "0.0.1"
@@ -446,10 +438,10 @@ packages:
     dependency: "direct main"
     description:
       name: http
-      sha256: "5895291c13fa8a3bd82e76d5627f69e0d85ca6a30dcac95c4ea19a5d555879c2"
+      sha256: "4c3f04bfb64d3efd508d06b41b825542f08122d30bda4933fb95c069d22a4fa3"
       url: "https://pub.dev"
     source: hosted
-    version: "0.13.6"
+    version: "1.0.0"
   http_multi_server:
     dependency: transitive
     description:
@@ -627,10 +619,10 @@ packages:
     dependency: "direct main"
     description:
       name: package_info_plus
-      sha256: "28386bbe89ab5a7919a47cea99cdd1128e5a6e0bbd7eaafe20440ead84a15de3"
+      sha256: ceb027f6bc6a60674a233b4a90a7658af1aebdea833da0b5b53c1e9821a78c7b
       url: "https://pub.dev"
     source: hosted
-    version: "4.0.1"
+    version: "4.0.2"
   package_info_plus_platform_interface:
     dependency: transitive
     description:
@@ -775,62 +767,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.1.6"
-  shared_preferences:
-    dependency: transitive
-    description:
-      name: shared_preferences
-      sha256: "16d3fb6b3692ad244a695c0183fca18cf81fd4b821664394a781de42386bf022"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.1.1"
-  shared_preferences_android:
-    dependency: transitive
-    description:
-      name: shared_preferences_android
-      sha256: "6478c6bbbecfe9aced34c483171e90d7c078f5883558b30ec3163cf18402c749"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.1.4"
-  shared_preferences_foundation:
-    dependency: transitive
-    description:
-      name: shared_preferences_foundation
-      sha256: e014107bb79d6d3297196f4f2d0db54b5d1f85b8ea8ff63b8e8b391a02700feb
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.2.2"
-  shared_preferences_linux:
-    dependency: transitive
-    description:
-      name: shared_preferences_linux
-      sha256: "9d387433ca65717bbf1be88f4d5bb18f10508917a8fa2fb02e0fd0d7479a9afa"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.2.0"
-  shared_preferences_platform_interface:
-    dependency: transitive
-    description:
-      name: shared_preferences_platform_interface
-      sha256: fb5cf25c0235df2d0640ac1b1174f6466bd311f621574997ac59018a6664548d
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.2.0"
-  shared_preferences_web:
-    dependency: transitive
-    description:
-      name: shared_preferences_web
-      sha256: "74083203a8eae241e0de4a0d597dbedab3b8fef5563f33cf3c12d7e93c655ca5"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.1.0"
-  shared_preferences_windows:
-    dependency: transitive
-    description:
-      name: shared_preferences_windows
-      sha256: "5e588e2efef56916a3b229c3bfe81e6a525665a454519ca51dbcc4236a274173"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.2.0"
   shelf:
     dependency: transitive
     description:
@@ -996,6 +932,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.3.2"
+  unicode_emojis:
+    dependency: "direct main"
+    description:
+      name: unicode_emojis
+      sha256: "3033f678964b2114a4e1c4afce905ff9ac1017127593ce93313a793dc4d6463b"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.0"
   url_launcher:
     dependency: "direct main"
     description:
@@ -1158,5 +1102,5 @@ packages:
     source: hosted
     version: "3.1.2"
 sdks:
-  dart: ">=3.0.0 <4.0.0"
+  dart: ">=3.0.2 <4.0.0"
   flutter: ">=3.3.0"

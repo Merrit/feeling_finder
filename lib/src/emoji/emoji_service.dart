@@ -1,4 +1,4 @@
-import 'package:emoji_picker_flutter/emoji_picker_flutter.dart' as emoji_picker;
+import 'package:unicode_emojis/unicode_emojis.dart' as ue;
 
 import 'emoji.dart';
 import 'emoji_category.dart';
@@ -13,7 +13,7 @@ class EmojiService {
   /// Builds the emoji set from the supplied json.
   factory EmojiService() {
     final Map<EmojiCategory, List<Emoji>> emojiMap =
-        _buildEmojisFromPickerPackage();
+        _buildEmojisFromUnicodePackage();
 
     return EmojiService._(emojiMap);
   }
@@ -22,173 +22,75 @@ class EmojiService {
   List<Emoji> emojisByCategory(EmojiCategory category) => allEmojis[category]!;
 
   /// Returns all emojis whos description, aliases or tags match [searchString].
-  Future<List<Emoji>> search(String keyword) async {
-    final results = await emoji_picker.EmojiPickerUtils()
-        .searchEmoji(keyword, emoji_picker.defaultEmojiSet);
-
-    return results.map((emoji) {
-      final category = _pickerEmojis[emoji]!.toEmojiCategory();
-
-      return Emoji(
-        aliases: [],
-        category: category,
-        emoji: emoji.emoji,
-        description: emoji.name,
-        tags: [],
-        unicodeVersion: '',
-        variants: _buildVariantsFromPicker(emoji, category),
-      );
-    }).toList();
+  List<Emoji> search(String keyword) {
+    return ue.UnicodeEmojis.search(keyword)
+        .map((ue.Emoji emoji) => emoji.toEmoji())
+        .toList();
   }
 }
 
-/// Hash map of all emojis from the emoji_picker_flutter package.
-///
-/// The key is the Emoji, and the value is the category.
-Map<emoji_picker.Emoji, emoji_picker.Category> _pickerEmojis = {};
-
-/// Builds the emoji set from the emoji_picker_flutter package.
-Map<EmojiCategory, List<Emoji>> _buildEmojisFromPickerPackage() {
-  const pickerEmojiCategories = emoji_picker.defaultEmojiSet;
+/// Builds the emoji set from the unicode_emojis package.
+Map<EmojiCategory, List<Emoji>> _buildEmojisFromUnicodePackage() {
   final Map<EmojiCategory, List<Emoji>> emojiMap = {};
 
-  for (final emojiCategory in pickerEmojiCategories) {
-    final EmojiCategory category = emojiCategory.category.toEmojiCategory();
-    final pickerEmojis = emojiCategory.emoji;
-    final List<Emoji> emojiList = [];
+  for (final emojiCategory in ue.Category.values) {
+    final List<Emoji> emojiList = ue.UnicodeEmojis.allEmojis
+        .where((emoji) => emoji.category == emojiCategory)
+        .map((ue.Emoji emoji) => emoji.toEmoji())
+        .toList();
 
-    for (final emoji in pickerEmojis) {
-      final List<Emoji>? variants = _buildVariantsFromPicker(emoji, category);
-
-      emojiList.add(
-        Emoji(
-          aliases: [],
-          category: category,
-          emoji: emoji.emoji,
-          description: emoji.name,
-          tags: [],
-          unicodeVersion: '',
-          variants: variants,
-        ),
-      );
-
-      _pickerEmojis[emoji] = emojiCategory.category;
-    }
-
-    emojiMap[category] = emojiList;
+    emojiMap[emojiCategory.toEmojiCategory()] = emojiList;
   }
 
   return emojiMap;
 }
 
-/// Returns a list of [Emoji]s that are variants of the emoji passed in.
-///
-/// The [emoji] can be either our own [Emoji] class or the one from the
-/// emoji_picker_flutter package.
-///
-/// If the [emoji] does not have any variants, returns `null`.
-List<Emoji>? buildVariants({
-  Emoji? emoji,
-  emoji_picker.Emoji? pickerEmoji,
-  required EmojiCategory category,
-}) {
-  if (emoji != null) {
-    return _buildVariantsFromOurEmoji(emoji, category);
-  } else if (pickerEmoji != null) {
-    return _buildVariantsFromPicker(pickerEmoji, category);
-  } else {
-    return null;
+extension UnicodeEmojiHelper on ue.Emoji {
+  Emoji toEmoji() {
+    return Emoji(
+      aliases: [],
+      category: category.toEmojiCategory(),
+      emoji: emoji,
+      name: name,
+      tags: [],
+      unicodeVersion: addedIn,
+      variants: skinVariations
+          ?.map((skinVariation) => Emoji(
+                aliases: [],
+                category: category.toEmojiCategory(),
+                emoji: skinVariation.emoji,
+                name: name,
+                tags: [],
+                unicodeVersion: addedIn,
+              ))
+          .toList(),
+    );
   }
 }
 
-/// Builds emoji variants from our own Emoji class.
-List<Emoji>? _buildVariantsFromOurEmoji(Emoji emoji, EmojiCategory category) {
-  final emoji_picker.Emoji? pickerEmoji = emoji.toPickerEmoji();
-  if (pickerEmoji == null) return null;
-  return _buildVariantsFromPicker(pickerEmoji, category);
-}
-
-/// Builds emoji variants from the emoji_picker_flutter package.
-List<Emoji>? _buildVariantsFromPicker(
-  emoji_picker.Emoji emoji,
-  EmojiCategory category,
-) {
-  if (!emoji.hasSkinTone) return null;
-
-  return emoji_picker.SkinTone.values
-      .map((skinTone) => Emoji(
-            aliases: [],
-            category: category,
-            emoji: emoji_picker.EmojiPickerUtils()
-                .applySkinTone(emoji, skinTone)
-                .emoji,
-            description: emoji.name,
-            tags: [],
-            unicodeVersion: '',
-          ))
-      .toList();
-}
-
-extension PickerCategoryHelper on emoji_picker.Category {
+extension UnicodeEmojiCategoryHelper on ue.Category {
   EmojiCategory toEmojiCategory() {
     switch (this) {
-      case emoji_picker.Category.SMILEYS:
+      case ue.Category.smileysAndEmotion:
         return EmojiCategory.smileys;
-      case emoji_picker.Category.ANIMALS:
+      case ue.Category.peopleAndBody:
+        return EmojiCategory.peopleAndBody;
+      case ue.Category.animalsAndNature:
         return EmojiCategory.animalsAndNature;
-      case emoji_picker.Category.FOODS:
+      case ue.Category.foodAndDrink:
         return EmojiCategory.foodAndDrink;
-      case emoji_picker.Category.TRAVEL:
+      case ue.Category.travelAndPlaces:
         return EmojiCategory.travelAndPlaces;
-      case emoji_picker.Category.ACTIVITIES:
+      case ue.Category.activities:
         return EmojiCategory.activities;
-      case emoji_picker.Category.OBJECTS:
+      case ue.Category.objects:
         return EmojiCategory.objects;
-      case emoji_picker.Category.SYMBOLS:
+      case ue.Category.symbols:
         return EmojiCategory.symbols;
-      case emoji_picker.Category.FLAGS:
+      case ue.Category.flags:
         return EmojiCategory.flags;
       default:
         return EmojiCategory.smileys;
     }
-  }
-}
-
-extension EmojiCategoryHelper on EmojiCategory {
-  emoji_picker.Category toPickerCategory() {
-    switch (this) {
-      case EmojiCategory.smileys:
-        return emoji_picker.Category.SMILEYS;
-      case EmojiCategory.animalsAndNature:
-        return emoji_picker.Category.ANIMALS;
-      case EmojiCategory.foodAndDrink:
-        return emoji_picker.Category.FOODS;
-      case EmojiCategory.travelAndPlaces:
-        return emoji_picker.Category.TRAVEL;
-      case EmojiCategory.activities:
-        return emoji_picker.Category.ACTIVITIES;
-      case EmojiCategory.objects:
-        return emoji_picker.Category.OBJECTS;
-      case EmojiCategory.symbols:
-        return emoji_picker.Category.SYMBOLS;
-      case EmojiCategory.flags:
-        return emoji_picker.Category.FLAGS;
-      default:
-        return emoji_picker.Category.SMILEYS;
-    }
-  }
-}
-
-extension EmojiHelper on Emoji {
-  emoji_picker.Emoji? toPickerEmoji() {
-    for (final emojiCategory in emoji_picker.defaultEmojiSet) {
-      for (final emoji in emojiCategory.emoji) {
-        if (emoji.emoji == this.emoji) {
-          return emoji;
-        }
-      }
-    }
-
-    return null;
   }
 }

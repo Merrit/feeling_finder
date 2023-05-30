@@ -19,12 +19,13 @@ class Emoji with _$Emoji {
     /// Example: "Smileys & Emotion".
     required EmojiCategory category,
 
-    /// The emoji's description from the unicode spec.
-    /// Example: "grinning squinting face".
-    required String description,
-
     /// The actual emoji, for example: 😆
     required String emoji,
+
+    /// The offical Unicode name.
+    ///
+    /// Example: "grinning squinting face".
+    required String name,
 
     /// Another list of strings that also match this emoji from the unicode spec.
     /// Example: ```["happy", "haha"]```.

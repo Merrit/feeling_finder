@@ -46,7 +46,7 @@ class _EmojiTileState extends State<EmojiTile> {
         child: Tooltip(
           waitDuration: const Duration(milliseconds: 400),
           richMessage: TextSpan(
-            text: widget.emoji.description,
+            text: widget.emoji.name,
             style: const TextStyle(fontSize: 12),
           ),
           child: MouseRegion(

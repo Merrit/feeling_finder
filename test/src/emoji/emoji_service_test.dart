@@ -7,8 +7,8 @@ void main() {
   group('EmojiService: ', () {
     final emojiService = EmojiService();
 
-    test('allEmojis has 8 categories', () {
-      expect(emojiService.allEmojis.length, 8);
+    test('allEmojis has 9 categories', () {
+      expect(emojiService.allEmojis.length, 9);
     });
 
     test(
@@ -27,68 +27,75 @@ void main() {
       expect(otherCategoryEmojis, isEmpty);
     });
 
-    test('search() finds apropriate emojis', () async {
-      final matches = await emojiService.search('wav');
+    test('search() finds apropriate emojis', () {
+      final matches = emojiService.search('waving');
 
       expect(matches, [
         const Emoji(
           emoji: '👋',
-          description: 'Waving Hand',
-          category: EmojiCategory.smileys,
+          name: 'waving hand sign',
+          category: EmojiCategory.peopleAndBody,
           aliases: [],
           tags: [],
-          unicodeVersion: '',
+          unicodeVersion: '0.6',
           variants: [
             Emoji(
               emoji: '👋🏻',
-              description: 'Waving Hand',
-              category: EmojiCategory.smileys,
+              name: 'waving hand sign',
+              category: EmojiCategory.peopleAndBody,
               aliases: [],
               tags: [],
-              unicodeVersion: '',
+              unicodeVersion: '0.6',
             ),
             Emoji(
               emoji: '👋🏼',
-              description: 'Waving Hand',
-              category: EmojiCategory.smileys,
+              name: 'waving hand sign',
+              category: EmojiCategory.peopleAndBody,
               aliases: [],
               tags: [],
-              unicodeVersion: '',
+              unicodeVersion: '0.6',
             ),
             Emoji(
               emoji: '👋🏽',
-              description: 'Waving Hand',
-              category: EmojiCategory.smileys,
+              name: 'waving hand sign',
+              category: EmojiCategory.peopleAndBody,
               aliases: [],
               tags: [],
-              unicodeVersion: '',
+              unicodeVersion: '0.6',
             ),
             Emoji(
               emoji: '👋🏾',
-              description: 'Waving Hand',
-              category: EmojiCategory.smileys,
+              name: 'waving hand sign',
+              category: EmojiCategory.peopleAndBody,
               aliases: [],
               tags: [],
-              unicodeVersion: '',
+              unicodeVersion: '0.6',
             ),
             Emoji(
               emoji: '👋🏿',
-              description: 'Waving Hand',
-              category: EmojiCategory.smileys,
+              name: 'waving hand sign',
+              category: EmojiCategory.peopleAndBody,
               aliases: [],
               tags: [],
-              unicodeVersion: '',
+              unicodeVersion: '0.6',
             ),
           ],
         ),
         const Emoji(
-          emoji: '🌊',
-          description: 'Water Wave',
-          category: EmojiCategory.animalsAndNature,
+          emoji: '🏴',
+          name: 'waving black flag',
+          category: EmojiCategory.flags,
           aliases: [],
           tags: [],
-          unicodeVersion: '',
-          variants: null,
+          unicodeVersion: '1.0',
+        ),
+        const Emoji(
+          emoji: '🏳️',
+          name: 'white flag',
+          category: EmojiCategory.flags,
+          aliases: [],
+          tags: [],
+          unicodeVersion: '0.7',
         ),
       ]);
     });

@@ -57,7 +57,7 @@ class EmojiCubit extends Cubit<EmojiState> {
     }
 
     emit(state.copyWith(
-      emojis: await _emojiService.search(keyword),
+      emojis: _emojiService.search(keyword),
     ));
   }
 

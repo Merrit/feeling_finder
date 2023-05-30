@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 
 import '../emoji/emoji.dart';
-import '../emoji/emoji_service.dart';
 import '../logs/logging_manager.dart';
 import '../storage/storage_service.dart';
 
@@ -48,10 +47,7 @@ class SettingsService {
 
     for (var emojiJson in emojiMapsList) {
       try {
-        Emoji emoji = Emoji.fromJson(emojiJson);
-        emoji = emoji.copyWith(
-          variants: buildVariants(emoji: emoji, category: emoji.category),
-        );
+        final emoji = Emoji.fromJson(emojiJson);
         _recentEmojis.add(emoji);
       } catch (e) {
         log.e('Recent emoji from storage not valid', e);
