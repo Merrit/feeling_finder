@@ -124,7 +124,7 @@ class _EmojiPageState extends State<EmojiPage> {
       context: context,
       builder: (context) => ReleaseNotesDialog(
         releaseNotes: releaseNotes,
-        donateCallback: () => AppCubit.instance.launchURL(donateUrl),
+        donateCallback: () => AppCubit.instance.launchURL(kDonateUrl),
         launchURL: (url) => AppCubit.instance.launchURL(url),
         onClose: () => Navigator.pop(context),
       ),
