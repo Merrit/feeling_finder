@@ -5,40 +5,23 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 ///
 /// `recent` is specific to this app's workings.
 enum EmojiCategory {
-  recent,
-  smileys,
-  peopleAndBody,
-  animalsAndNature,
-  foodAndDrink,
-  travelAndPlaces,
-  activities,
-  objects,
-  symbols,
-  flags,
-}
+  /// The "recent" category, which is specific to this app's workings.
+  recent('Recent'),
+  smileys('Smileys & Emotion'),
+  peopleAndBody('People & Body'),
+  animalsAndNature('Animals & Nature'),
+  foodAndDrink('Food & Drink'),
+  travelAndPlaces('Travel & Places'),
+  activities('Activities'),
+  objects('Objects'),
+  symbols('Symbols'),
+  flags('Flags');
 
-/// Hash map that relates category names from emoji json to their enum values.
-const emojiCategoryMap = <String, EmojiCategory>{
-  'Recent': EmojiCategory.recent,
-  'Smileys & Emotion': EmojiCategory.smileys,
-  'People & Body': EmojiCategory.peopleAndBody,
-  'Animals & Nature': EmojiCategory.animalsAndNature,
-  'Food & Drink': EmojiCategory.foodAndDrink,
-  'Travel & Places': EmojiCategory.travelAndPlaces,
-  'Activities': EmojiCategory.activities,
-  'Objects': EmojiCategory.objects,
-  'Symbols': EmojiCategory.symbols,
-  'Flags': EmojiCategory.flags,
-};
+  /// The human-readable category name.
+  final String description;
 
-/// Converts the category name from the emoji json into the enum value.
-///
-/// Example: `Animals & Nature` -> `EmojiCategory.animalsAndNature`.
-EmojiCategory emojiCategoryFromString(String emojiString) {
-  return emojiCategoryMap[emojiString]!;
-}
+  const EmojiCategory(this.description);
 
-extension EmojiCategoryHelper on EmojiCategory {
   /// The translated, human-readable category name.
   ///
   /// Example: English -> `Animals & Nature`, German -> `Tiere & Natur`.
@@ -78,9 +61,4 @@ extension EmojiCategoryHelper on EmojiCategory {
     }
     return name;
   }
-
-  /// The original category name from the emoji json, example: `Animals & Nature`.
-  String get name => emojiCategoryMap.entries
-      .singleWhere((element) => element.value == this)
-      .key;
 }
