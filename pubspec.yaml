@@ -35,7 +35,7 @@ dependencies:
   package_info_plus: ^4.0.1
   path_provider: ^2.0.6
   pub_semver: ^2.1.4
-  unicode_emojis: ^0.1.0
+  unicode_emojis: ^0.3.0
   url_launcher: ^6.1.11
   window_manager: ^0.3.2
   window_size:

@@ -936,10 +936,10 @@ packages:
     dependency: "direct main"
     description:
       name: unicode_emojis
-      sha256: "3033f678964b2114a4e1c4afce905ff9ac1017127593ce93313a793dc4d6463b"
+      sha256: "365a36a29924ac9b9d88e934215b23f318620033dc4a6f6b9499af37ceb99375"
       url: "https://pub.dev"
     source: hosted
-    version: "0.1.0"
+    version: "0.3.0"
   url_launcher:
     dependency: "direct main"
     description:
