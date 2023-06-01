@@ -23,9 +23,27 @@ class EmojiService {
 
   /// Returns all emojis whos description, aliases or tags match [searchString].
   List<Emoji> search(String keyword) {
-    return ue.UnicodeEmojis.search(keyword)
+    final result = ue.UnicodeEmojis.search(keyword)
         .map((ue.Emoji emoji) => emoji.toEmoji())
         .toList();
+
+    // If the search string contains the word "red", add "black heart suit" and
+    // "heavy black heart" emojis to the result.
+    //
+    // This is a workaround for the fact that these emojis are named oddly in
+    // Unicode as a historical artifact.
+    // See: https://emojipedia.org/glossary/#black
+    if (keyword.contains('red')) {
+      ue.UnicodeEmojis.search('black heart suit').forEach((emoji) {
+        result.add(emoji.toEmoji());
+      });
+
+      ue.UnicodeEmojis.search('heavy black heart').forEach((emoji) {
+        result.add(emoji.toEmoji());
+      });
+    }
+
+    return result;
   }
 }
 
