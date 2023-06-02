@@ -49,7 +49,7 @@ static void my_application_activate(GApplication* application) {
     gtk_window_set_title(window, WINDOW_TITLE);
   }
 
-  gtk_window_set_default_size(window, 620, 590);
+  gtk_window_set_default_size(window, 640, 700);
 
   /* --------------------------------- Custom --------------------------------- */
   /// Hide window by default so we can manipulate size, frame, etc and
