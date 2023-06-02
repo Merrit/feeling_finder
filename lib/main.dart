@@ -24,14 +24,14 @@ import 'src/window/app_window.dart';
 
 import 'package:window_size/window_size.dart' as window_size;
 
-Stopwatch time = Stopwatch()..start();
+Stopwatch? time = Stopwatch()..start();
 void listener(RawKeyEvent event) async {
-  if (event.logicalKey == LogicalKeyboardKey.keyL && event.isControlPressed && time.elapsedMilliseconds > 250) {
+  if (time!.elapsedMilliseconds > 250 && event.logicalKey == LogicalKeyboardKey.keyL && event.isControlPressed) {
     if (await windowManager.isVisible()) {
-      time.reset();
+      time!.reset();
       windowManager.hide();
     } else {
-      time.reset();
+      time!.reset();
       windowManager.show();
     }
   }
@@ -48,10 +48,6 @@ void main(List<String> args) async {
 
   await LoggingManager.initialize(verbose: verbose);
   await AppWindow.initialize();
-
-  if (registerKeyboardListener(listener) == null) {
-    debugPrint("Failed to register keyboard listener");
-  }
 
   // Initialize the storage service.
   final storageService = StorageService();
@@ -102,7 +98,13 @@ void main(List<String> args) async {
   /// the window before showing it, allowing the picker to appear
   /// in any custom manner desired.
   if (platformIsDesktop()) {
+    if (registerKeyboardListener(listener) == null) {
+      debugPrint("Failed to register keyboard listener");
+    }
     // Skip on non-desktop platforms as they have no windows to manage.
     window_size.setWindowVisibility(visible: true);
+    //await windowManager.setAlignment(Alignment.bottomRight);
+  } else {
+    time = null;
   }
 }
