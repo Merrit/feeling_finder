@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:helpers/helpers.dart';
+import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
 import '../app/app.dart';
 import '../core/core.dart';
@@ -36,6 +37,8 @@ class _EmojiPageState extends State<EmojiPage> {
     super.initState();
   }
 
+  final floatingActionButtonKey = GlobalKey(debugLabel: 'floatingActionButton');
+
   @override
   Widget build(BuildContext context) {
     return BlocListener<AppCubit, AppState>(
@@ -49,35 +52,52 @@ class _EmojiPageState extends State<EmojiPage> {
         onKey: (FocusNode node, RawKeyEvent event) {
           return _redirectSearchKeys(event, searchBoxFocusNode);
         },
-        child: Scaffold(
-          appBar: AppBar(
-            centerTitle: true,
-            title: SearchBarWidget(searchBoxFocusNode),
-            actions: [
-              IconButton(
-                // Keyboard navigation shouldn't focus settings button.
-                focusNode: FocusNode(
-                  debugLabel: 'settingsButtonFocusNode',
-                  skipTraversal: true,
-                ),
-                onPressed: () {
-                  Navigator.restorablePushNamed(
-                      context, SettingsPage.routeName);
-                },
-                icon: const Icon(Icons.settings),
+        child: BlocBuilder<EmojiCubit, EmojiState>(
+          buildWhen: (previous, current) =>
+              previous.category != current.category,
+          builder: (context, state) {
+            Widget? floatingActionButton;
+            if (state.category == EmojiCategory.custom) {
+              floatingActionButton = FloatingActionButton(
+                key: floatingActionButtonKey,
+                onPressed: () => _showAddCustomEmojiDialog(context),
+                child: const Icon(Icons.add),
+              );
+            }
+
+            return Scaffold(
+              appBar: AppBar(
+                centerTitle: true,
+                title: SearchBarWidget(searchBoxFocusNode),
+                actions: [
+                  IconButton(
+                    // Keyboard navigation shouldn't focus settings button.
+                    focusNode: FocusNode(
+                      debugLabel: 'settingsButtonFocusNode',
+                      skipTraversal: true,
+                    ),
+                    onPressed: () {
+                      Navigator.restorablePushNamed(
+                          context, SettingsPage.routeName);
+                    },
+                    icon: const Icon(Icons.settings),
+                  ),
+                ],
               ),
-            ],
-          ),
-          drawer: (platformIsMobile())
-              ? const Drawer(child: CategoryListView())
-              : null,
-          body: Row(
-            children: [
-              // Category buttons shown in a drawer on mobile.
-              if (!platformIsMobile()) const CategoryListView(),
-              EmojiGridView(gridViewFocusNode),
-            ],
-          ),
+              drawer: (platformIsMobile())
+                  ? const Drawer(child: CategoryListView())
+                  : null,
+              body: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Category buttons shown in a drawer on mobile.
+                  if (!platformIsMobile()) const CategoryListView(),
+                  EmojiGridView(floatingActionButtonKey, gridViewFocusNode),
+                ],
+              ),
+              floatingActionButton: floatingActionButton,
+            );
+          },
         ),
       ),
     );
@@ -124,7 +144,7 @@ class _EmojiPageState extends State<EmojiPage> {
       context: context,
       builder: (context) => ReleaseNotesDialog(
         releaseNotes: releaseNotes,
-        donateCallback: () => AppCubit.instance.launchURL(donateUrl),
+        donateCallback: () => AppCubit.instance.launchURL(kDonateUrl),
         launchURL: (url) => AppCubit.instance.launchURL(url),
         onClose: () => Navigator.pop(context),
       ),
@@ -216,13 +236,22 @@ class CategoryListView extends StatelessWidget {
 }
 
 /// A GridView that displays the emojis as clickable buttons.
-class EmojiGridView extends StatelessWidget {
+class EmojiGridView extends StatefulWidget {
+  final GlobalKey floatingActionButtonKey;
   final FocusScopeNode gridViewFocusNode;
 
   const EmojiGridView(
+    this.floatingActionButtonKey,
     this.gridViewFocusNode, {
     Key? key,
   }) : super(key: key);
+
+  @override
+  State<EmojiGridView> createState() => _EmojiGridViewState();
+}
+
+class _EmojiGridViewState extends State<EmojiGridView> {
+  bool haveShownCustomEmojisTutorial = false;
 
   @override
   Widget build(BuildContext context) {
@@ -256,27 +285,78 @@ class EmojiGridView extends StatelessWidget {
           },
           child: BlocBuilder<EmojiCubit, EmojiState>(
             builder: (context, state) {
-              return FocusScope(
-                node: gridViewFocusNode,
-                child: GridView.builder(
-                  // Key is required for scroll position to be reset when
-                  // the emoji category is changed.
-                  key: ValueKey(state.category),
-                  controller: gridviewScrollController,
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 10,
-                    horizontal: 20,
-                  ),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 8,
-                  ),
-                  itemCount: state.emojis.length,
-                  itemBuilder: (context, index) {
-                    final Emoji emoji = state.emojis[index];
+              final isCustomCategory = state.category == EmojiCategory.custom;
 
-                    return EmojiTile(emoji, index);
-                  },
+              if (isCustomCategory && state.emojis.isNotEmpty) {
+                haveShownCustomEmojisTutorial = true;
+              }
+
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                if (state.category == EmojiCategory.custom &&
+                    state.emojis.isEmpty &&
+                    !haveShownCustomEmojisTutorial) {
+                  haveShownCustomEmojisTutorial = true;
+                  // Small delay for the floating action button to animate in.
+                  Future.delayed(const Duration(milliseconds: 500))
+                      .then((value) {
+                    _showCustomEmojisTutorial(
+                      context,
+                      widget.floatingActionButtonKey,
+                    );
+                  });
+                }
+              });
+
+              // Recent and custom emojis are shown with a Wrap so they can
+              // display emojis of various widths in order to accomodate
+              // the custom emojis.
+              final Widget recentAndCustomView = SingleChildScrollView(
+                controller: gridviewScrollController,
+                child: Wrap(
+                  spacing: 10,
+                  runSpacing: 10,
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  children: [
+                    for (var emoji in state.emojis)
+                      EmojiTile(emoji, state.emojis.indexOf(emoji)),
+                  ],
                 ),
+              );
+
+              // Regular emojis are shown with an efficient GridView.
+              final Widget emojiCategoryView = GridView.builder(
+                // Key is required for scroll position to be reset when
+                // the emoji category is changed.
+                key: ValueKey(state.category),
+                controller: gridviewScrollController,
+                padding: const EdgeInsets.symmetric(
+                  vertical: 10,
+                  horizontal: 20,
+                ),
+                gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                  maxCrossAxisExtent: 50,
+                  crossAxisSpacing: 10,
+                  mainAxisSpacing: 10,
+                ),
+                itemCount: state.emojis.length,
+                itemBuilder: (context, index) {
+                  final Emoji emoji = state.emojis[index];
+
+                  return EmojiTile(emoji, index);
+                },
+              );
+
+              final Widget view;
+              if (state.category == EmojiCategory.recent ||
+                  state.category == EmojiCategory.custom) {
+                view = recentAndCustomView;
+              } else {
+                view = emojiCategoryView;
+              }
+
+              return FocusScope(
+                node: widget.gridViewFocusNode,
+                child: view,
               );
             },
           ),
@@ -284,4 +364,168 @@ class EmojiGridView extends StatelessWidget {
       ),
     );
   }
+}
+
+/// A dialog that allows the user to add a custom emoji.
+class _AddCustomEmojiDialog extends StatelessWidget {
+  _AddCustomEmojiDialog();
+
+  final controller = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<EmojiCubit, EmojiState>(
+      builder: (context, state) {
+        const customEmojiTextStyle = TextStyle(fontSize: 20);
+
+        final exampleButtonStyle = TextButton.styleFrom(
+          padding: const EdgeInsets.all(15),
+        );
+
+        final instructionWidgets = [
+          const Text('Type your own, or try one of these:'),
+          const SizedBox(height: 10),
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextButton(
+                style: exampleButtonStyle,
+                onPressed: () => controller.text = r'¯\_(ツ)_/¯',
+                child: const Text(r'¯\_(ツ)_/¯', style: customEmojiTextStyle),
+              ),
+              TextButton(
+                style: exampleButtonStyle,
+                onPressed: () => controller.text = '˗ˏˋ ★ˎˊ˗',
+                child: const Text('˗ˏˋ ★ˎˊ˗', style: customEmojiTextStyle),
+              ),
+              TextButton(
+                style: exampleButtonStyle,
+                onPressed: () => controller.text = "It's Adventure Time!",
+                child: const Text(
+                  "It's Adventure Time!",
+                  style: customEmojiTextStyle,
+                ),
+              ),
+            ],
+          ),
+        ];
+
+        final textField = CallbackShortcuts(
+          bindings: <ShortcutActivator, VoidCallback>{
+            // If the user presses enter, add the emoji.
+            const SingleActivator(LogicalKeyboardKey.enter): () =>
+                _addCustomEmoji(context),
+            // If the user presses Shift+Enter, the shortcut doesn't catch
+            // the event and the TextFormField should add a newline.
+          },
+          child: TextFormField(
+            autofocus: true,
+            controller: controller,
+            maxLines: null,
+            onFieldSubmitted: (value) => _addCustomEmoji(context),
+            style: customEmojiTextStyle,
+          ),
+        );
+
+        final List<Widget> contents = [
+          if (state.emojis.isEmpty) ...instructionWidgets,
+          textField,
+        ];
+
+        return AlertDialog(
+          scrollable: true,
+          title: const Text('Add custom emoji'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: contents,
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () => _addCustomEmoji(context),
+              child: const Text('Add'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _addCustomEmoji(BuildContext context) {
+    final emoji = controller.text;
+    if (emoji.isNotEmpty) {
+      EmojiCubit.instance.addCustomEmoji(emoji);
+    }
+    Navigator.pop(context);
+  }
+}
+
+Future<void> _showAddCustomEmojiDialog(BuildContext context) async {
+  tutorial?.skip();
+  tutorial = null;
+
+  // Delay required for the tutorial widget to be disposed, or else it will
+  // throw an exception when trying to close the dialog.
+  Future.delayed(const Duration(milliseconds: 10), () {
+    return showDialog(
+      context: context,
+      builder: (context) => _AddCustomEmojiDialog(),
+    );
+  });
+}
+
+TutorialCoachMark? tutorial;
+
+void _showCustomEmojisTutorial(
+  BuildContext context,
+  GlobalKey floatingActionButtonKey,
+) {
+  // Dismiss snackbar if present, otherwise the position of the FAB will change
+  // and the tutorial will be misplaced.
+  ScaffoldMessenger.of(context).removeCurrentSnackBar();
+
+  final List<TargetFocus> targets = [];
+  final floatingActionButton = floatingActionButtonKey.currentContext;
+  if (floatingActionButton != null) {
+    targets.add(
+      TargetFocus(
+        enableOverlayTab: true,
+        identify: "Target 1",
+        keyTarget: floatingActionButtonKey,
+        paddingFocus: 20,
+        contents: [
+          TargetContent(
+            align: ContentAlign.custom,
+            customPosition: CustomTargetContentPosition(
+              left: MediaQuery.of(context).size.width / 2 - 100,
+              bottom: 70,
+            ),
+            child: const Text(
+              "Add your own custom emojis!",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+                fontSize: 20,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  tutorial = TutorialCoachMark(
+    targets: targets,
+    pulseEnable: false,
+    alignSkip: Alignment.topRight,
+    skipWidget: const Icon(Icons.close),
+    onClickTarget: (_) {
+      return _showAddCustomEmojiDialog(context);
+    },
+  );
+
+  tutorial?.show(context: context);
 }

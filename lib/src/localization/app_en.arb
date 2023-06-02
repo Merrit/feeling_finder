@@ -3,14 +3,18 @@
   "@appTitle": {
     "description": "The title of the application"
   },
-  "searchHintText": "Search..",
+  "searchHintText": "Type to search",
   "settings": "Settings",
+  "donate": "Donate",
+  "homepage": "Homepage",
+  "currentVersion": "Current version",
+  "updateAvailable": "Update available",
+  "upToDate": "Up to date",
   "exitAfterCopy": "Exit after copying",
   "theme": "Theme",
   "systemTheme": "System Theme",
   "lightTheme": "Light Theme",
   "darkTheme": "Dark Theme",
-
   "emojiCategoryRecent": "Recent",
   "emojiCategoryAll": "All",
   "emojiCategorySmileys": "Smileys & Emotion",
@@ -21,5 +25,6 @@
   "emojiCategoryActivities": "Activities",
   "emojiCategoryObjects": "Objects",
   "emojiCategorySymbols": "Symbols",
-  "emojiCategoryFlags": "Flags"
+  "emojiCategoryFlags": "Flags",
+  "emojiCategoryCustom": "Custom"
 }

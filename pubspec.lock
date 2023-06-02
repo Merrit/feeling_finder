@@ -583,8 +583,16 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.4"
-  mocktail:
+  mockito:
     dependency: "direct dev"
+    description:
+      name: mockito
+      sha256: "8b46d7eb40abdda92d62edd01546051f0c27365e65608c284de336dccfef88cc"
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.4.1"
+  mocktail:
+    dependency: transitive
     description:
       name: mocktail
       sha256: "80a996cd9a69284b3dc521ce185ffe9150cde69767c2d3a0720147d93c0cef53"
@@ -932,6 +940,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.1"
+  tutorial_coach_mark:
+    dependency: "direct main"
+    description:
+      name: tutorial_coach_mark
+      sha256: "669d4bd517d22e14671f3ddee0e7442d976ab71f94bb6eec6ad057ca3944fd73"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.2.8"
   typed_data:
     dependency: transitive
     description:
@@ -944,10 +960,10 @@ packages:
     dependency: "direct main"
     description:
       name: unicode_emojis
-      sha256: "3033f678964b2114a4e1c4afce905ff9ac1017127593ce93313a793dc4d6463b"
+      sha256: "365a36a29924ac9b9d88e934215b23f318620033dc4a6f6b9499af37ceb99375"
       url: "https://pub.dev"
     source: hosted
-    version: "0.1.0"
+    version: "0.3.0"
   url_launcher:
     dependency: "direct main"
     description:

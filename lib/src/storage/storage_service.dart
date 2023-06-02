@@ -8,13 +8,6 @@ import '../logs/logging_manager.dart';
 
 /// Interfaces with the host OS to store & retrieve data from disk.
 class StorageService {
-  StorageService() {
-    instance = this;
-  }
-
-  /// Singleton instance.
-  static late StorageService instance;
-
   /// A generic storage pool, anything large should make its own box.
   Box? _generalBox;
 

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../app/app.dart';
+import '../core/core.dart';
 import 'cubit/settings_cubit.dart';
 
 /// Displays the various settings that can be customized by the user.
@@ -70,6 +72,49 @@ class SettingsPage extends StatelessWidget {
                     onChanged: (value) => settingsCubit.updateExitOnCopy(value),
                   );
                 },
+              ),
+
+              const Divider(),
+
+              BlocBuilder<AppCubit, AppState>(
+                builder: (context, state) {
+                  return Column(
+                    children: [
+                      ListTile(
+                        title: Text(
+                          '${AppLocalizations.of(context)!.currentVersion}: ${state.runningVersion}',
+                        ),
+                      ),
+                      ListTile(
+                        title: Text(
+                          (state.updateAvailable)
+                              ? '${AppLocalizations.of(context)!.updateAvailable}: ${state.updateVersion}'
+                              : AppLocalizations.of(context)!.upToDate,
+                        ),
+                      ),
+                    ],
+                  );
+                },
+              ),
+
+              const Divider(),
+
+              Column(
+                children: [
+                  ListTile(
+                    title: Text(AppLocalizations.of(context)!.homepage),
+                    trailing: const Icon(Icons.language),
+                    onTap: () => AppCubit.instance.launchURL(kWebsiteUrl),
+                  ),
+                  ListTile(
+                    title: Text(AppLocalizations.of(context)!.donate),
+                    trailing: const Icon(
+                      Icons.favorite,
+                      color: Colors.red,
+                    ),
+                    onTap: () => AppCubit.instance.launchURL(kDonateUrl),
+                  ),
+                ],
               ),
             ],
           ),

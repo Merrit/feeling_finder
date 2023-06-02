@@ -1,44 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-/// The various top-level emoji categories.
-///
-/// `recent` is specific to this app's workings.
+/// Top-level categories for emojis.
 enum EmojiCategory {
-  recent,
-  smileys,
-  peopleAndBody,
-  animalsAndNature,
-  foodAndDrink,
-  travelAndPlaces,
-  activities,
-  objects,
-  symbols,
-  flags,
-}
+  /// Recently used emojis.
+  recent('Recent'),
 
-/// Hash map that relates category names from emoji json to their enum values.
-const emojiCategoryMap = <String, EmojiCategory>{
-  'Recent': EmojiCategory.recent,
-  'Smileys & Emotion': EmojiCategory.smileys,
-  'People & Body': EmojiCategory.peopleAndBody,
-  'Animals & Nature': EmojiCategory.animalsAndNature,
-  'Food & Drink': EmojiCategory.foodAndDrink,
-  'Travel & Places': EmojiCategory.travelAndPlaces,
-  'Activities': EmojiCategory.activities,
-  'Objects': EmojiCategory.objects,
-  'Symbols': EmojiCategory.symbols,
-  'Flags': EmojiCategory.flags,
-};
+  smileys('Smileys & Emotion'),
+  peopleAndBody('People & Body'),
+  animalsAndNature('Animals & Nature'),
+  foodAndDrink('Food & Drink'),
+  travelAndPlaces('Travel & Places'),
+  activities('Activities'),
+  objects('Objects'),
+  symbols('Symbols'),
+  flags('Flags'),
 
-/// Converts the category name from the emoji json into the enum value.
-///
-/// Example: `Animals & Nature` -> `EmojiCategory.animalsAndNature`.
-EmojiCategory emojiCategoryFromString(String emojiString) {
-  return emojiCategoryMap[emojiString]!;
-}
+  /// User-defined custom emojis.
+  custom('Custom');
 
-extension EmojiCategoryHelper on EmojiCategory {
+  /// The human-readable category name.
+  final String description;
+
+  const EmojiCategory(this.description);
+
   /// The translated, human-readable category name.
   ///
   /// Example: English -> `Animals & Nature`, German -> `Tiere & Natur`.
@@ -75,12 +60,10 @@ extension EmojiCategoryHelper on EmojiCategory {
       case EmojiCategory.flags:
         name = AppLocalizations.of(context)!.emojiCategoryFlags;
         break;
+      case EmojiCategory.custom:
+        name = AppLocalizations.of(context)!.emojiCategoryCustom;
+        break;
     }
     return name;
   }
-
-  /// The original category name from the emoji json, example: `Animals & Nature`.
-  String get name => emojiCategoryMap.entries
-      .singleWhere((element) => element.value == this)
-      .key;
 }

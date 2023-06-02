@@ -14,6 +14,7 @@ build-dir/
 # Generated code
 generated*
 Generated*
+*.mocks.dart
 
 # Test coverage
 lcov.info
