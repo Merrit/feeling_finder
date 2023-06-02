@@ -3,9 +3,12 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:helpers/helpers.dart';
+import 'package:hid_listener/hid_listener.dart';
 import 'package:http/http.dart' as http;
+import 'package:window_manager/window_manager.dart';
 
 import 'src/app.dart';
 import 'src/app/app.dart';
@@ -21,6 +24,20 @@ import 'src/window/app_window.dart';
 
 import 'package:window_size/window_size.dart' as window_size;
 
+Stopwatch time = Stopwatch()..start();
+void listener(RawKeyEvent event) async {
+  if (event.logicalKey == LogicalKeyboardKey.keyL && event.isControlPressed && time.elapsedMilliseconds > 250) {
+    if (await windowManager.isVisible()) {
+      time.reset();
+      windowManager.hide();
+    } else {
+      time.reset();
+      windowManager.show();
+    }
+  }
+  debugPrint(event.logicalKey.keyLabel);
+}
+
 void main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -31,6 +48,10 @@ void main(List<String> args) async {
 
   await LoggingManager.initialize(verbose: verbose);
   await AppWindow.initialize();
+
+  if (registerKeyboardListener(listener) == null) {
+    debugPrint("Failed to register keyboard listener");
+  }
 
   // Initialize the storage service.
   final storageService = StorageService();

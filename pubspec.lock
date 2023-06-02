@@ -418,6 +418,14 @@ packages:
       url: "https://github.com/Merrit/helpers.git"
     source: git
     version: "0.0.1"
+  hid_listener:
+    dependency: "direct main"
+    description:
+      name: hid_listener
+      sha256: "75fe6758f6529c49b7ad303e6baf02d4fd7d39ef2b36a6fbc297c584a1717f3a"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.2"
   hive:
     dependency: "direct main"
     description:
