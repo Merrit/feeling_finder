@@ -89,7 +89,9 @@ class _EmojiTileState extends State<EmojiTile> {
                   widget.emoji.emoji,
                   style: TextStyle(
                     fontSize: fontSize,
-                    fontFamily: emojiFont,
+                    fontFamily: (widget.emoji.aliases.contains('custom'))
+                        ? null
+                        : emojiFont,
                   ),
                 ),
               ),
