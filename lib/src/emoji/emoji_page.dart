@@ -49,35 +49,56 @@ class _EmojiPageState extends State<EmojiPage> {
         onKey: (FocusNode node, RawKeyEvent event) {
           return _redirectSearchKeys(event, searchBoxFocusNode);
         },
-        child: Scaffold(
-          appBar: AppBar(
-            centerTitle: true,
-            title: SearchBarWidget(searchBoxFocusNode),
-            actions: [
-              IconButton(
-                // Keyboard navigation shouldn't focus settings button.
-                focusNode: FocusNode(
-                  debugLabel: 'settingsButtonFocusNode',
-                  skipTraversal: true,
-                ),
+        child: BlocBuilder<EmojiCubit, EmojiState>(
+          buildWhen: (previous, current) =>
+              previous.category != current.category,
+          builder: (context, state) {
+            Widget? floatingActionButton;
+            if (state.category == EmojiCategory.custom) {
+              floatingActionButton = FloatingActionButton(
                 onPressed: () {
-                  Navigator.restorablePushNamed(
-                      context, SettingsPage.routeName);
+                  showDialog(
+                    context: context,
+                    builder: (context) => _AddCustomEmojiDialog(),
+                  );
                 },
-                icon: const Icon(Icons.settings),
+                child: const Icon(Icons.add),
+              );
+            }
+
+            return Scaffold(
+              appBar: AppBar(
+                centerTitle: true,
+                title: SearchBarWidget(searchBoxFocusNode),
+                actions: [
+                  IconButton(
+                    // Keyboard navigation shouldn't focus settings button.
+                    focusNode: FocusNode(
+                      debugLabel: 'settingsButtonFocusNode',
+                      skipTraversal: true,
+                    ),
+                    onPressed: () {
+                      Navigator.restorablePushNamed(
+                          context, SettingsPage.routeName);
+                    },
+                    icon: const Icon(Icons.settings),
+                  ),
+                ],
               ),
-            ],
-          ),
-          drawer: (platformIsMobile())
-              ? const Drawer(child: CategoryListView())
-              : null,
-          body: Row(
-            children: [
-              // Category buttons shown in a drawer on mobile.
-              if (!platformIsMobile()) const CategoryListView(),
-              EmojiGridView(gridViewFocusNode),
-            ],
-          ),
+              drawer: (platformIsMobile())
+                  ? const Drawer(child: CategoryListView())
+                  : null,
+              body: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Category buttons shown in a drawer on mobile.
+                  if (!platformIsMobile()) const CategoryListView(),
+                  EmojiGridView(gridViewFocusNode),
+                ],
+              ),
+              floatingActionButton: floatingActionButton,
+            );
+          },
         ),
       ),
     );
@@ -256,32 +277,98 @@ class EmojiGridView extends StatelessWidget {
           },
           child: BlocBuilder<EmojiCubit, EmojiState>(
             builder: (context, state) {
+              // Recent and custom emojis are shown with a Wrap so they can
+              // display emojis of various widths in order to accomodate
+              // the custom emojis.
+              final Widget recentAndCustomView = SingleChildScrollView(
+                controller: gridviewScrollController,
+                child: Wrap(
+                  spacing: 10,
+                  runSpacing: 10,
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  children: [
+                    for (var emoji in state.emojis)
+                      EmojiTile(emoji, state.emojis.indexOf(emoji)),
+                  ],
+                ),
+              );
+
+              // Regular emojis are shown with an efficient GridView.
+              final Widget emojiCategoryView = GridView.builder(
+                // Key is required for scroll position to be reset when
+                // the emoji category is changed.
+                key: ValueKey(state.category),
+                controller: gridviewScrollController,
+                padding: const EdgeInsets.symmetric(
+                  vertical: 10,
+                  horizontal: 20,
+                ),
+                gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                  maxCrossAxisExtent: 50,
+                  crossAxisSpacing: 10,
+                  mainAxisSpacing: 10,
+                ),
+                itemCount: state.emojis.length,
+                itemBuilder: (context, index) {
+                  final Emoji emoji = state.emojis[index];
+
+                  return EmojiTile(emoji, index);
+                },
+              );
+
+              final Widget view;
+              if (state.category == EmojiCategory.recent ||
+                  state.category == EmojiCategory.custom) {
+                view = recentAndCustomView;
+              } else {
+                view = emojiCategoryView;
+              }
+
               return FocusScope(
                 node: gridViewFocusNode,
-                child: GridView.builder(
-                  // Key is required for scroll position to be reset when
-                  // the emoji category is changed.
-                  key: ValueKey(state.category),
-                  controller: gridviewScrollController,
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 10,
-                    horizontal: 20,
-                  ),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 8,
-                  ),
-                  itemCount: state.emojis.length,
-                  itemBuilder: (context, index) {
-                    final Emoji emoji = state.emojis[index];
-
-                    return EmojiTile(emoji, index);
-                  },
-                ),
+                child: view,
               );
             },
           ),
         ),
       ),
     );
+  }
+}
+
+/// A dialog that allows the user to add a custom emoji.
+class _AddCustomEmojiDialog extends StatelessWidget {
+  _AddCustomEmojiDialog();
+
+  final controller = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: const Text('Add custom emoji'),
+      content: TextField(
+        autofocus: true,
+        onChanged: (value) => controller.text = value,
+        onSubmitted: (value) => _addCustomEmoji(context),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: const Text('Cancel'),
+        ),
+        TextButton(
+          onPressed: () => _addCustomEmoji(context),
+          child: const Text('Add'),
+        ),
+      ],
+    );
+  }
+
+  void _addCustomEmoji(BuildContext context) {
+    final emoji = controller.text;
+    if (emoji.isNotEmpty) {
+      EmojiCubit.instance.addCustomEmoji(emoji);
+    }
+    Navigator.pop(context);
   }
 }

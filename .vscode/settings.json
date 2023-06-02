@@ -1,0 +1,6 @@
+{
+    "git.pullTags": false,
+    "dart.flutterTestAdditionalArgs": [
+        "--coverage"
+    ]
+}

@@ -33,6 +33,15 @@ class _EmojiTileState extends State<EmojiTile> {
 
   @override
   Widget build(BuildContext context) {
+    final bool isCustomEmoji = widget.emoji.aliases.contains('custom');
+
+    double? fontSize;
+    if (isCustomEmoji) {
+      fontSize = 20.0;
+    } else {
+      fontSize = 35.0;
+    }
+
     return BlocBuilder<EmojiCubit, EmojiState>(
       builder: (context, state) {
         final bool hasVariants = widget.emoji.variants?.isNotEmpty == true;
@@ -50,63 +59,87 @@ class _EmojiTileState extends State<EmojiTile> {
           hasVariantsIndicator = null;
         }
 
-        return Center(
-          child: Container(
-            decoration: hasVariantsIndicator,
-            child: Tooltip(
-              waitDuration: const Duration(milliseconds: 400),
-              richMessage: TextSpan(
-                text: widget.emoji.name,
-                style: const TextStyle(fontSize: 12),
-              ),
-              child: MouseRegion(
-                onEnter: (_) => focusNode.requestFocus(),
-                onExit: (_) => focusNode.unfocus(),
-                child: Focus(
-                  debugLabel: 'emojiTileShortcutFocusNode',
-                  canRequestFocus: false,
-                  onKey: (FocusNode focusNode, RawKeyEvent event) {
-                    if (event.logicalKey == LogicalKeyboardKey.contextMenu &&
-                        hasVariants) {
-                      _showVariantsPopup();
-                      return KeyEventResult.handled;
-                    } else {
-                      return KeyEventResult.ignored;
-                    }
-                  },
-                  child: InkWell(
-                    focusNode: focusNode,
-                    autofocus: (widget.index == 0) ? true : false,
-                    focusColor: Colors.lightBlue,
-                    onTap: () async {
-                      await EmojiCubit.instance.userSelectedEmoji(widget.emoji);
-                      focusNode.unfocus();
-                    },
-                    onLongPress: (showVariantIndicator)
-                        ? () => _showVariantsPopup()
-                        : null,
-                    onSecondaryTap: (showVariantIndicator)
-                        ? () => _showVariantsPopup()
-                        : null,
-                    child: Text(
-                      widget.emoji.emoji,
-                      style: const TextStyle(
-                        fontSize: 35,
-                        fontFamily: emojiFont,
-                      ),
-                    ),
+        final bool enableContextMenu =
+            showVariantIndicator || (isCustomEmoji && !categoryIsRecent);
+
+        final tileContents = Container(
+          decoration: hasVariantsIndicator,
+          child: Tooltip(
+            waitDuration: const Duration(milliseconds: 400),
+            richMessage: TextSpan(
+              text: widget.emoji.name,
+              style: const TextStyle(fontSize: 12),
+            ),
+            child: MouseRegion(
+              onEnter: (_) => focusNode.requestFocus(),
+              onExit: (_) => focusNode.unfocus(),
+              child: Focus(
+                debugLabel: 'emojiTileShortcutFocusNode',
+                canRequestFocus: false,
+                onKey: (FocusNode focusNode, RawKeyEvent event) {
+                  if (event.logicalKey == LogicalKeyboardKey.contextMenu &&
+                      hasVariants) {
+                    _showVariantsPopup(enableContextMenu);
+                    return KeyEventResult.handled;
+                  } else {
+                    return KeyEventResult.ignored;
+                  }
+                },
+                child: Text(
+                  widget.emoji.emoji,
+                  style: TextStyle(
+                    fontSize: fontSize,
+                    fontFamily: emojiFont,
                   ),
                 ),
               ),
             ),
           ),
         );
+
+        Widget tileWrapper;
+        if (isCustomEmoji) {
+          // Only custom emojis get wrapped with a Card, because otherwise
+          // they can be difficult to differentiate from each other.
+          tileWrapper = Card(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: tileContents,
+            ),
+          );
+        } else {
+          // Regular emojis get wrapped with a Center, because otherwise they
+          // all sit off center of the focus color background.
+          //
+          // IntrinsicWidth is used to prevent the Center from expanding to
+          // fill the entire width of the available space.
+          tileWrapper = IntrinsicWidth(
+            child: Center(
+              child: tileContents,
+            ),
+          );
+        }
+
+        return InkWell(
+          focusNode: focusNode,
+          autofocus: (widget.index == 0) ? true : false,
+          focusColor: Colors.lightBlue,
+          onTap: () async {
+            await EmojiCubit.instance.userSelectedEmoji(widget.emoji);
+            focusNode.unfocus();
+          },
+          onLongPress: () => _showVariantsPopup(enableContextMenu),
+          onSecondaryTap: () => _showVariantsPopup(enableContextMenu),
+          child: tileWrapper,
+        );
       },
     );
   }
 
   /// Shows a popup menu with the variants of the selected emoji.
-  Future<void> _showVariantsPopup() async {
+  Future<void> _showVariantsPopup(bool enableContextMenu) async {
+    if (!enableContextMenu) return;
+
     final RenderBox button = context.findRenderObject() as RenderBox;
     final RenderBox overlay =
         Overlay.of(context).context.findRenderObject() as RenderBox;
@@ -119,11 +152,26 @@ class _EmojiTileState extends State<EmojiTile> {
       Offset.zero & overlay.size,
     );
 
-    final selectedValue = await showMenu(
-      context: context,
-      position: position,
-      items: [
-        for (final variant in widget.emoji.variants!)
+    final List<PopupMenuItem<String>> items = [];
+    if (widget.emoji.aliases.contains('custom')) {
+      // Button to remove the custom emoji.
+      items.add(
+        const PopupMenuItem(
+          value: 'remove',
+          child: Center(
+            child: Text(
+              'Remove',
+              style: TextStyle(
+                fontSize: 20,
+                fontFamily: emojiFont,
+              ),
+            ),
+          ),
+        ),
+      );
+    } else {
+      for (final variant in widget.emoji.variants!) {
+        items.add(
           PopupMenuItem(
             value: variant.emoji,
             child: Center(
@@ -136,14 +184,54 @@ class _EmojiTileState extends State<EmojiTile> {
               ),
             ),
           ),
-      ],
+        );
+      }
+    }
+
+    final String? selectedValue = await showMenu<String>(
+      context: context,
+      position: position,
+      items: items,
     );
 
-    if (selectedValue != null) {
-      final selectedEmoji = widget.emoji.variants!.firstWhere(
-        (variant) => variant.emoji == selectedValue,
-      );
-      EmojiCubit.instance.userSelectedEmoji(selectedEmoji);
+    switch (selectedValue) {
+      case null:
+        break;
+      case 'remove':
+        _showRemoveCustomEmojiDialog();
+        break;
+      default:
+        final selectedEmoji = widget.emoji.variants!.firstWhere(
+          (variant) => variant.emoji == selectedValue,
+        );
+        EmojiCubit.instance.userSelectedEmoji(selectedEmoji);
+    }
+  }
+
+  /// Shows a dialog to confirm the removal of a custom emoji.
+  Future<void> _showRemoveCustomEmojiDialog() async {
+    final bool? result = await showDialog<bool>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Remove custom emoji?'),
+          content: Text(widget.emoji.emoji),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(true),
+              child: const Text('Remove'),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (result == true) {
+      await EmojiCubit.instance.removeCustomEmoji(widget.emoji);
     }
   }
 }

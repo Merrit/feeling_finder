@@ -25,5 +25,6 @@
   "emojiCategoryActivities": "Activities",
   "emojiCategoryObjects": "Objects",
   "emojiCategorySymbols": "Symbols",
-  "emojiCategoryFlags": "Flags"
+  "emojiCategoryFlags": "Flags",
+  "emojiCategoryCustom": "Custom"
 }

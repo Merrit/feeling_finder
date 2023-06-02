@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-/// The various top-level emoji categories.
-///
-/// `recent` is specific to this app's workings.
+/// Top-level categories for emojis.
 enum EmojiCategory {
-  /// The "recent" category, which is specific to this app's workings.
+  /// Recently used emojis.
   recent('Recent'),
+
   smileys('Smileys & Emotion'),
   peopleAndBody('People & Body'),
   animalsAndNature('Animals & Nature'),
@@ -15,7 +14,10 @@ enum EmojiCategory {
   activities('Activities'),
   objects('Objects'),
   symbols('Symbols'),
-  flags('Flags');
+  flags('Flags'),
+
+  /// User-defined custom emojis.
+  custom('Custom');
 
   /// The human-readable category name.
   final String description;
@@ -57,6 +59,9 @@ enum EmojiCategory {
         break;
       case EmojiCategory.flags:
         name = AppLocalizations.of(context)!.emojiCategoryFlags;
+        break;
+      case EmojiCategory.custom:
+        name = AppLocalizations.of(context)!.emojiCategoryCustom;
         break;
     }
     return name;

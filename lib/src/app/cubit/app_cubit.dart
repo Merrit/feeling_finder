@@ -18,13 +18,17 @@ class AppCubit extends Cubit<AppState> {
   /// Service for fetching release notes.
   final ReleaseNotesService _releaseNotesService;
 
+  /// Service for storing and retrieving data.
+  final StorageService _storageService;
+
   /// Service for fetching version info.
   final UpdateService _updateService;
 
   /// Singleton instance.
   static late AppCubit instance;
 
-  AppCubit({
+  AppCubit(
+    this._storageService, {
     required ReleaseNotesService releaseNotesService,
     required UpdateService updateService,
   })  : _updateService = updateService,
@@ -46,10 +50,10 @@ class AppCubit extends Cubit<AppState> {
 
   /// Checks if this is the first run of the app.
   Future<void> _checkForFirstRun() async {
-    final bool? firstRun = await StorageService.instance.getValue('firstRun');
+    final bool? firstRun = await _storageService.getValue('firstRun');
     if (firstRun == null) {
       emit(state.copyWith(firstRun: true));
-      StorageService.instance.saveValue(key: 'firstRun', value: false);
+      _storageService.saveValue(key: 'firstRun', value: false);
     }
   }
 
@@ -69,8 +73,7 @@ class AppCubit extends Cubit<AppState> {
   Future<void> _fetchReleaseNotes() async {
     if (state.firstRun) return;
 
-    final String? lastReleaseNotesVersionShown = await StorageService //
-        .instance
+    final String? lastReleaseNotesVersionShown = await _storageService //
         .getValue('lastReleaseNotesVersionShown');
 
     if (lastReleaseNotesVersionShown == state.runningVersion) return;
@@ -84,7 +87,7 @@ class AppCubit extends Cubit<AppState> {
     emit(state.copyWith(releaseNotes: releaseNotes));
     emit(state.copyWith(releaseNotes: null));
 
-    StorageService.instance.saveValue(
+    _storageService.saveValue(
       key: 'lastReleaseNotesVersionShown',
       value: state.runningVersion,
     );

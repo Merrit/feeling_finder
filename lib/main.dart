@@ -43,6 +43,7 @@ void main(List<String> args) async {
   final emojiService = EmojiService();
 
   final appCubit = AppCubit(
+    storageService,
     releaseNotesService: ReleaseNotesService(
       client: http.Client(),
       repository: 'merrit/feeling_finder',
@@ -63,6 +64,7 @@ void main(List<String> args) async {
           create: (context) => EmojiCubit(
             emojiService,
             settingsService,
+            storageService,
           ),
           lazy: false,
         ),

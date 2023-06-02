@@ -57,6 +57,27 @@ class SettingsService {
     return _recentEmojis;
   }
 
+  /// Remove an emoji from the recents list.
+  Future<void> removeRecentEmoji(Emoji emoji) async {
+    _recentEmojis.remove(emoji);
+    final emojiMapList = _recentEmojis.map((e) => e.toJson()).toList();
+    await _storageService.saveValue(
+      key: 'recentEmojis',
+      value: jsonEncode(emojiMapList),
+    );
+  }
+
+  /// Replace the list of recent emojis with a new list.
+  Future<void> setRecentEmojis(List<Emoji> emojis) async {
+    _recentEmojis.clear();
+    _recentEmojis.addAll(emojis);
+    final emojiMapList = _recentEmojis.map((e) => e.toJson()).toList();
+    await _storageService.saveValue(
+      key: 'recentEmojis',
+      value: jsonEncode(emojiMapList),
+    );
+  }
+
   /// Updates the list of recent emojis in storage.
   Future<void> saveRecentEmoji(Emoji emoji) async {
     if (_recentEmojis.contains(emoji)) {
@@ -66,10 +87,10 @@ class SettingsService {
     }
     if (_recentEmojis.length == 20) _recentEmojis.removeLast();
     _recentEmojis.insert(0, emoji);
-    final emojiStringList = _recentEmojis.map((e) => e.toJson()).toList();
+    final emojiMapList = _recentEmojis.map((e) => e.toJson()).toList();
     await _storageService.saveValue(
       key: 'recentEmojis',
-      value: jsonEncode(emojiStringList),
+      value: jsonEncode(emojiMapList),
     );
   }
 

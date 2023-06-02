@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:feeling_finder/src/window/app_window.dart';
@@ -9,6 +10,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import '../../logs/logging_manager.dart';
 import '../../settings/cubit/settings_cubit.dart';
 import '../../settings/settings_service.dart';
+import '../../storage/storage_service.dart';
 import '../emoji.dart';
 import '../emoji_category.dart';
 import '../emoji_service.dart';
@@ -21,10 +23,12 @@ part 'emoji_cubit.freezed.dart';
 class EmojiCubit extends Cubit<EmojiState> {
   final EmojiService _emojiService;
   final SettingsService _settingsService;
+  final StorageService _storageService;
 
   EmojiCubit(
     this._emojiService,
     this._settingsService,
+    this._storageService,
   ) : super(EmojiState.initial(
           _settingsService.recentEmojis(),
           _emojiService.emojisByCategory(EmojiCategory.smileys),
@@ -34,6 +38,33 @@ class EmojiCubit extends Cubit<EmojiState> {
 
   /// Singleton instance of the EmojiCubit.
   static late EmojiCubit instance;
+
+  /// Add a custom emoji to the list of custom emojis.
+  Future<void> addCustomEmoji(String emojiString) async {
+    final customEmojis = _storageService //
+            .getValue('customEmojis') as List<String>? ??
+        [];
+
+    final emoji = Emoji(
+      aliases: ['custom'],
+      category: EmojiCategory.custom,
+      emoji: emojiString,
+      name: emojiString,
+      tags: ['custom'],
+      unicodeVersion: '0.0',
+    );
+
+    customEmojis.add(jsonEncode(emoji.toJson()));
+
+    await _storageService.saveValue(
+      key: 'customEmojis',
+      value: customEmojis,
+    );
+
+    emit(state.copyWith(
+      emojis: [...state.emojis, emoji],
+    ));
+  }
 
   /// Clear the list of recent emojis.
   Future<void> clearRecentEmojis() async {
@@ -66,11 +97,23 @@ class EmojiCubit extends Cubit<EmojiState> {
 
   /// Sets the list of loaded emojis to the requested [category].
   void setCategory(EmojiCategory category) {
+    List<Emoji> emojis;
+    if (category == EmojiCategory.recent) {
+      emojis = _settingsService.recentEmojis();
+    } else if (category == EmojiCategory.custom) {
+      final customEmojis = _storageService //
+          .getValue('customEmojis') as List<String>?;
+      emojis = customEmojis //
+              ?.map((e) => Emoji.fromJson(jsonDecode(e)))
+              .toList() ??
+          [];
+    } else {
+      emojis = _emojiService.emojisByCategory(category);
+    }
+
     emit(state.copyWith(
       category: category,
-      emojis: (category == EmojiCategory.recent)
-          ? _settingsService.recentEmojis()
-          : _emojiService.emojisByCategory(category),
+      emojis: emojis,
     ));
   }
 
@@ -101,6 +144,23 @@ class EmojiCubit extends Cubit<EmojiState> {
       previousCategoryIndex = EmojiCategory.values.length - 1;
     }
     setCategory(EmojiCategory.values[previousCategoryIndex]);
+  }
+
+  /// Remove custom emoji from the list of custom emojis.
+  ///
+  /// Custom emoji will also be removed from the list of recent emojis.
+  Future<void> removeCustomEmoji(Emoji emoji) async {
+    final customEmojis = [...state.emojis] //
+      ..remove(emoji);
+
+    emit(state.copyWith(emojis: customEmojis));
+
+    await _storageService.saveValue(
+      key: 'customEmojis',
+      value: customEmojis.map((e) => jsonEncode(e.toJson())).toList(),
+    );
+
+    await _settingsService.removeRecentEmoji(emoji);
   }
 
   /// The user has clicked or tapped an emoji to be copied.

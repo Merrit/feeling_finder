@@ -59,7 +59,7 @@ dev_dependencies:
   integration_test:
     sdk: flutter
   json_serializable: ^6.7.0
-  mocktail: ^0.3.0
+  mockito: ^5.4.1
   msix: ^3.6.6
 
 flutter:
