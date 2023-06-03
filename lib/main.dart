@@ -26,7 +26,8 @@ import 'package:window_size/window_size.dart' as window_size;
 
 Stopwatch? time = Stopwatch()..start();
 void listener(RawKeyEvent event) async {
-  if (time!.elapsedMilliseconds > 250 && event.logicalKey == LogicalKeyboardKey.keyL && event.isControlPressed) {
+  RawKeyboard.instance.handleRawKeyEvent(event);
+  if (time!.elapsedMilliseconds > 250 && (event.isControlPressed && event.logicalKey == LogicalKeyboardKey.keyL)) {
     if (await windowManager.isVisible()) {
       time!.reset();
       windowManager.hide();
@@ -35,7 +36,6 @@ void listener(RawKeyEvent event) async {
       windowManager.show();
     }
   }
-  debugPrint(event.logicalKey.keyLabel);
 }
 
 void main(List<String> args) async {
@@ -103,7 +103,6 @@ void main(List<String> args) async {
     }
     // Skip on non-desktop platforms as they have no windows to manage.
     window_size.setWindowVisibility(visible: true);
-    //await windowManager.setAlignment(Alignment.bottomRight);
   } else {
     time = null;
   }
