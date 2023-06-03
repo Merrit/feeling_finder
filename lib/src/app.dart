@@ -45,6 +45,8 @@ class App extends StatelessWidget {
             Locale('de', ''), // German, no country code
             Locale('it', ''), // Italian, no country code
             Locale('ru', ''), // Russian, no country code
+            Locale('pt', ''), // Portuguese, no country code
+            Locale('pt', 'BR'), // Brazilian Portuguese
           ],
 
           // Use AppLocalizations to configure the correct application title
