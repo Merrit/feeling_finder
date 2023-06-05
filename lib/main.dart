@@ -3,12 +3,9 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:helpers/helpers.dart';
-import 'package:hid_listener/hid_listener.dart';
 import 'package:http/http.dart' as http;
-import 'package:window_manager/window_manager.dart';
 
 import 'src/app.dart';
 import 'src/app/app.dart';
@@ -18,30 +15,19 @@ import 'src/helpers/helpers.dart';
 import 'src/logs/logging_manager.dart';
 import 'src/settings/cubit/settings_cubit.dart';
 import 'src/settings/settings_service.dart';
+import 'src/shortcuts/app_hotkey.dart';
 import 'src/storage/storage_service.dart';
 import 'src/updates/updates.dart';
 import 'src/window/app_window.dart';
 
 import 'package:window_size/window_size.dart' as window_size;
 
-Stopwatch? time = Stopwatch()..start();
-void listener(RawKeyEvent event) async {
-  RawKeyboard.instance.handleRawKeyEvent(event);
-  if (time!.elapsedMilliseconds > 250 && (event.isControlPressed && event.logicalKey == LogicalKeyboardKey.keyL)) {
-    if (await windowManager.isVisible()) {
-      time!.reset();
-      windowManager.hide();
-    } else {
-      time!.reset();
-      windowManager.show();
-    }
-  }
-}
-
 void main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await closeExistingSessions();
+
+  if(platformIsDesktop()) HotkeyService().initHotkeyRegistration();
 
   final bool verbose = args.contains('-v') || //
       Platform.environment['VERBOSE'] == 'true';
@@ -98,12 +84,7 @@ void main(List<String> args) async {
   /// the window before showing it, allowing the picker to appear
   /// in any custom manner desired.
   if (platformIsDesktop()) {
-    if (registerKeyboardListener(listener) == null) {
-      debugPrint("Failed to register keyboard listener");
-    }
     // Skip on non-desktop platforms as they have no windows to manage.
     window_size.setWindowVisibility(visible: true);
-  } else {
-    time = null;
   }
 }
