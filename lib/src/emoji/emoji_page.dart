@@ -69,19 +69,8 @@ class _EmojiPageState extends State<EmojiPage> {
               appBar: AppBar(
                 centerTitle: true,
                 title: SearchBarWidget(searchBoxFocusNode),
-                actions: [
-                  IconButton(
-                    // Keyboard navigation shouldn't focus settings button.
-                    focusNode: FocusNode(
-                      debugLabel: 'settingsButtonFocusNode',
-                      skipTraversal: true,
-                    ),
-                    onPressed: () {
-                      Navigator.restorablePushNamed(
-                          context, SettingsPage.routeName);
-                    },
-                    icon: const Icon(Icons.settings),
-                  ),
+                actions: const [
+                  _SettingsButton(),
                 ],
               ),
               drawer: (platformIsMobile())
@@ -528,4 +517,37 @@ void _showCustomEmojisTutorial(
   );
 
   tutorial?.show(context: context);
+}
+
+class _SettingsButton extends StatelessWidget {
+  const _SettingsButton();
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<AppCubit, AppState>(
+      builder: (context, state) {
+        // Show a badge on the settings button if there is an update available.
+        return Badge(
+          isLabelVisible: state.updateAvailable,
+          backgroundColor: Colors.greenAccent,
+          label: Container(
+            padding: const EdgeInsets.all(1),
+          ),
+          largeSize: 10.0,
+          offset: const Offset(-3, 3),
+          child: IconButton(
+            // Keyboard navigation shouldn't focus settings button.
+            focusNode: FocusNode(
+              debugLabel: 'settingsButtonFocusNode',
+              skipTraversal: true,
+            ),
+            onPressed: () {
+              Navigator.restorablePushNamed(context, SettingsPage.routeName);
+            },
+            icon: const Icon(Icons.settings),
+          ),
+        );
+      },
+    );
+  }
 }
