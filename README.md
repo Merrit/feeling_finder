@@ -32,6 +32,7 @@ A fast and beautiful app to help convey emotion in text communication.
 
 **Linux**
   - [Flathub](https://flathub.org/apps/details/codes.merritt.FeelingFinder)
+  - [Snap](https://snapcraft.io/feeling-finder)
   - [Portable](https://github.com/Merrit/feeling_finder/releases/latest/download/FeelingFinder-Linux-Portable.tar.gz)
 
 **Windows**

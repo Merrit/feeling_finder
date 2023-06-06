@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../cubit/emoji_cubit.dart';
 
 /// Widget that allows the user to search for emoji by keyword.
 class SearchBarWidget extends StatefulWidget {
-  final FocusNode searchBarFocusNode;
+  final FocusNode focusNode;
+  final TextEditingController textController;
 
-  const SearchBarWidget(
-    this.searchBarFocusNode, {
+  const SearchBarWidget({
     Key? key,
+    required this.focusNode,
+    required this.textController,
   }) : super(key: key);
 
   @override
@@ -18,10 +19,13 @@ class SearchBarWidget extends StatefulWidget {
 }
 
 class _SearchBarWidgetState extends State<SearchBarWidget> {
-  final TextEditingController searchTextController = TextEditingController();
-  final FocusNode shortcutFocusNode = FocusNode(
-    debugLabel: 'searchBarEscapeShortcutFocusNode',
-  );
+  late TextEditingController searchTextController;
+
+  @override
+  void initState() {
+    super.initState();
+    searchTextController = widget.textController;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,37 +44,23 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
       trailing.add(clearButton);
     }
 
-    return Focus(
-      focusNode: shortcutFocusNode,
-      onKey: (FocusNode focusNode, RawKeyEvent event) {
-        if (event.logicalKey != LogicalKeyboardKey.escape) {
-          return KeyEventResult.ignored;
+    return SearchBar(
+      constraints: const BoxConstraints(minWidth: 360.0, maxWidth: 400.0),
+      controller: searchTextController,
+      focusNode: widget.focusNode,
+      hintText: AppLocalizations.of(context)!.searchHintText,
+      leading: const Icon(Icons.search),
+      onChanged: (value) async {
+        if (value.isEmpty) {
+          trailing.clear();
+        } else {
+          trailing.add(clearButton);
         }
 
-        widget.searchBarFocusNode.unfocus();
-        searchTextController.clear();
-        EmojiCubit.instance.search('');
         setState(() {});
-        return KeyEventResult.handled;
+        await EmojiCubit.instance.search(value);
       },
-      child: SearchBar(
-        constraints: const BoxConstraints(minWidth: 360.0, maxWidth: 400.0),
-        controller: searchTextController,
-        focusNode: widget.searchBarFocusNode,
-        hintText: AppLocalizations.of(context)!.searchHintText,
-        leading: const Icon(Icons.search),
-        onChanged: (value) async {
-          if (value.isEmpty) {
-            trailing.clear();
-          } else {
-            trailing.add(clearButton);
-          }
-
-          setState(() {});
-          await EmojiCubit.instance.search(value);
-        },
-        trailing: trailing,
-      ),
+      trailing: trailing,
     );
   }
 }
