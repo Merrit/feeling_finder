@@ -158,7 +158,7 @@ class _EmojiTileState extends State<EmojiTile> {
     if (widget.emoji.aliases.contains('custom')) {
       // Button to remove the custom emoji.
       items.add(
-        const PopupMenuItem(
+        PopupMenuItem(
           value: 'remove',
           child: Center(
             child: Text(
@@ -179,7 +179,7 @@ class _EmojiTileState extends State<EmojiTile> {
             child: Center(
               child: Text(
                 variant.emoji,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 35,
                   fontFamily: emojiFont,
                 ),
