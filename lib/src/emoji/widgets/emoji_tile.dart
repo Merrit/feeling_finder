@@ -122,17 +122,25 @@ class _EmojiTileState extends State<EmojiTile> {
           );
         }
 
-        return InkWell(
-          focusNode: focusNode,
-          autofocus: (widget.index == 0) ? true : false,
-          focusColor: Colors.lightBlue,
-          onTap: () async {
-            await EmojiCubit.instance.userSelectedEmoji(widget.emoji);
-            focusNode.unfocus();
+        return CallbackShortcuts(
+          bindings: <ShortcutActivator, VoidCallback>{
+            const SingleActivator(LogicalKeyboardKey.enter): () async {
+              await EmojiCubit.instance.userSelectedEmoji(widget.emoji);
+              focusNode.unfocus();
+            },
           },
-          onLongPress: () => _showVariantsPopup(enableContextMenu),
-          onSecondaryTap: () => _showVariantsPopup(enableContextMenu),
-          child: tileWrapper,
+          child: InkWell(
+            focusNode: focusNode,
+            autofocus: (widget.index == 0) ? true : false,
+            focusColor: Colors.lightBlue,
+            onTap: () async {
+              await EmojiCubit.instance.userSelectedEmoji(widget.emoji);
+              focusNode.unfocus();
+            },
+            onLongPress: () => _showVariantsPopup(enableContextMenu),
+            onSecondaryTap: () => _showVariantsPopup(enableContextMenu),
+            child: tileWrapper,
+          ),
         );
       },
     );
