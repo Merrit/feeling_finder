@@ -27,6 +27,17 @@ class EmojiPage extends StatefulWidget {
 }
 
 class _EmojiPageState extends State<EmojiPage> {
+  @override
+  void initState() {
+    final appCubit = context.read<AppCubit>();
+    final releaseNotes = appCubit.state.releaseNotes;
+    if (releaseNotes != null) {
+      _showReleaseNotesDialog(context, releaseNotes);
+    }
+
+    super.initState();
+  }
+
   final FocusScopeNode emojiPageFocusScope = FocusScopeNode(
     debugLabel: 'emojiPageFocusScope',
   );
@@ -44,6 +55,8 @@ class _EmojiPageState extends State<EmojiPage> {
 
   final floatingActionButtonKey = GlobalKey(debugLabel: 'floatingActionButton');
 
+  bool haveShownReleaseNotes = false;
+
   @override
   Widget build(BuildContext context) {
     final shortcuts = <ShortcutActivator, VoidCallback>{
@@ -56,8 +69,9 @@ class _EmojiPageState extends State<EmojiPage> {
 
     return BlocListener<AppCubit, AppState>(
       listener: (context, state) {
-        if (state.releaseNotes != null) {
-          _showReleaseNotesDialog(context, state.releaseNotes!);
+        final releaseNotes = state.releaseNotes;
+        if (releaseNotes != null) {
+          _showReleaseNotesDialog(context, releaseNotes);
         }
       },
       child: FocusScope(
@@ -188,6 +202,9 @@ class _EmojiPageState extends State<EmojiPage> {
     BuildContext context,
     ReleaseNotes releaseNotes,
   ) {
+    if (haveShownReleaseNotes) return Future.value();
+    haveShownReleaseNotes = true;
+
     return showDialog(
       context: context,
       builder: (context) => ReleaseNotesDialog(
