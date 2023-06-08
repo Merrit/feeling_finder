@@ -15,4 +15,10 @@ class VersionInfo {
     required this.latestVersion,
     required this.updateAvailable,
   });
+
+  /// Creates an empty version info object.
+  const VersionInfo.empty()
+      : currentVersion = '',
+        latestVersion = null,
+        updateAvailable = false;
 }
