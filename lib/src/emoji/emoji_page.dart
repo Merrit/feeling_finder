@@ -324,7 +324,7 @@ class _EmojiGridViewState extends State<EmojiGridView> {
               SnackBar(
                 content: Text(
                   '${state.copiedEmoji} copied to clipboard.',
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 25,
                     fontFamily: emojiFont,
                   ),
