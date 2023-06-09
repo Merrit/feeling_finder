@@ -10,6 +10,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import '../../logs/logging_manager.dart';
 import '../../settings/cubit/settings_cubit.dart';
 import '../../settings/settings_service.dart';
+import '../../shortcuts/app_hotkey.dart';
 import '../../storage/storage_service.dart';
 import '../emoji.dart';
 import '../emoji_category.dart';
@@ -196,6 +197,7 @@ class EmojiCubit extends Cubit<EmojiState> {
       await AppWindow.instance.hide();
       log.i('Exiting app after copying emoji');
       await LoggingManager.instance.close();
+      await hotKeyService.unregisterBindings();
       exit(0);
     }
   }

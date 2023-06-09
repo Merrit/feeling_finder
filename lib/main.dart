@@ -27,7 +27,7 @@ void main(List<String> args) async {
 
   await closeExistingSessions();
 
-  if(platformIsDesktop()) HotkeyService().initHotkeyRegistration();
+  if(platformIsDesktop()) hotKeyService.initHotkeyRegistration();
 
   final bool verbose = args.contains('-v') || //
       Platform.environment['VERBOSE'] == 'true';

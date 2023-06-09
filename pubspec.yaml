@@ -27,7 +27,6 @@ dependencies:
     git:
       url: https://github.com/Merrit/helpers.git
       ref: cf08d198e9cefe6556ffb5d389e29ca14d32408a
-  hid_listener: ^1.1.2
   hive: ^2.0.4
   hive_flutter: ^1.1.0
   hotkey_manager: ^0.1.8
