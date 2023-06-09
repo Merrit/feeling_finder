@@ -34,6 +34,7 @@ lcov.info
 .buildlog/
 .history
 .svn/
+lib/src/localization/app_localizations*.dart
 
 # IntelliJ related
 *.iml

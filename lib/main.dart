@@ -12,6 +12,7 @@ import 'src/app/app.dart';
 import 'src/emoji/cubit/emoji_cubit.dart';
 import 'src/emoji/emoji_service.dart';
 import 'src/helpers/helpers.dart';
+import 'src/helpers/window_watcher.dart';
 import 'src/logs/logging_manager.dart';
 import 'src/settings/cubit/settings_cubit.dart';
 import 'src/settings/settings_service.dart';
@@ -73,7 +74,15 @@ void main(List<String> args) async {
         ),
         BlocProvider.value(value: settingsCubit),
       ],
-      child: const App(),
+      child: WindowWatcher(
+        onClose: () {
+          if (platformIsMobile()) {
+            return;
+          }
+          exit(0);
+        },
+        child: const App(),
+      ),
     ),
   );
 

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'emoji/emoji_page.dart';
+import 'localization/app_localizations.dart';
 import 'settings/cubit/settings_cubit.dart';
 import 'settings/settings_page.dart';
 import 'shortcuts/app_shortcuts.dart';

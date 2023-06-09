@@ -39,7 +39,9 @@ dependencies:
   tutorial_coach_mark: ^1.2.8
   unicode_emojis: ^0.3.0
   url_launcher: ^6.1.11
-  window_manager: ^0.3.2
+  window_manager:
+    git:
+      url: https://github.com/Kingtous/rustdesk_window_manager.git
   window_size:
     git:
       url: https://github.com/google/flutter-desktop-embedding.git
@@ -53,6 +55,7 @@ dev_dependencies:
     git:
       url: https://github.com/Merrit/flutter_app_builder.git
       ref: 9a9534a7703610677538fdca48a158cb5ced7167
+  flutter_gen: ^5.3.1
   flutter_launcher_icons: ^0.10.0
   flutter_lints: ^2.0.1
   flutter_test:
