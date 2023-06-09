@@ -23,11 +23,13 @@ part 'emoji_cubit.freezed.dart';
 /// view to the [EmojiService].
 class EmojiCubit extends Cubit<EmojiState> {
   final EmojiService _emojiService;
+  final SettingsCubit _settingsCubit;
   final SettingsService _settingsService;
   final StorageService _storageService;
 
   EmojiCubit(
     this._emojiService,
+    this._settingsCubit,
     this._settingsService,
     this._storageService,
   ) : super(EmojiState.initial(
@@ -179,7 +181,7 @@ class EmojiCubit extends Cubit<EmojiState> {
     }
 
     // Check if the preference to exit on copy is set.
-    final shouldExitApp = settingsCubit.state.exitOnCopy;
+    final shouldExitApp = _settingsCubit.state.exitOnCopy;
 
     if (!shouldExitApp) {
       // Trigger copy notification.

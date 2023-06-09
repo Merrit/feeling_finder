@@ -18,7 +18,7 @@ import 'emoji_cubit_test.mocks.dart';
 @GenerateMocks([SettingsCubit, StorageService])
 void main() {
   group('EmojiCubit', () {
-    late MockSettingsCubit _settingsCubit;
+    late MockSettingsCubit settingsCubit;
     late MockStorageService storageService;
     late SettingsService settingsService;
     late EmojiService emojiService;
@@ -27,10 +27,8 @@ void main() {
     setUpAll(() async {
       TestWidgetsFlutterBinding.ensureInitialized();
       await LoggingManager.initialize(verbose: false);
-      _settingsCubit = MockSettingsCubit();
-      // TODO: Make SettingsCubit not a singleton.
-      settingsCubit = _settingsCubit;
-      when(_settingsCubit.state).thenReturn(const SettingsState(
+      settingsCubit = MockSettingsCubit();
+      when(settingsCubit.state).thenReturn(const SettingsState(
         exitOnCopy: false,
         hotKeyEnabled: false,
         themeMode: ThemeMode.system,
@@ -49,6 +47,7 @@ void main() {
     test('has emojis', () {
       emojiCubit = EmojiCubit(
         emojiService,
+        settingsCubit,
         settingsService,
         storageService,
       );
@@ -58,6 +57,7 @@ void main() {
     test('initial category is Smileys & Emotion', () {
       emojiCubit = EmojiCubit(
         emojiService,
+        settingsCubit,
         settingsService,
         storageService,
       );
@@ -67,6 +67,7 @@ void main() {
     test('recent emojis is empty', () {
       emojiCubit = EmojiCubit(
         emojiService,
+        settingsCubit,
         settingsService,
         storageService,
       );
@@ -99,6 +100,7 @@ void main() {
 
       emojiCubit = EmojiCubit(
         EmojiService(),
+        settingsCubit,
         settingsService,
         storageService,
       );
@@ -133,6 +135,7 @@ void main() {
 
       emojiCubit = EmojiCubit(
         EmojiService(),
+        settingsCubit,
         settingsService,
         storageService,
       );
@@ -178,6 +181,7 @@ void main() {
     test('setCategory(), then category has changed', () {
       emojiCubit = EmojiCubit(
         emojiService,
+        settingsCubit,
         settingsService,
         storageService,
       );
