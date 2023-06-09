@@ -810,12 +810,11 @@ packages:
   screen_retriever:
     dependency: transitive
     description:
-      path: "."
-      ref: "406b9b0"
-      resolved-ref: "406b9b038b2c1d779f1e7bf609c8c248be247372"
-      url: "https://github.com/Kingtous/rustdesk_screen_retriever.git"
-    source: git
-    version: "0.1.2"
+      name: screen_retriever
+      sha256: "4931f226ca158123ccd765325e9fbf360bfed0af9b460a10f960f9bb13d58323"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.6"
   shelf:
     dependency: transitive
     description:
@@ -1137,8 +1136,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: HEAD
-      resolved-ref: "8cb5bf683e6b7b3f73280449900fe8d2c6bfe011"
+      ref: "fix/flutter_3.10/on_close"
+      resolved-ref: fde56295b7966b01d73c7d8c5425584f5e7e9c51
       url: "https://github.com/Kingtous/rustdesk_window_manager.git"
     source: git
     version: "0.3.4"

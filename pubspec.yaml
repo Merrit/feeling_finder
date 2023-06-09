@@ -42,6 +42,7 @@ dependencies:
   window_manager:
     git:
       url: https://github.com/Kingtous/rustdesk_window_manager.git
+      ref: fix/flutter_3.10/on_close
   window_size:
     git:
       url: https://github.com/google/flutter-desktop-embedding.git

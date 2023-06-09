@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../app/app.dart';
 import '../core/core.dart';
-import '../localization/app_localizations.dart';
+import '../localization/gen/app_localizations.dart';
 import 'cubit/settings_cubit.dart';
 
 /// Displays the various settings that can be customized by the user.
