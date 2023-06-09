@@ -68,6 +68,7 @@ void main(List<String> args) async {
         BlocProvider(
           create: (context) => EmojiCubit(
             emojiService,
+            settingsCubit,
             settingsService,
             storageService,
           ),
