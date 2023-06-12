@@ -3,12 +3,15 @@ import 'package:window_manager/window_manager.dart';
 
 Stopwatch time = Stopwatch()..start();
 
+//TODO: Make it configurable
+KeyCode? keyCode;
+
 class HotKeyService {
   HotKeyService();
 
   static final HotKeyService instance = HotKeyService();
 
-  Future<void> initHotkeyRegistration([KeyCode? keyCode]) async {
+  Future<void> initHotkeyRegistration() async {
     await hotKeyManager.unregisterAll();
     
     if (time.elapsedMilliseconds >= 0) {

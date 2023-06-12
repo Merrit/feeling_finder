@@ -26,6 +26,7 @@ class SettingsCubit extends Cubit<SettingsState> {
   }) : super(
           SettingsState(
             exitOnCopy: _settingsService.exitOnCopy(),
+            hotKeyEnabled: _settingsService.hotKeyEnabled(),
             themeMode: userThemePreference,
             userThemePreference: userThemePreference,
           ),
@@ -72,6 +73,12 @@ class SettingsCubit extends Cubit<SettingsState> {
   Future<void> updateExitOnCopy(bool value) async {
     emit(state.copyWith(exitOnCopy: value));
     await _settingsService.saveExitOnCopy(value);
+  }
+
+  /// Update and persist whether the app uses the Keybind for visibility toggling.
+  Future<void> updateHotKeyEnabled(bool value) async {
+    emit(state.copyWith(hotKeyEnabled: value));
+    await _settingsService.saveHotKeyEnabled(value);
   }
 
   /// Update and persist the ThemeMode based on the user's selection.
