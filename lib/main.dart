@@ -28,8 +28,6 @@ void main(List<String> args) async {
 
   await closeExistingSessions();
 
-  if(platformIsDesktop()) hotKeyService.initHotkeyRegistration();
-
   final bool verbose = args.contains('-v') || //
       Platform.environment['VERBOSE'] == 'true';
 
@@ -58,6 +56,9 @@ void main(List<String> args) async {
   // Initialize the settings service.
   final settingsService = SettingsService(storageService);
   final settingsCubit = await SettingsCubit.init(settingsService);
+
+  // Initialize Visibility Shortcut (Depends on Settings Service)
+  if(platformIsDesktop()) hotKeyService.initHotkeyRegistration();
 
   // Run the app and pass in the state controllers.
   runApp(

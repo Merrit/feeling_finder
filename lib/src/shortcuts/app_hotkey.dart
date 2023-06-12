@@ -1,3 +1,4 @@
+import 'package:feeling_finder/src/settings/settings_service.dart';
 import 'package:hotkey_manager/hotkey_manager.dart';
 import 'package:window_manager/window_manager.dart';
 
@@ -13,8 +14,10 @@ class HotKeyService {
 
   Future<void> initHotkeyRegistration() async {
     await hotKeyManager.unregisterAll();
-    
-    if (time.elapsedMilliseconds >= 0) {
+
+    final useHotKey = SettingsService.instance.hotKeyEnabled();
+
+    if (time.elapsedMilliseconds >= 0 && useHotKey) {
       final HotKey hideShortcut = HotKey(
         keyCode ?? KeyCode.period,
         modifiers: [KeyModifier.alt],
