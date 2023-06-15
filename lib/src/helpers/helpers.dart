@@ -37,8 +37,8 @@ bool platformIsMobile() => (!platformIsDesktop() && !kIsWeb) ? true : false;
 
 /// Convenience function to check if the app is running on a Linux with the X11 display manager
 bool platformIsLinuxX11() {
-  if(Platform.isLinux) {
-    if(Platform.environment['XDG_SESSION_TYPE'] == 'x11') {
+  if (Platform.isLinux) {
+    if (Platform.environment['XDG_SESSION_TYPE'] == 'x11') {
       return true;
     }
   }
