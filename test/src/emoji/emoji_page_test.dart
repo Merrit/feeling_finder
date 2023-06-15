@@ -8,6 +8,7 @@ import 'package:feeling_finder/src/settings/cubit/settings_cubit.dart';
 import 'package:feeling_finder/src/settings/settings_service.dart';
 import 'package:feeling_finder/src/storage/storage_service.dart';
 import 'package:feeling_finder/src/updates/updates.dart';
+import 'package:feeling_finder/src/window/app_window.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -17,6 +18,7 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
 @GenerateNiceMocks([
+  MockSpec<AppWindow>(),
   MockSpec<SettingsService>(),
   MockSpec<StorageService>(),
   MockSpec<ReleaseNotesService>(),
@@ -26,6 +28,7 @@ import 'emoji_page_test.mocks.dart';
 
 void main() {
   group('EmojiPage:', () {
+    late MockAppWindow appWindow;
     late MockSettingsService mockSettingsService;
     late MockStorageService mockStorageService;
     late MockReleaseNotesService mockReleaseNotesService;
@@ -33,6 +36,11 @@ void main() {
 
     setUpAll(() async {
       await LoggingManager.initialize(verbose: false);
+
+      appWindow = MockAppWindow();
+      when(appWindow.focus()).thenAnswer((_) async {});
+      when(appWindow.hide()).thenAnswer((_) async {});
+      when(appWindow.show()).thenAnswer((_) async {});
     });
 
     setUp(() {
@@ -55,6 +63,7 @@ void main() {
       final settingsCubit = await SettingsCubit.init(mockSettingsService);
 
       final emojiCubit = EmojiCubit(
+        appWindow,
         EmojiService(),
         settingsCubit,
         SettingsService(mockStorageService),
@@ -110,6 +119,7 @@ void main() {
       final settingsCubit = await SettingsCubit.init(mockSettingsService);
 
       final emojiCubit = EmojiCubit(
+        appWindow,
         EmojiService(),
         settingsCubit,
         SettingsService(mockStorageService),

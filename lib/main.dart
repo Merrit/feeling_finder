@@ -2,6 +2,7 @@
 
 import 'dart:io';
 
+import 'package:feeling_finder/src/system_tray/system_tray.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:helpers/helpers.dart';
@@ -32,7 +33,8 @@ void main(List<String> args) async {
       Platform.environment['VERBOSE'] == 'true';
 
   await LoggingManager.initialize(verbose: verbose);
-  await AppWindow.initialize();
+  final appWindow = await AppWindow.initialize();
+  await SystemTray.initialize(appWindow);
 
   // Initialize the storage service.
   final storageService = StorageService();
@@ -62,28 +64,34 @@ void main(List<String> args) async {
 
   // Run the app and pass in the state controllers.
   runApp(
-    MultiBlocProvider(
+    MultiRepositoryProvider(
       providers: [
-        BlocProvider.value(value: appCubit),
-        BlocProvider(
-          create: (context) => EmojiCubit(
-            emojiService,
-            settingsCubit,
-            settingsService,
-            storageService,
-          ),
-          lazy: false,
-        ),
-        BlocProvider.value(value: settingsCubit),
+        if (appWindow != null) RepositoryProvider.value(value: appWindow),
       ],
-      child: WindowWatcher(
-        onClose: () {
-          if (platformIsMobile()) {
-            return;
-          }
-          exit(0);
-        },
-        child: const App(),
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider.value(value: appCubit),
+          BlocProvider(
+            create: (context) => EmojiCubit(
+              appWindow,
+              emojiService,
+              settingsCubit,
+              settingsService,
+              storageService,
+            ),
+            lazy: false,
+          ),
+          BlocProvider.value(value: settingsCubit),
+        ],
+        child: WindowWatcher(
+          onClose: () {
+            if (platformIsMobile()) {
+              return;
+            }
+            exit(0);
+          },
+          child: const App(),
+        ),
       ),
     ),
   );
