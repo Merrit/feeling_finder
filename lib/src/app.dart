@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:tray_manager/tray_manager.dart';
 
 import 'emoji/emoji_page.dart';
 import 'localization/gen/app_localizations.dart';
@@ -10,10 +11,39 @@ import 'shortcuts/app_shortcuts.dart';
 import 'theme/app_theme.dart';
 
 /// The base widget that configures the application.
-class App extends StatelessWidget {
+class App extends StatefulWidget {
   const App({
     Key? key,
   }) : super(key: key);
+
+  @override
+  State<App> createState() => _AppState();
+}
+
+class _AppState extends State<App> with TrayListener {
+  @override
+  void initState() {
+    trayManager.addListener(this);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    trayManager.removeListener(this);
+    super.dispose();
+  }
+
+  @override
+  void onTrayIconMouseDown() {
+    trayManager.popUpContextMenu();
+    super.onTrayIconMouseDown();
+  }
+
+  @override
+  void onTrayIconRightMouseDown() {
+    trayManager.popUpContextMenu();
+    super.onTrayIconRightMouseDown();
+  }
 
   @override
   Widget build(BuildContext context) {

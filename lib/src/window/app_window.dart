@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 import 'package:helpers/helpers.dart';
 import 'package:window_manager/window_manager.dart';
@@ -5,13 +7,14 @@ import 'package:window_manager/window_manager.dart';
 class AppWindow {
   AppWindow._();
 
-  static late AppWindow instance;
-
-  static Future<void> initialize() async {
-    if (!defaultTargetPlatform.isDesktop) return;
+  static Future<AppWindow?> initialize() async {
+    if (!defaultTargetPlatform.isDesktop) return null;
     await windowManager.ensureInitialized();
-    instance = AppWindow._();
+    return AppWindow._();
   }
+
+  /// Exits the app.
+  void close() => exit(0);
 
   /// Focuses the window.
   Future<void> focus() async => await windowManager.focus();
