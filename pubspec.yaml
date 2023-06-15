@@ -29,6 +29,7 @@ dependencies:
       ref: cf08d198e9cefe6556ffb5d389e29ca14d32408a
   hive: ^2.0.4
   hive_flutter: ^1.1.0
+  hotkey_manager: ^0.1.8
   http: ^1.0.0
   json_annotation: ^4.8.1
   logger: ^1.3.0
@@ -38,7 +39,10 @@ dependencies:
   tutorial_coach_mark: ^1.2.8
   unicode_emojis: ^0.3.0
   url_launcher: ^6.1.11
-  window_manager: ^0.3.2
+  window_manager:
+    git:
+      url: https://github.com/Kingtous/rustdesk_window_manager.git
+      ref: fix/flutter_3.10/on_close
   window_size:
     git:
       url: https://github.com/google/flutter-desktop-embedding.git
@@ -51,7 +55,8 @@ dev_dependencies:
   flutter_app_builder:
     git:
       url: https://github.com/Merrit/flutter_app_builder.git
-      ref: 3c38d05af2ab6355e8c72a6d42ff7ad6c29c9348
+      ref: 9a9534a7703610677538fdca48a158cb5ced7167
+  flutter_gen: ^5.3.1
   flutter_launcher_icons: ^0.10.0
   flutter_lints: ^2.0.1
   flutter_test:

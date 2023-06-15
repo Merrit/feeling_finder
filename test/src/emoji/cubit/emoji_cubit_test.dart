@@ -32,6 +32,7 @@ void main() {
       settingsCubit = _settingsCubit;
       when(_settingsCubit.state).thenReturn(const SettingsState(
         exitOnCopy: false,
+        hotKeyEnabled: false,
         themeMode: ThemeMode.system,
         userThemePreference: ThemeMode.dark,
       ));

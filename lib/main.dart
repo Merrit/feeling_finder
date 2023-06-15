@@ -12,9 +12,11 @@ import 'src/app/app.dart';
 import 'src/emoji/cubit/emoji_cubit.dart';
 import 'src/emoji/emoji_service.dart';
 import 'src/helpers/helpers.dart';
+import 'src/helpers/window_watcher.dart';
 import 'src/logs/logging_manager.dart';
 import 'src/settings/cubit/settings_cubit.dart';
 import 'src/settings/settings_service.dart';
+import 'src/shortcuts/app_hotkey.dart';
 import 'src/storage/storage_service.dart';
 import 'src/updates/updates.dart';
 import 'src/window/app_window.dart';
@@ -55,6 +57,9 @@ void main(List<String> args) async {
   final settingsService = SettingsService(storageService);
   final settingsCubit = await SettingsCubit.init(settingsService);
 
+  // Initialize Visibility Shortcut (Depends on Settings Service)
+  if(platformIsLinuxX11()) hotKeyService.initHotkeyRegistration();
+
   // Run the app and pass in the state controllers.
   runApp(
     MultiBlocProvider(
@@ -70,7 +75,15 @@ void main(List<String> args) async {
         ),
         BlocProvider.value(value: settingsCubit),
       ],
-      child: const App(),
+      child: WindowWatcher(
+        onClose: () {
+          if (platformIsMobile()) {
+            return;
+          }
+          exit(0);
+        },
+        child: const App(),
+      ),
     ),
   );
 

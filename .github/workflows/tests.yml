@@ -22,5 +22,8 @@ jobs:
       - name: Run code generation
         run: flutter pub run build_runner build --delete-conflicting-outputs
 
+      - name: Run i18n generation
+        run: flutter gen-l10n
+
       - name: Run tests
         run: flutter test

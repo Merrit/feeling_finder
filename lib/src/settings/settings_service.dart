@@ -26,6 +26,15 @@ class SettingsService {
     await _storageService.saveValue(key: 'exitOnCopy', value: value);
   }
 
+  bool hotKeyEnabled() {
+    final useHotKey = _storageService.getValue('useHotKey') as bool?;
+    return useHotKey ?? false;
+  }
+
+  Future<void> saveHotKeyEnabled(bool value) async {
+    await _storageService.saveValue(key: 'useHotKey', value: value);
+  }
+
   /// In-memory variable for the recent emojis list.
   final List<Emoji> _recentEmojis = [];
 

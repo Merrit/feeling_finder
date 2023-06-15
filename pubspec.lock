@@ -177,6 +177,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.17.1"
+  color:
+    dependency: transitive
+    description:
+      name: color
+      sha256: ddcdf1b3badd7008233f5acffaf20ca9f5dc2cd0172b75f68f24526a5f5725cb
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.0"
   console:
     dependency: transitive
     description:
@@ -217,6 +225,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.3.1"
+  dartx:
+    dependency: transitive
+    description:
+      name: dartx
+      sha256: "45d7176701f16c5a5e00a4798791c1964bc231491b879369c818dd9a9c764871"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.0"
   dbus:
     dependency: transitive
     description:
@@ -282,8 +298,8 @@ packages:
     dependency: "direct dev"
     description:
       path: "."
-      ref: "3c38d05af2ab6355e8c72a6d42ff7ad6c29c9348"
-      resolved-ref: "3c38d05af2ab6355e8c72a6d42ff7ad6c29c9348"
+      ref: "9a9534a7703610677538fdca48a158cb5ced7167"
+      resolved-ref: "9a9534a7703610677538fdca48a158cb5ced7167"
       url: "https://github.com/Merrit/flutter_app_builder.git"
     source: git
     version: "1.0.0"
@@ -309,6 +325,22 @@ packages:
       url: "https://github.com/Merrit/flutter_flatpak.git"
     source: git
     version: "0.0.1"
+  flutter_gen:
+    dependency: "direct dev"
+    description:
+      name: flutter_gen
+      sha256: f04fb8653aab529ee5487f37972489bf9f73d4f0cb74a3e1c4857a5076caffa8
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.3.1"
+  flutter_gen_core:
+    dependency: transitive
+    description:
+      name: flutter_gen_core
+      sha256: e8637dd6a59860f89e5e71be0a27101ec32dad1a0ed7fd879fd23b6e91d5004d
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.3.1"
   flutter_launcher_icons:
     dependency: "direct dev"
     description:
@@ -434,6 +466,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.0"
+  hotkey_manager:
+    dependency: "direct main"
+    description:
+      name: hotkey_manager
+      sha256: "8aaa0aeaca7015b8c561a58d02eb7ebba95e93357fc9540398c5751ee24afd7c"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.8"
   http:
     dependency: "direct main"
     description:
@@ -924,6 +964,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.5.1"
+  time:
+    dependency: transitive
+    description:
+      name: time
+      sha256: "83427e11d9072e038364a5e4da559e85869b227cf699a541be0da74f14140124"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.3"
   timing:
     dependency: transitive
     description:
@@ -1020,6 +1068,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.6"
+  uuid:
+    dependency: transitive
+    description:
+      name: uuid
+      sha256: "648e103079f7c64a36dc7d39369cabb358d377078a051d6ae2ad3aa539519313"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.7"
   vector_math:
     dependency: transitive
     description:
@@ -1079,11 +1135,12 @@ packages:
   window_manager:
     dependency: "direct main"
     description:
-      name: window_manager
-      sha256: "2b2572442b2a5178642730442dc625ac088244f5827b1f0811371b1b7485eb62"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.3.2"
+      path: "."
+      ref: "fix/flutter_3.10/on_close"
+      resolved-ref: fde56295b7966b01d73c7d8c5425584f5e7e9c51
+      url: "https://github.com/Kingtous/rustdesk_window_manager.git"
+    source: git
+    version: "0.3.4"
   window_size:
     dependency: "direct main"
     description:

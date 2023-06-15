@@ -8,6 +8,7 @@ import 'package:helpers/helpers.dart';
 import 'package:url_launcher/url_launcher.dart' as url_launcher;
 
 import '../../logs/logging_manager.dart';
+import '../../shortcuts/app_hotkey.dart';
 import '../../storage/storage_service.dart';
 import '../../updates/updates.dart';
 
@@ -111,8 +112,9 @@ class AppCubit extends Cubit<AppState> {
   }
 
   /// The user has requested to quit the app.
-  void quit() {
+  void quit() async {
     LoggingManager.instance.close();
+    await hotKeyService.unregisterBindings();
     exit(0);
   }
 }
