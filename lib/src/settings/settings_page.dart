@@ -1,3 +1,4 @@
+import 'package:feeling_finder/src/helpers/helpers.dart';
 import 'package:feeling_finder/src/shortcuts/app_hotkey.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,6 +16,7 @@ class SettingsPage extends StatelessWidget {
   const SettingsPage({Key? key}) : super(key: key);
 
   static const routeName = '/settings';
+  static bool runsX11 = platformIsLinuxX11();
 
   @override
   Widget build(BuildContext context) {
@@ -77,6 +79,7 @@ class SettingsPage extends StatelessWidget {
 
               const Divider(),
 
+              if(runsX11)
               BlocBuilder<SettingsCubit, SettingsState>(
                 builder: (context, state) {
                   return SwitchListTile(
@@ -94,6 +97,7 @@ class SettingsPage extends StatelessWidget {
                 },
               ),
 
+              if(runsX11)
               BlocBuilder<SettingsCubit, SettingsState>(
                 builder: (context, state) {
                   return Visibility(
@@ -110,7 +114,7 @@ class SettingsPage extends StatelessWidget {
                 },
               ),
 
-              const Divider(),
+              if(runsX11) const Divider(),
 
               BlocBuilder<AppCubit, AppState>(
                 builder: (context, state) {

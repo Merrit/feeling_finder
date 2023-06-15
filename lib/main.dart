@@ -58,7 +58,7 @@ void main(List<String> args) async {
   final settingsCubit = await SettingsCubit.init(settingsService);
 
   // Initialize Visibility Shortcut (Depends on Settings Service)
-  if(platformIsDesktop()) hotKeyService.initHotkeyRegistration();
+  if(platformIsLinuxX11()) hotKeyService.initHotkeyRegistration();
 
   // Run the app and pass in the state controllers.
   runApp(
