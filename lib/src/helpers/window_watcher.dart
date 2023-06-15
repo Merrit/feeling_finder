@@ -8,8 +8,6 @@ class WindowWatcher extends StatefulWidget {
   final VoidCallback onClose;
   const WindowWatcher({super.key, required this.child, required this.onClose});
 
-
-
   @override
   State<StatefulWidget> createState() => _WindowWatcherState();
 }

@@ -23,25 +23,24 @@ class HotKeyService {
         modifiers: [KeyModifier.alt],
         scope: HotKeyScope.system, // Set as system-wide hotkey.
       );
-      
-      await hotKeyManager.register(
-          hideShortcut,
+
+      await hotKeyManager.register(hideShortcut,
           keyDownHandler: (hotKey) async {
-            if (time.elapsedMilliseconds > 250) {
-              if (await windowManager.isMinimized()) {
-                time.reset();
-                await windowManager.show(inactive: true);
-                return;
-              }
-    
-              if (await windowManager.isVisible()) {
-                time.reset();
-                await windowManager.hide();
-              } else {
-                time.reset();
-                await windowManager.show();
-              }
-            }
+        if (time.elapsedMilliseconds > 250) {
+          if (await windowManager.isMinimized()) {
+            time.reset();
+            await windowManager.show(inactive: true);
+            return;
+          }
+
+          if (await windowManager.isVisible()) {
+            time.reset();
+            await windowManager.hide();
+          } else {
+            time.reset();
+            await windowManager.show();
+          }
+        }
       });
     }
   }
