@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+import 'package:helpers/helpers.dart';
 import 'package:unicode_emojis/unicode_emojis.dart' as ue;
 
 import 'emoji.dart';
@@ -56,6 +58,11 @@ Map<EmojiCategory, List<Emoji>> _buildEmojisFromUnicodePackage() {
         .where((emoji) => emoji.category == emojiCategory)
         .map((ue.Emoji emoji) => emoji.toEmoji())
         .toList();
+
+    if (defaultTargetPlatform.isWindows) {
+      // Windows only supports version 14.0 of the Unicode emoji set.
+      emojiList.removeWhere((e) => double.parse(e.unicodeVersion) > 14.0);
+    }
 
     emojiMap[emojiCategory.toEmojiCategory()] = emojiList;
   }
