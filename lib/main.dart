@@ -67,6 +67,7 @@ void main(List<String> args) async {
     MultiRepositoryProvider(
       providers: [
         if (appWindow != null) RepositoryProvider.value(value: appWindow),
+        RepositoryProvider.value(value: settingsService),
       ],
       child: MultiBlocProvider(
         providers: [
