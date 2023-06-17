@@ -6,6 +6,8 @@ publish_to: "none"
 
 version: 1.0.0+15
 
+homepage: https://github.com/Merrit/feeling_finder
+
 environment:
   sdk: ">=3.0.0 <4.0.0"
 

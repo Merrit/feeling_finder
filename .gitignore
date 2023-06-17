@@ -47,6 +47,7 @@ lcov.info
 #.vscode/
 
 # Flutter/Dart/Pub related
+.fvm/
 **/doc/api/
 **/ios/Flutter/.last_build_id
 .dart_tool/
@@ -56,6 +57,7 @@ lcov.info
 .pub-cache/
 .pub/
 /build/
+/dist/
 
 # Web related
 lib/generated_plugin_registrant.dart
