@@ -42,4 +42,3 @@ jobs:
           packageName: ${{env.packageName}}
           releaseFiles: ${{env.appname-without-spaces}}-Android.aab
           track: production
-          changesNotSentForReview: true
