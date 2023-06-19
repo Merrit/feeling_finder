@@ -2,10 +2,11 @@
 #                                    Custom                                    #
 # ---------------------------------------------------------------------------- #
 
+.fvm/
+
 # Flatpak
 .flatpak-builder/
 build-dir/
-
 
 # Freezed
 *.freezed.dart
@@ -15,6 +16,9 @@ build-dir/
 generated*
 Generated*
 *.mocks.dart
+
+# Packaging
+dist/
 
 # Test coverage
 lcov.info
