@@ -10,6 +10,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import '../../logs/logging_manager.dart';
 import '../../settings/cubit/settings_cubit.dart';
 import '../../settings/settings_service.dart';
+import '../../shortcuts/app_hotkey.dart';
 import '../../storage/storage_service.dart';
 import '../emoji.dart';
 import '../emoji_category.dart';
@@ -21,12 +22,16 @@ part 'emoji_cubit.freezed.dart';
 /// Controls the state of [EmojiPage] and connects the
 /// view to the [EmojiService].
 class EmojiCubit extends Cubit<EmojiState> {
+  final AppWindow? _appWindow;
   final EmojiService _emojiService;
+  final SettingsCubit _settingsCubit;
   final SettingsService _settingsService;
   final StorageService _storageService;
 
   EmojiCubit(
+    this._appWindow,
     this._emojiService,
+    this._settingsCubit,
     this._settingsService,
     this._storageService,
   ) : super(EmojiState.initial(
@@ -178,7 +183,7 @@ class EmojiCubit extends Cubit<EmojiState> {
     }
 
     // Check if the preference to exit on copy is set.
-    final shouldExitApp = settingsCubit.state.exitOnCopy;
+    final shouldExitApp = _settingsCubit.state.exitOnCopy;
 
     if (!shouldExitApp) {
       // Trigger copy notification.
@@ -193,9 +198,10 @@ class EmojiCubit extends Cubit<EmojiState> {
     if (shouldExitApp) {
       // Hide the window because it has a small delay before closing to
       // allow the logger to finish writing to the file.
-      await AppWindow.instance.hide();
+      await _appWindow?.hide();
       log.i('Exiting app after copying emoji');
       await LoggingManager.instance.close();
+      await hotKeyService.unregisterBindings();
       exit(0);
     }
   }

@@ -1,9 +1,11 @@
+import 'package:feeling_finder/src/helpers/helpers.dart';
+import 'package:feeling_finder/src/shortcuts/app_hotkey.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../app/app.dart';
 import '../core/core.dart';
+import '../localization/gen/app_localizations.dart';
 import 'cubit/settings_cubit.dart';
 
 /// Displays the various settings that can be customized by the user.
@@ -14,9 +16,12 @@ class SettingsPage extends StatelessWidget {
   const SettingsPage({Key? key}) : super(key: key);
 
   static const routeName = '/settings';
+  static bool runsX11 = platformIsLinuxX11();
 
   @override
   Widget build(BuildContext context) {
+    final settingsCubit = context.read<SettingsCubit>();
+
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.settings),
@@ -75,6 +80,44 @@ class SettingsPage extends StatelessWidget {
               ),
 
               const Divider(),
+
+              if (runsX11)
+                BlocBuilder<SettingsCubit, SettingsState>(
+                  builder: (context, state) {
+                    return SwitchListTile(
+                      title: const Text(
+                          "Toggle visibility with a keyboard shortcut"),
+                      value: state.hotKeyEnabled,
+                      onChanged: (value) {
+                        if (value) {
+                          hotKeyService.initHotkeyRegistration();
+                        } else {
+                          hotKeyService.unregisterBindings();
+                        }
+                        settingsCubit.updateHotKeyEnabled(value);
+                      },
+                    );
+                  },
+                ),
+
+              if (runsX11)
+                BlocBuilder<SettingsCubit, SettingsState>(
+                  builder: (context, state) {
+                    return Visibility(
+                        visible: state.hotKeyEnabled,
+                        maintainAnimation: true,
+                        maintainState: true,
+                        child: AnimatedOpacity(
+                          opacity: state.hotKeyEnabled ? 1.0 : 0.0,
+                          duration: const Duration(milliseconds: 500),
+                          //TODO: Replace with proper hotkey configuration
+                          child:
+                              const Text("Press Alt + . to use the shortcut"),
+                        ));
+                  },
+                ),
+
+              if (runsX11) const Divider(),
 
               BlocBuilder<AppCubit, AppState>(
                 builder: (context, state) {

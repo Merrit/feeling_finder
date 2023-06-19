@@ -8,6 +8,7 @@ import 'package:feeling_finder/src/logs/logging_manager.dart';
 import 'package:feeling_finder/src/settings/cubit/settings_cubit.dart';
 import 'package:feeling_finder/src/settings/settings_service.dart';
 import 'package:feeling_finder/src/storage/storage_service.dart';
+import 'package:feeling_finder/src/window/app_window.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
@@ -15,10 +16,15 @@ import 'package:mockito/mockito.dart';
 
 import 'emoji_cubit_test.mocks.dart';
 
-@GenerateMocks([SettingsCubit, StorageService])
+@GenerateNiceMocks([
+  MockSpec<AppWindow>(),
+  MockSpec<SettingsCubit>(),
+  MockSpec<StorageService>(),
+])
 void main() {
   group('EmojiCubit', () {
-    late MockSettingsCubit _settingsCubit;
+    late MockAppWindow appWindow;
+    late MockSettingsCubit settingsCubit;
     late MockStorageService storageService;
     late SettingsService settingsService;
     late EmojiService emojiService;
@@ -27,14 +33,20 @@ void main() {
     setUpAll(() async {
       TestWidgetsFlutterBinding.ensureInitialized();
       await LoggingManager.initialize(verbose: false);
-      _settingsCubit = MockSettingsCubit();
-      // TODO: Make SettingsCubit not a singleton.
-      settingsCubit = _settingsCubit;
-      when(_settingsCubit.state).thenReturn(const SettingsState(
+
+      appWindow = MockAppWindow();
+      when(appWindow.focus()).thenAnswer((_) async {});
+      when(appWindow.hide()).thenAnswer((_) async {});
+      when(appWindow.show()).thenAnswer((_) async {});
+
+      settingsCubit = MockSettingsCubit();
+      when(settingsCubit.state).thenReturn(const SettingsState(
         exitOnCopy: false,
+        hotKeyEnabled: false,
         themeMode: ThemeMode.system,
         userThemePreference: ThemeMode.dark,
       ));
+
       emojiService = EmojiService();
     });
 
@@ -47,7 +59,9 @@ void main() {
     });
     test('has emojis', () {
       emojiCubit = EmojiCubit(
+        appWindow,
         emojiService,
+        settingsCubit,
         settingsService,
         storageService,
       );
@@ -56,7 +70,9 @@ void main() {
 
     test('initial category is Smileys & Emotion', () {
       emojiCubit = EmojiCubit(
+        appWindow,
         emojiService,
+        settingsCubit,
         settingsService,
         storageService,
       );
@@ -65,7 +81,9 @@ void main() {
 
     test('recent emojis is empty', () {
       emojiCubit = EmojiCubit(
+        appWindow,
         emojiService,
+        settingsCubit,
         settingsService,
         storageService,
       );
@@ -97,7 +115,9 @@ void main() {
       when(storageService.getValue('recentEmojis')).thenReturn(json);
 
       emojiCubit = EmojiCubit(
+        appWindow,
         EmojiService(),
+        settingsCubit,
         settingsService,
         storageService,
       );
@@ -131,7 +151,9 @@ void main() {
       when(storageService.getValue('recentEmojis')).thenReturn(json);
 
       emojiCubit = EmojiCubit(
+        appWindow,
         EmojiService(),
+        settingsCubit,
         settingsService,
         storageService,
       );
@@ -176,7 +198,9 @@ void main() {
 
     test('setCategory(), then category has changed', () {
       emojiCubit = EmojiCubit(
+        appWindow,
         emojiService,
+        settingsCubit,
         settingsService,
         storageService,
       );

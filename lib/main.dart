@@ -2,6 +2,7 @@
 
 import 'dart:io';
 
+import 'package:feeling_finder/src/system_tray/system_tray.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:helpers/helpers.dart';
@@ -12,9 +13,11 @@ import 'src/app/app.dart';
 import 'src/emoji/cubit/emoji_cubit.dart';
 import 'src/emoji/emoji_service.dart';
 import 'src/helpers/helpers.dart';
+import 'src/helpers/window_watcher.dart';
 import 'src/logs/logging_manager.dart';
 import 'src/settings/cubit/settings_cubit.dart';
 import 'src/settings/settings_service.dart';
+import 'src/shortcuts/app_hotkey.dart';
 import 'src/storage/storage_service.dart';
 import 'src/updates/updates.dart';
 import 'src/window/app_window.dart';
@@ -30,7 +33,8 @@ void main(List<String> args) async {
       Platform.environment['VERBOSE'] == 'true';
 
   await LoggingManager.initialize(verbose: verbose);
-  await AppWindow.initialize();
+  final appWindow = await AppWindow.initialize();
+  await SystemTray.initialize(appWindow);
 
   // Initialize the storage service.
   final storageService = StorageService();
@@ -55,22 +59,41 @@ void main(List<String> args) async {
   final settingsService = SettingsService(storageService);
   final settingsCubit = await SettingsCubit.init(settingsService);
 
+  // Initialize Visibility Shortcut (Depends on Settings Service)
+  if (platformIsLinuxX11()) hotKeyService.initHotkeyRegistration();
+
   // Run the app and pass in the state controllers.
   runApp(
-    MultiBlocProvider(
+    MultiRepositoryProvider(
       providers: [
-        BlocProvider.value(value: appCubit),
-        BlocProvider(
-          create: (context) => EmojiCubit(
-            emojiService,
-            settingsService,
-            storageService,
-          ),
-          lazy: false,
-        ),
-        BlocProvider.value(value: settingsCubit),
+        if (appWindow != null) RepositoryProvider.value(value: appWindow),
+        RepositoryProvider.value(value: settingsService),
       ],
-      child: const App(),
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider.value(value: appCubit),
+          BlocProvider(
+            create: (context) => EmojiCubit(
+              appWindow,
+              emojiService,
+              settingsCubit,
+              settingsService,
+              storageService,
+            ),
+            lazy: false,
+          ),
+          BlocProvider.value(value: settingsCubit),
+        ],
+        child: WindowWatcher(
+          onClose: () {
+            if (platformIsMobile()) {
+              return;
+            }
+            exit(0);
+          },
+          child: const App(),
+        ),
+      ),
     ),
   );
 

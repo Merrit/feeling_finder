@@ -9,13 +9,6 @@ import '../settings_service.dart';
 
 part 'settings_state.dart';
 
-/// Convenient global access to the SettingsCubit.
-///
-/// There is only ever 1 instance of this cubit, and having this variable
-/// means not having to do `context.read<SettingsCubit>()` to access it every
-/// time, as well as making it available without a BuildContext.
-late SettingsCubit settingsCubit;
-
 /// Controls the state of the settings for the app.
 class SettingsCubit extends Cubit<SettingsState> {
   final SettingsService _settingsService;
@@ -26,11 +19,11 @@ class SettingsCubit extends Cubit<SettingsState> {
   }) : super(
           SettingsState(
             exitOnCopy: _settingsService.exitOnCopy(),
+            hotKeyEnabled: _settingsService.hotKeyEnabled(),
             themeMode: userThemePreference,
             userThemePreference: userThemePreference,
           ),
         ) {
-    settingsCubit = this;
     _listenToFlatpakTheme();
   }
 
@@ -72,6 +65,12 @@ class SettingsCubit extends Cubit<SettingsState> {
   Future<void> updateExitOnCopy(bool value) async {
     emit(state.copyWith(exitOnCopy: value));
     await _settingsService.saveExitOnCopy(value);
+  }
+
+  /// Update and persist whether the app uses the Keybind for visibility toggling.
+  Future<void> updateHotKeyEnabled(bool value) async {
+    emit(state.copyWith(hotKeyEnabled: value));
+    await _settingsService.saveHotKeyEnabled(value);
   }
 
   /// Update and persist the ThemeMode based on the user's selection.

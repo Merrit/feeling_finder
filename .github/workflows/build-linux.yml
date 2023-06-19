@@ -29,6 +29,8 @@ jobs:
           sudo apt-get update
           # libappindicator required for tray_manager
           sudo apt-get install appindicator3-0.1 libappindicator3-dev
+          # keybinder required for global hotkeys
+          sudo apt-get install keybinder-3.0
 
       - name: Set pre-release environment variable
         if: inputs.pre-release == true

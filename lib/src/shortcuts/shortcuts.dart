@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../emoji/cubit/emoji_cubit.dart';
 import '../logs/logging_manager.dart';
+import 'app_hotkey.dart';
 
 /// A ShortcutManager that logs all keys that it handles.
 class LoggingShortcutManager extends ShortcutManager {
@@ -79,7 +80,8 @@ class QuitIntent extends Intent {
 /// An action that is bound to QuitIntent in order to quit this application.
 class QuitAction extends Action<QuitIntent> {
   @override
-  Object? invoke(QuitIntent intent) {
+  Future<Object?> invoke(QuitIntent intent) async {
+    await hotKeyService.unregisterBindings();
     log.v('Quit requested, exiting.');
     exit(0);
   }

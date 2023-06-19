@@ -4,6 +4,9 @@ class SettingsState extends Equatable {
   /// Whether the app should exit automatically after copying an emoji.
   final bool exitOnCopy;
 
+  /// Whether the app should use the hotkey to show and hide the app.
+  final bool hotKeyEnabled;
+
   /// The currently loaded [ThemeMode].
   final ThemeMode themeMode;
 
@@ -16,6 +19,7 @@ class SettingsState extends Equatable {
 
   const SettingsState({
     required this.exitOnCopy,
+    required this.hotKeyEnabled,
     required this.themeMode,
     required this.userThemePreference,
   });
@@ -23,17 +27,20 @@ class SettingsState extends Equatable {
   @override
   List<Object> get props => [
         exitOnCopy,
+        hotKeyEnabled,
         themeMode,
         userThemePreference,
       ];
 
   SettingsState copyWith({
     bool? exitOnCopy,
+    bool? hotKeyEnabled,
     ThemeMode? themeMode,
     ThemeMode? userThemePreference,
   }) {
     return SettingsState(
       exitOnCopy: exitOnCopy ?? this.exitOnCopy,
+      hotKeyEnabled: hotKeyEnabled ?? this.hotKeyEnabled,
       themeMode: themeMode ?? this.themeMode,
       userThemePreference: userThemePreference ?? this.userThemePreference,
     );

@@ -1,0 +1,30 @@
+{
+  "appTitle": "Feeling Finder",
+  "@appTitle": {
+    "description": "The title of the application"
+  },
+  "searchHintText": "Digite para pesquisar",
+  "settings": "Definições",
+  "donate": "Doar",
+  "homepage": "Página inicial",
+  "currentVersion": "Versão actual",
+  "updateAvailable": "Actualização disponível",
+  "upToDate": "Actualizado!",
+  "exitAfterCopy": "Sair depois de copiar",
+  "theme": "Tema",
+  "systemTheme": "Tema do Sistema",
+  "lightTheme": "Tema Claro",
+  "darkTheme": "Tema Escuro",
+  "emojiCategoryRecent": "Recente",
+  "emojiCategoryAll": "Todos",
+  "emojiCategorySmileys": "Smileys & Emoções",
+  "emojiCategoryPeopleAndBody": "Pessoas e Corpo",
+  "emojiCategoryAnimalsAndNature": "Animais e Natureza",
+  "emojiCategoryFoodAndDrink": "Comida e Bebida",
+  "emojiCategoryTravelAndPlaces": "Viagens e Lugares",
+  "emojiCategoryActivities": "Actividades",
+  "emojiCategoryObjects": "Objectos",
+  "emojiCategorySymbols": "Símbolos",
+  "emojiCategoryFlags": "Bandeiras",
+  "emojiCategoryCustom": "Personalizados"
+}
