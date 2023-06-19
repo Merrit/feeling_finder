@@ -36,9 +36,10 @@ jobs:
         run: echo "$GOOGLE_PLAY_API_JSON" | base64 --decode > google_play_api.json
 
       - name: Release Android build on Google Play
-        uses: r0adkll/upload-google-play@v1.0.15
+        uses: r0adkll/upload-google-play@v1
         with:
           serviceAccountJson: google_play_api.json
           packageName: ${{env.packageName}}
           releaseFiles: ${{env.appname-without-spaces}}-Android.aab
           track: production
+          changesNotSentForReview: true
