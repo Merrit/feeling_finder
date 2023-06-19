@@ -2,10 +2,11 @@
 #                                    Custom                                    #
 # ---------------------------------------------------------------------------- #
 
+.fvm/
+
 # Flatpak
 .flatpak-builder/
 build-dir/
-
 
 # Freezed
 *.freezed.dart
@@ -15,6 +16,9 @@ build-dir/
 generated*
 Generated*
 *.mocks.dart
+
+# Packaging
+dist/
 
 # Test coverage
 lcov.info
@@ -48,7 +52,6 @@ lib/src/localization/gen/*
 #.vscode/
 
 # Flutter/Dart/Pub related
-.fvm/
 **/doc/api/
 **/ios/Flutter/.last_build_id
 .dart_tool/
@@ -58,7 +61,6 @@ lib/src/localization/gen/*
 .pub-cache/
 .pub/
 /build/
-/dist/
 
 # Web related
 lib/generated_plugin_registrant.dart
