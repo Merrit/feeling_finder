@@ -1,6 +1,8 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:helpers/helpers.dart';
 
 import '../cubit/emoji_cubit.dart';
 import '../emoji.dart';
@@ -66,6 +68,12 @@ class _EmojiTileState extends State<EmojiTile> {
           decoration: hasVariantsIndicator,
           child: Tooltip(
             waitDuration: const Duration(milliseconds: 400),
+            // By default on mobile the tooltip is triggered on long press.
+            // Since long-press is used to show the variants popup, we disable
+            // the tooltip trigger on mobile.
+            triggerMode: defaultTargetPlatform.isMobile
+                ? TooltipTriggerMode.manual
+                : null,
             richMessage: TextSpan(
               text: widget.emoji.name,
               style: const TextStyle(fontSize: 12),
