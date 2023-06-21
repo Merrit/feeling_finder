@@ -63,4 +63,4 @@ jobs:
         run: flutter gen-l10n
 
       - name: Run integration test on Linux
-        run: xvfb-run -a flutter test integration_test -v
+        run: xvfb-run -a flutter test -d linux integration_test -v
