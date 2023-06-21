@@ -27,12 +27,12 @@ import 'package:window_size/window_size.dart' as window_size;
 void main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await closeExistingSessions();
-
-  final bool verbose = args.contains('-v') || //
-      Platform.environment['VERBOSE'] == 'true';
+  final bool verbose =
+      args.contains('-v') || Platform.environment['VERBOSE'] == 'true';
 
   await LoggingManager.initialize(verbose: verbose);
+  await closeExistingSessions();
+
   final appWindow = await AppWindow.initialize();
   await SystemTray.initialize(appWindow);
 
