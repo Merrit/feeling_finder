@@ -51,6 +51,12 @@ jobs:
           # keybinder required for global hotkeys
           sudo apt-get install keybinder-3.0
 
+      - name: Run code generation
+        run: flutter pub run build_runner build --delete-conflicting-outputs
+
+      - name: Run i18n generation
+        run: flutter gen-l10n
+
       - name: Run integration test on Linux
         run: |
           export DISPLAY=:99
