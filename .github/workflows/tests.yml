@@ -36,7 +36,7 @@ jobs:
 
   integration_tests_linux:
     name: Run integration tests on Linux
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     needs: flutter_test
     steps:
       - uses: actions/checkout@v3
