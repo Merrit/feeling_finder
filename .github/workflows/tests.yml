@@ -33,3 +33,9 @@ jobs:
 
       - name: Run tests
         run: flutter test
+
+      - name: Run integration test on Linux
+        run: |
+          export DISPLAY=:99
+          sudo Xvfb -ac :99 -screen 0 1920x1080x24 > /dev/null 2>&1 &
+          flutter test -d linux integration_test
