@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:helpers/helpers.dart';
@@ -27,17 +28,6 @@ class EmojiPage extends StatefulWidget {
 }
 
 class _EmojiPageState extends State<EmojiPage> {
-  @override
-  void initState() {
-    final appCubit = context.read<AppCubit>();
-    final releaseNotes = appCubit.state.releaseNotes;
-    if (releaseNotes != null) {
-      _showReleaseNotesDialog(context, releaseNotes);
-    }
-
-    super.initState();
-  }
-
   final FocusScopeNode emojiPageFocusScope = FocusScopeNode(
     debugLabel: 'emojiPageFocusScope',
   );
@@ -67,59 +57,62 @@ class _EmojiPageState extends State<EmojiPage> {
       const SingleActivator(LogicalKeyboardKey.tab): () => _handleTabPressed(),
     };
 
-    return BlocListener<AppCubit, AppState>(
-      listener: (context, state) {
-        final releaseNotes = state.releaseNotes;
-        if (releaseNotes != null) {
-          _showReleaseNotesDialog(context, releaseNotes);
-        }
-      },
-      child: FocusScope(
-        debugLabel: 'emojiPageFocusScope',
-        onKey: (node, event) => _redirectSearchKeys(event, searchBoxFocusNode),
-        child: CallbackShortcuts(
-          bindings: shortcuts,
-          child: BlocBuilder<EmojiCubit, EmojiState>(
-            buildWhen: (previous, current) =>
-                previous.category != current.category,
-            builder: (context, state) {
-              Widget? floatingActionButton;
-              if (state.category == EmojiCategory.custom) {
-                floatingActionButton = FloatingActionButton(
-                  key: floatingActionButtonKey,
-                  onPressed: () => _showAddCustomEmojiDialog(context),
-                  child: const Icon(Icons.add),
-                );
-              }
+    return BlocBuilder<AppCubit, AppState>(
+      builder: (context, state) {
+        SchedulerBinding.instance.addPostFrameCallback((_) {
+          if (state.releaseNotes != null) {
+            _showReleaseNotesDialog(context, state.releaseNotes!);
+          }
+        });
 
-              return Scaffold(
-                appBar: AppBar(
-                  centerTitle: true,
-                  title: SearchBarWidget(
-                    focusNode: searchBoxFocusNode,
-                    textController: searchBoxTextController,
+        return FocusScope(
+          debugLabel: 'emojiPageFocusScope',
+          onKey: (node, event) =>
+              _redirectSearchKeys(event, searchBoxFocusNode),
+          child: CallbackShortcuts(
+            bindings: shortcuts,
+            child: BlocBuilder<EmojiCubit, EmojiState>(
+              buildWhen: (previous, current) =>
+                  previous.category != current.category,
+              builder: (context, state) {
+                Widget? floatingActionButton;
+                if (state.category == EmojiCategory.custom) {
+                  floatingActionButton = FloatingActionButton(
+                    key: floatingActionButtonKey,
+                    onPressed: () => _showAddCustomEmojiDialog(context),
+                    child: const Icon(Icons.add),
+                  );
+                }
+
+                return Scaffold(
+                  appBar: AppBar(
+                    centerTitle: true,
+                    title: SearchBarWidget(
+                      focusNode: searchBoxFocusNode,
+                      textController: searchBoxTextController,
+                    ),
+                    actions: [
+                      _SettingsButton(focusNode: settingsButtonFocusNode),
+                    ],
                   ),
-                  actions: [
-                    _SettingsButton(focusNode: settingsButtonFocusNode),
-                  ],
-                ),
-                drawer: (platformIsMobile())
-                    ? const Drawer(child: CategoryListView())
-                    : null,
-                body: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Category buttons shown in a drawer on mobile.
-                    if (!platformIsMobile()) const CategoryListView(),
-                    EmojiGridView(floatingActionButtonKey, gridViewFocusNode),
-                  ],
-                ),
-                floatingActionButton: floatingActionButton,
-              );
-            },
+                  drawer: (platformIsMobile())
+                      ? const Drawer(child: CategoryListView())
+                      : null,
+                  body: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Category buttons shown in a drawer on mobile.
+                      if (!platformIsMobile()) const CategoryListView(),
+                      EmojiGridView(floatingActionButtonKey, gridViewFocusNode),
+                    ],
+                  ),
+                  floatingActionButton: floatingActionButton,
+                );
+              },
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 
@@ -211,7 +204,10 @@ class _EmojiPageState extends State<EmojiPage> {
         releaseNotes: releaseNotes,
         donateCallback: () => AppCubit.instance.launchURL(kDonateUrl),
         launchURL: (url) => AppCubit.instance.launchURL(url),
-        onClose: () => Navigator.pop(context),
+        onClose: () {
+          AppCubit.instance.dismissReleaseNotesDialog();
+          Navigator.pop(context);
+        },
       ),
     );
   }
