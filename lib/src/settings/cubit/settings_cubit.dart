@@ -1,12 +1,13 @@
 import 'dart:async';
 
-import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_flatpak/flutter_flatpak.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../settings_service.dart';
 
+part 'settings_cubit.freezed.dart';
 part 'settings_state.dart';
 
 /// Controls the state of the settings for the app.
