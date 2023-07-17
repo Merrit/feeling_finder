@@ -9,6 +9,9 @@ class SettingsState with _$SettingsState {
     /// Whether the app should use the hotkey to show and hide the app.
     required bool hotKeyEnabled,
 
+    /// Whether the system tray icon should be shown.
+    required bool showSystemTrayIcon,
+
     /// The currently loaded [ThemeMode].
     required ThemeMode themeMode,
 

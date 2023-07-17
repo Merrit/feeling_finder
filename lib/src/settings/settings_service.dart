@@ -103,6 +103,18 @@ class SettingsService {
     );
   }
 
+  /// Save whether the system tray icon should be shown.
+  Future<void> saveShowSystemTrayIcon(bool value) async {
+    await _storageService.saveValue(key: 'showSystemTrayIcon', value: value);
+  }
+
+  /// Whether the system tray icon should be shown.
+  bool showSystemTrayIcon() {
+    final showSystemTrayIcon =
+        _storageService.getValue('showSystemTrayIcon') as bool?;
+    return showSystemTrayIcon ?? true;
+  }
+
   /// Remove all emojis from the recents list.
   Future<void> clearRecentEmojis() async {
     _recentEmojis.clear();

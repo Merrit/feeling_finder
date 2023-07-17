@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_flatpak/flutter_flatpak.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import '../../system_tray/system_tray.dart';
 import '../settings_service.dart';
 
 part 'settings_cubit.freezed.dart';
@@ -13,24 +14,35 @@ part 'settings_state.dart';
 /// Controls the state of the settings for the app.
 class SettingsCubit extends Cubit<SettingsState> {
   final SettingsService _settingsService;
+  final SystemTray? _systemTray;
 
   SettingsCubit._(
-    this._settingsService, {
+    this._settingsService,
+    this._systemTray, {
     required ThemeMode userThemePreference,
   }) : super(
           SettingsState(
             exitOnCopy: _settingsService.exitOnCopy(),
             hotKeyEnabled: _settingsService.hotKeyEnabled(),
+            showSystemTrayIcon: _settingsService.showSystemTrayIcon(),
             themeMode: userThemePreference,
             userThemePreference: userThemePreference,
           ),
         ) {
     _listenToFlatpakTheme();
+
+    if (state.showSystemTrayIcon) {
+      _systemTray?.show();
+    }
   }
 
-  static Future<SettingsCubit> init(SettingsService settingsService) async {
+  static Future<SettingsCubit> init(
+    SettingsService settingsService,
+    SystemTray? systemTray,
+  ) async {
     return SettingsCubit._(
       settingsService,
+      systemTray,
       userThemePreference: await settingsService.themeMode(),
     );
   }
@@ -72,6 +84,13 @@ class SettingsCubit extends Cubit<SettingsState> {
   Future<void> updateHotKeyEnabled(bool value) async {
     emit(state.copyWith(hotKeyEnabled: value));
     await _settingsService.saveHotKeyEnabled(value);
+  }
+
+  /// Update and persist whether the app should show the system tray icon.
+  Future<void> updateShowSystemTrayIcon(bool showTray) async {
+    emit(state.copyWith(showSystemTrayIcon: showTray));
+    showTray ? _systemTray?.show() : _systemTray?.remove();
+    await _settingsService.saveShowSystemTrayIcon(showTray);
   }
 
   /// Update and persist the ThemeMode based on the user's selection.

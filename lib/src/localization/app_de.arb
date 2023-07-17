@@ -2,6 +2,7 @@
   "appTitle": "Feeling Finder",
   "searchHintText": "Suche..",
   "settings": "Einstellungen",
+  "showSystemTray": "System Tray anzeigen",
   "exitAfterCopy": "Beenden nach dem Kopieren",
   "theme": "Thema",
   "systemTheme": "Systemthema",

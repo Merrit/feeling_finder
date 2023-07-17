@@ -43,6 +43,7 @@ void main() {
       when(settingsCubit.state).thenReturn(const SettingsState(
         exitOnCopy: false,
         hotKeyEnabled: false,
+        showSystemTrayIcon: false,
         themeMode: ThemeMode.system,
         userThemePreference: ThemeMode.dark,
       ));

@@ -5,6 +5,7 @@
   },
   "searchHintText": "Type to search",
   "settings": "Settings",
+  "showSystemTray": "Show system tray icon",
   "donate": "Donate",
   "homepage": "Homepage",
   "currentVersion": "Current version",
