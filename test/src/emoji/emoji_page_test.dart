@@ -7,6 +7,7 @@ import 'package:feeling_finder/src/logs/logging_manager.dart';
 import 'package:feeling_finder/src/settings/cubit/settings_cubit.dart';
 import 'package:feeling_finder/src/settings/settings_service.dart';
 import 'package:feeling_finder/src/storage/storage_service.dart';
+import 'package:feeling_finder/src/system_tray/system_tray.dart';
 import 'package:feeling_finder/src/updates/updates.dart';
 import 'package:feeling_finder/src/window/app_window.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +22,7 @@ import 'package:mockito/mockito.dart';
   MockSpec<AppWindow>(),
   MockSpec<SettingsService>(),
   MockSpec<StorageService>(),
+  MockSpec<SystemTray>(),
   MockSpec<ReleaseNotesService>(),
   MockSpec<UpdateService>(),
 ])
@@ -31,6 +33,7 @@ void main() {
     late MockAppWindow appWindow;
     late MockSettingsService mockSettingsService;
     late MockStorageService mockStorageService;
+    late MockSystemTray mockSystemTray;
     late MockReleaseNotesService mockReleaseNotesService;
     late MockUpdateService mockUpdateService;
 
@@ -46,6 +49,7 @@ void main() {
     setUp(() {
       mockSettingsService = MockSettingsService();
       mockStorageService = MockStorageService();
+      mockSystemTray = MockSystemTray();
       mockReleaseNotesService = MockReleaseNotesService();
 
       mockUpdateService = MockUpdateService();
@@ -60,7 +64,10 @@ void main() {
         updateService: mockUpdateService,
       );
 
-      final settingsCubit = await SettingsCubit.init(mockSettingsService);
+      final settingsCubit = await SettingsCubit.init(
+        mockSettingsService,
+        mockSystemTray,
+      );
 
       final emojiCubit = EmojiCubit(
         appWindow,
@@ -116,7 +123,10 @@ void main() {
         updateService: mockUpdateService,
       );
 
-      final settingsCubit = await SettingsCubit.init(mockSettingsService);
+      final settingsCubit = await SettingsCubit.init(
+        mockSettingsService,
+        mockSystemTray,
+      );
 
       final emojiCubit = EmojiCubit(
         appWindow,

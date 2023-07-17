@@ -13,12 +13,6 @@ class SystemTray {
     if (appWindow == null) return null;
     if (!defaultTargetPlatform.isDesktop) return null;
 
-    final String iconPath = (defaultTargetPlatform.isWindows) //
-        ? AppIcons.windows
-        : AppIcons.linux;
-
-    await trayManager.setIcon(iconPath);
-
     final Menu menu = Menu(
       items: [
         MenuItem(label: 'Show', onClick: (menuItem) => appWindow.show()),
@@ -32,8 +26,17 @@ class SystemTray {
     return const SystemTray._();
   }
 
-  /// Sets the system tray icon.
-  Future<void> setIcon(String iconPath) async {
+  /// Removes the system tray icon.
+  Future<void> remove() async {
+    await trayManager.destroy();
+  }
+
+  /// Shows the system tray icon.
+  Future<void> show() async {
+    final String iconPath = (defaultTargetPlatform.isWindows) //
+        ? AppIcons.windows
+        : AppIcons.linux;
+
     await trayManager.setIcon(iconPath);
   }
 }

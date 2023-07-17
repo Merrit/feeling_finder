@@ -1,7 +1,9 @@
 import 'package:feeling_finder/src/helpers/helpers.dart';
 import 'package:feeling_finder/src/shortcuts/app_hotkey.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:helpers/helpers.dart';
 
 import '../app/app.dart';
 import '../core/core.dart';
@@ -80,6 +82,18 @@ class SettingsPage extends StatelessWidget {
               ),
 
               const Divider(),
+
+              if (defaultTargetPlatform.isDesktop)
+                BlocBuilder<SettingsCubit, SettingsState>(
+                  builder: (context, state) {
+                    return SwitchListTile(
+                      title: Text(AppLocalizations.of(context)!.showSystemTray),
+                      value: state.showSystemTrayIcon,
+                      onChanged: (value) =>
+                          settingsCubit.updateShowSystemTrayIcon(value),
+                    );
+                  },
+                ),
 
               if (runsX11)
                 BlocBuilder<SettingsCubit, SettingsState>(

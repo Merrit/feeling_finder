@@ -34,7 +34,7 @@ void main(List<String> args) async {
   await closeExistingSessions();
 
   final appWindow = await AppWindow.initialize();
-  await SystemTray.initialize(appWindow);
+  final systemTray = await SystemTray.initialize(appWindow);
 
   // Initialize the storage service.
   final storageService = StorageService();
@@ -57,7 +57,10 @@ void main(List<String> args) async {
 
   // Initialize the settings service.
   final settingsService = SettingsService(storageService);
-  final settingsCubit = await SettingsCubit.init(settingsService);
+  final settingsCubit = await SettingsCubit.init(
+    settingsService,
+    systemTray,
+  );
 
   // Initialize Visibility Shortcut (Depends on Settings Service)
   if (platformIsLinuxX11()) hotKeyService.initHotkeyRegistration();
