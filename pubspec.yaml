@@ -4,7 +4,7 @@ description: A fast and beautiful app to help convey emotion in text communicati
 # Prevent accidental publishing to pub.dev.
 publish_to: "none"
 
-version: 1.2.0+17
+version: 1.3.0+18
 
 homepage: https://github.com/Merrit/feeling_finder
 
