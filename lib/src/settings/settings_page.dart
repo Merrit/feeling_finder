@@ -4,10 +4,12 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:helpers/helpers.dart';
+import 'package:hotkey_manager/hotkey_manager.dart';
 
 import '../app/app.dart';
 import '../core/core.dart';
 import '../localization/gen/app_localizations.dart';
+import '../localization/gen/strings.g.dart';
 import 'cubit/settings_cubit.dart';
 
 /// Displays the various settings that can be customized by the user.
@@ -26,7 +28,7 @@ class SettingsPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.settings),
+        title: Text(t.settings.title),
       ),
       body: Center(
         child: SizedBox(
@@ -42,7 +44,7 @@ class SettingsPage extends StatelessWidget {
               BlocBuilder<SettingsCubit, SettingsState>(
                 builder: (context, state) {
                   return ListTile(
-                    title: Text(AppLocalizations.of(context)!.theme),
+                    title: Text(t.settings.theme),
                     trailing: DropdownButton<ThemeMode>(
                       // Read the selected themeMode from the controller
                       value: state.userThemePreference,
@@ -52,16 +54,16 @@ class SettingsPage extends StatelessWidget {
                         DropdownMenuItem(
                           value: ThemeMode.system,
                           child: Text(
-                            AppLocalizations.of(context)!.systemTheme,
+                            t.settings.systemTheme,
                           ),
                         ),
                         DropdownMenuItem(
                           value: ThemeMode.light,
-                          child: Text(AppLocalizations.of(context)!.lightTheme),
+                          child: Text(t.settings.lightTheme),
                         ),
                         DropdownMenuItem(
                           value: ThemeMode.dark,
-                          child: Text(AppLocalizations.of(context)!.darkTheme),
+                          child: Text(t.settings.darkTheme),
                         )
                       ],
                     ),
@@ -74,7 +76,7 @@ class SettingsPage extends StatelessWidget {
               BlocBuilder<SettingsCubit, SettingsState>(
                 builder: (context, state) {
                   return SwitchListTile(
-                    title: Text(AppLocalizations.of(context)!.exitAfterCopy),
+                    title: Text(t.settings.exitAfterCopy),
                     value: state.exitOnCopy,
                     onChanged: (value) => settingsCubit.updateExitOnCopy(value),
                   );
@@ -87,7 +89,7 @@ class SettingsPage extends StatelessWidget {
                 BlocBuilder<SettingsCubit, SettingsState>(
                   builder: (context, state) {
                     return SwitchListTile(
-                      title: Text(AppLocalizations.of(context)!.showSystemTray),
+                      title: Text(t.settings.showSystemTray),
                       value: state.showSystemTrayIcon,
                       onChanged: (value) =>
                           settingsCubit.updateShowSystemTrayIcon(value),
@@ -99,8 +101,7 @@ class SettingsPage extends StatelessWidget {
                 BlocBuilder<SettingsCubit, SettingsState>(
                   builder: (context, state) {
                     return SwitchListTile(
-                      title: const Text(
-                          "Toggle visibility with a keyboard shortcut"),
+                      title: Text(t.settings.hotkeyToggle),
                       value: state.hotKeyEnabled,
                       onChanged: (value) {
                         if (value) {
@@ -125,8 +126,7 @@ class SettingsPage extends StatelessWidget {
                           opacity: state.hotKeyEnabled ? 1.0 : 0.0,
                           duration: const Duration(milliseconds: 500),
                           //TODO: Replace with proper hotkey configuration
-                          child:
-                              const Text("Press Alt + . to use the shortcut"),
+                          child: Text(t.settings.shortcutUsage(modifierKey: KeyModifier.alt.keyLabel, actionKey: KeyCode.period.keyLabel)),
                         ));
                   },
                 ),
@@ -139,14 +139,14 @@ class SettingsPage extends StatelessWidget {
                     children: [
                       ListTile(
                         title: Text(
-                          '${AppLocalizations.of(context)!.currentVersion}: ${state.runningVersion}',
+                          '${t.settings.currentVersion}: ${state.runningVersion}',
                         ),
                       ),
                       ListTile(
                         title: Text(
                           (state.updateAvailable)
-                              ? '${AppLocalizations.of(context)!.updateAvailable}: ${state.updateVersion}'
-                              : AppLocalizations.of(context)!.upToDate,
+                              ? '${t.settings.updateAvailable}: ${state.updateVersion}'
+                              : t.settings.upToDate,
                         ),
                       ),
                     ],
@@ -159,12 +159,12 @@ class SettingsPage extends StatelessWidget {
               Column(
                 children: [
                   ListTile(
-                    title: Text(AppLocalizations.of(context)!.homepage),
+                    title: Text(t.settings.homepage),
                     trailing: const Icon(Icons.language),
                     onTap: () => AppCubit.instance.launchURL(kWebsiteUrl),
                   ),
                   ListTile(
-                    title: Text(AppLocalizations.of(context)!.donate),
+                    title: Text(t.settings.donate),
                     trailing: const Icon(
                       Icons.favorite,
                       color: Colors.red,

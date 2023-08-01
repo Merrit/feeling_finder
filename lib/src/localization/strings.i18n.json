@@ -1,0 +1,39 @@
+{
+  "appTitle": "Feeling Finder",
+  "@AppTitle": "The title of the application",
+
+  "emojiCategories": {
+    "recent": "Recent",
+    "all": "All",
+    "smileys": "Smileys & Emotion",
+    "peopleAndBody": "People & Body",
+    "animalsAndNature": "Animals & Nature",
+    "foodAndDrink": "Food & Drink",
+    "travelAndPlaces": "Travel & Places",
+    "activities": "Activities",
+    "objects": "Objects",
+    "symbols": "Symbols",
+    "flags": "Flags",
+    "custom": "Custom"
+  },
+
+  "settings": {
+    "title": "Settings",
+    "language": "Language",
+    "theme": "Theme",
+    "systemTheme": "System",
+    "lightTheme": "Light",
+    "darkTheme": "Dark",
+    "showSystemTray": "Show system tray icon",
+    "exitAfterCopy": "Exit after copying",
+    "updateAvailable": "Update available",
+    "upToDate": "Up to date",
+    "donate": "Donate",
+    "homepage": "Homepage",
+    "currentVersion": "Current version",
+    "hotkeyToggle": "Toggle visibility with a keyboard shortcut",
+    "shortcutUsage": "Press {modifierKey} + {actionKey} to use the shortcut"
+  },
+
+  "searchHintText": "Type to search"
+}

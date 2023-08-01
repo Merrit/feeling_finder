@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../localization/gen/app_localizations.dart';
+import '../localization/gen/strings.g.dart';
 
 /// Top-level categories for emojis.
 enum EmojiCategory {
@@ -32,37 +33,37 @@ enum EmojiCategory {
     String name;
     switch (this) {
       case EmojiCategory.recent:
-        name = AppLocalizations.of(context)!.emojiCategoryRecent;
+        name = t.emojiCategories.recent;
         break;
       case EmojiCategory.smileys:
-        name = AppLocalizations.of(context)!.emojiCategorySmileys;
+        name = t.emojiCategories.smileys;
         break;
       case EmojiCategory.peopleAndBody:
-        name = AppLocalizations.of(context)!.emojiCategoryPeopleAndBody;
+        name = t.emojiCategories.peopleAndBody;
         break;
       case EmojiCategory.animalsAndNature:
-        name = AppLocalizations.of(context)!.emojiCategoryAnimalsAndNature;
+        name = t.emojiCategories.animalsAndNature;
         break;
       case EmojiCategory.foodAndDrink:
-        name = AppLocalizations.of(context)!.emojiCategoryFoodAndDrink;
+        name = t.emojiCategories.foodAndDrink;
         break;
       case EmojiCategory.travelAndPlaces:
-        name = AppLocalizations.of(context)!.emojiCategoryTravelAndPlaces;
+        name = t.emojiCategories.travelAndPlaces;
         break;
       case EmojiCategory.activities:
-        name = AppLocalizations.of(context)!.emojiCategoryActivities;
+        name = t.emojiCategories.activities;
         break;
       case EmojiCategory.objects:
-        name = AppLocalizations.of(context)!.emojiCategoryObjects;
+        name = t.emojiCategories.objects;
         break;
       case EmojiCategory.symbols:
-        name = AppLocalizations.of(context)!.emojiCategorySymbols;
+        name = t.emojiCategories.symbols;
         break;
       case EmojiCategory.flags:
-        name = AppLocalizations.of(context)!.emojiCategoryFlags;
+        name = t.emojiCategories.flags;
         break;
       case EmojiCategory.custom:
-        name = AppLocalizations.of(context)!.emojiCategoryCustom;
+        name = t.emojiCategories.custom;
         break;
     }
     return name;
