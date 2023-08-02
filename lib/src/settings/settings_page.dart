@@ -8,7 +8,7 @@ import 'package:hotkey_manager/hotkey_manager.dart';
 
 import '../app/app.dart';
 import '../core/core.dart';
-import '../i18n/strings.g.dart';
+import '../localization/strings.g.dart';
 import 'cubit/settings_cubit.dart';
 
 /// Displays the various settings that can be customized by the user.

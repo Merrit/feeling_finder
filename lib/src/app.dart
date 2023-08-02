@@ -1,4 +1,4 @@
-import 'package:feeling_finder/src/i18n/strings.g.dart';
+import 'package:feeling_finder/src/localization/strings.g.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';

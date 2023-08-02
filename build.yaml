@@ -10,6 +10,6 @@ targets:
       slang_build_runner:
         options:
           fallback_strategy: base_locale
-          input_directory: lib/src/i18n/
+          input_directory: lib/src/localization
           string_interpolation: braces
           timestamp: false

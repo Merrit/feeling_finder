@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../i18n/strings.g.dart';
+import '../localization/strings.g.dart';
 
 /// Top-level categories for emojis.
 enum EmojiCategory {
