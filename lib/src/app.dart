@@ -61,15 +61,12 @@ class _AppState extends State<App> with TrayListener {
           // background. This is a setting relevent to mobile devices.
           restorationScopeId: 'app',
 
+          /// Setup for i18n, provider inherits from the device locale found
           locale: TranslationProvider.of(context).flutterLocale,
           localizationsDelegates: GlobalMaterialLocalizations.delegates,
           supportedLocales: AppLocaleUtils.supportedLocales,
 
-          // Use AppLocalizations to configure the correct application title
-          // depending on the user's locale.
-          //
-          // The appTitle is defined in .arb files found in the localization
-          // directory.
+          /// [t] is the generated translation class from the i18n plugin
           onGenerateTitle: (BuildContext context) => t.appTitle,
 
           // Define a light and dark color theme. Then, read the user's
