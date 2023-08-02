@@ -2,7 +2,7 @@
 
 import 'dart:io';
 
-import 'package:feeling_finder/src/localization/gen/strings.g.dart';
+import 'package:feeling_finder/src/i18n/strings.g.dart';
 import 'package:feeling_finder/src/system_tray/system_tray.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -96,9 +96,7 @@ void main(List<String> args) async {
             }
             exit(0);
           },
-          child: TranslationProvider(
-              child: const  App()
-          ),
+          child: TranslationProvider(child: const App()),
         ),
       ),
     ),

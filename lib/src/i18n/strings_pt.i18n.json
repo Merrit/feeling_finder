@@ -1,0 +1,35 @@
+{
+  "appTitle": "Feeling Finder",
+  "@AppTitle": "The title of the application",
+  "emojiCategories": {
+    "recent": "Recentes",
+    "all": "Todos",
+    "smileys": "Smileys & Emoções",
+    "peopleAndBody": "Pessoas e Corpo",
+    "animalsAndNature": "Animais e Natureza",
+    "foodAndDrink": "Comida e Bebida",
+    "travelAndPlaces": "Viagens e Lugares",
+    "activities": "Actividades",
+    "objects": "Objectos",
+    "symbols": "Símbolos",
+    "flags": "Bandeiras",
+    "custom": "Personalizados"
+  },
+  "settings": {
+    "title": "Definições",
+    "theme": "Tema",
+    "systemTheme": "Tema do Sistema",
+    "lightTheme": "Tema Claro",
+    "darkTheme": "Tema Escuro",
+    "showSystemTray": "Mostrar ícone da bandeja",
+    "exitAfterCopy": "Sair depois de copiar",
+    "updateAvailable": "Actualização disponível",
+    "upToDate": "Actualizado!",
+    "donate": "Doar",
+    "homepage": "Página inicial",
+    "currentVersion": "Versão actual",
+    "hotkeyToggle": "Alterne a visibilidade com um atalho de teclado",
+    "shortcutUsage": "Prima {modifierKey} + {actionKey} para utilizar o atalho"
+  },
+  "searchHintText": "Digite para pesquisar"
+}

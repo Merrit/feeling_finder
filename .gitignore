@@ -38,7 +38,6 @@ lcov.info
 .buildlog/
 .history
 .svn/
-lib/src/localization/gen/*
 
 # IntelliJ related
 *.iml

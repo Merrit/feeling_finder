@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../localization/gen/app_localizations.dart';
-import '../../localization/gen/strings.g.dart';
+import '../../i18n/strings.g.dart';
 import '../cubit/emoji_cubit.dart';
 
 /// Widget that allows the user to search for emoji by keyword.

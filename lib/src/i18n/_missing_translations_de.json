@@ -1,7 +1,8 @@
 {
-  "appTitle": "Feeling Finder",
-  "@AppTitle": "The title of the application",
-
+  "@@info": [
+    "Here are translations that exist in <en> but not in <de>.",
+    "After editing this file, you can run 'dart run slang apply --locale=de' to quickly apply the newly added translations."
+  ],
   "emojiCategories": {
     "recent": "Recent",
     "all": "All",
@@ -16,16 +17,7 @@
     "flags": "Flags",
     "custom": "Custom"
   },
-
   "settings": {
-    "title": "Settings",
-    "language": "Language",
-    "theme": "Theme",
-    "systemTheme": "System",
-    "lightTheme": "Light",
-    "darkTheme": "Dark",
-    "showSystemTray": "Show system tray icon",
-    "exitAfterCopy": "Exit after copying",
     "updateAvailable": "Update available",
     "upToDate": "Up to date",
     "donate": "Donate",
@@ -33,7 +25,5 @@
     "currentVersion": "Current version",
     "hotkeyToggle": "Toggle visibility with a keyboard shortcut",
     "shortcutUsage": "Press {modifierKey} + {actionKey} to use the shortcut"
-  },
-
-  "searchHintText": "Type to search"
+  }
 }

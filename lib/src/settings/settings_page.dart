@@ -8,8 +8,7 @@ import 'package:hotkey_manager/hotkey_manager.dart';
 
 import '../app/app.dart';
 import '../core/core.dart';
-import '../localization/gen/app_localizations.dart';
-import '../localization/gen/strings.g.dart';
+import '../i18n/strings.g.dart';
 import 'cubit/settings_cubit.dart';
 
 /// Displays the various settings that can be customized by the user.
@@ -126,7 +125,9 @@ class SettingsPage extends StatelessWidget {
                           opacity: state.hotKeyEnabled ? 1.0 : 0.0,
                           duration: const Duration(milliseconds: 500),
                           //TODO: Replace with proper hotkey configuration
-                          child: Text(t.settings.shortcutUsage(modifierKey: KeyModifier.alt.keyLabel, actionKey: KeyCode.period.keyLabel)),
+                          child: Text(t.settings.shortcutUsage(
+                              modifierKey: KeyModifier.alt.keyLabel,
+                              actionKey: KeyCode.period.keyLabel)),
                         ));
                   },
                 ),

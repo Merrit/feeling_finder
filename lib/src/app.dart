@@ -1,11 +1,10 @@
-import 'package:feeling_finder/src/localization/gen/strings.g.dart';
+import 'package:feeling_finder/src/i18n/strings.g.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:tray_manager/tray_manager.dart';
 
 import 'emoji/emoji_page.dart';
-import 'localization/gen/app_localizations.dart';
 import 'settings/cubit/settings_cubit.dart';
 import 'settings/settings_page.dart';
 import 'shortcuts/app_shortcuts.dart';

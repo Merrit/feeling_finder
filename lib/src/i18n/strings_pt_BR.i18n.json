@@ -1,7 +1,6 @@
 {
   "appTitle": "Feeling Finder",
   "@AppTitle": "The title of the application",
-
   "emojiCategories": {
     "recent": "Recentes",
     "all": "Todos",
@@ -16,21 +15,21 @@
     "flags": "Bandeiras",
     "custom": "Personalizados"
   },
-
   "settings": {
     "title": "Configurações",
-    "language": "Language",
     "theme": "Tema",
     "systemTheme": "Tema do Sistema",
     "lightTheme": "Tema Claro",
     "darkTheme": "Tema Escuro",
+    "showSystemTray": "Mostrar ícone da bandeja",
     "exitAfterCopy": "Sair após copiar",
     "updateAvailable": "Atualização disponível",
     "upToDate": "Atualizado!",
     "donate": "Doar",
     "homepage": "Página inicial",
-    "currentVersion": "Versão atual"
+    "currentVersion": "Versão atual",
+    "hotkeyToggle": "Alterne a visibilidade com um atalho de teclado",
+    "shortcutUsage": "Pressione {modifierKey} + {actionKey} para usar o atalho"
   },
-
   "searchHintText": "Digite para pesquisar"
 }
