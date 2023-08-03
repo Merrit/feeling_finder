@@ -28,7 +28,7 @@ import 'package:window_size/window_size.dart' as window_size;
 void main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Initial configuration for the app locale.
+  /// Initial configuration for the app locale.
   LocaleSettings.useDeviceLocale();
 
   final bool verbose =

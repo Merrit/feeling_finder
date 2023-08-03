@@ -13,3 +13,4 @@ targets:
           input_directory: lib/src/localization
           string_interpolation: braces
           timestamp: false
+          translate_var: translations

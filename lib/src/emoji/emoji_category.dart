@@ -27,41 +27,41 @@ enum EmojiCategory {
   /// The translated, human-readable category name.
   ///
   /// Example: English -> `Animals & Nature`, German -> `Tiere & Natur`.
-  String localizedName(BuildContext context) {
+  String localizedName() {
     String name;
     switch (this) {
       case EmojiCategory.recent:
-        name = t.emojiCategories.recent;
+        name = translations.emojiCategories.recent;
         break;
       case EmojiCategory.smileys:
-        name = t.emojiCategories.smileys;
+        name = translations.emojiCategories.smileys;
         break;
       case EmojiCategory.peopleAndBody:
-        name = t.emojiCategories.peopleAndBody;
+        name = translations.emojiCategories.peopleAndBody;
         break;
       case EmojiCategory.animalsAndNature:
-        name = t.emojiCategories.animalsAndNature;
+        name = translations.emojiCategories.animalsAndNature;
         break;
       case EmojiCategory.foodAndDrink:
-        name = t.emojiCategories.foodAndDrink;
+        name = translations.emojiCategories.foodAndDrink;
         break;
       case EmojiCategory.travelAndPlaces:
-        name = t.emojiCategories.travelAndPlaces;
+        name = translations.emojiCategories.travelAndPlaces;
         break;
       case EmojiCategory.activities:
-        name = t.emojiCategories.activities;
+        name = translations.emojiCategories.activities;
         break;
       case EmojiCategory.objects:
-        name = t.emojiCategories.objects;
+        name = translations.emojiCategories.objects;
         break;
       case EmojiCategory.symbols:
-        name = t.emojiCategories.symbols;
+        name = translations.emojiCategories.symbols;
         break;
       case EmojiCategory.flags:
-        name = t.emojiCategories.flags;
+        name = translations.emojiCategories.flags;
         break;
       case EmojiCategory.custom:
-        name = t.emojiCategories.custom;
+        name = translations.emojiCategories.custom;
         break;
     }
     return name;

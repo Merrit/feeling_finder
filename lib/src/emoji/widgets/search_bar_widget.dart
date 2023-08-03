@@ -47,7 +47,7 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
       constraints: const BoxConstraints(minWidth: 360.0, maxWidth: 400.0),
       controller: searchTextController,
       focusNode: widget.focusNode,
-      hintText: t.searchHintText,
+      hintText: translations.searchHintText,
       leading: const Icon(Icons.search),
       onChanged: (value) async {
         if (value.isEmpty) {

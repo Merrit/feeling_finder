@@ -27,7 +27,7 @@ class SettingsPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(t.settings.title),
+        title: Text(translations.settings.title),
       ),
       body: Center(
         child: SizedBox(
@@ -43,7 +43,7 @@ class SettingsPage extends StatelessWidget {
               BlocBuilder<SettingsCubit, SettingsState>(
                 builder: (context, state) {
                   return ListTile(
-                    title: Text(t.settings.theme),
+                    title: Text(translations.settings.theme),
                     trailing: DropdownButton<ThemeMode>(
                       // Read the selected themeMode from the controller
                       value: state.userThemePreference,
@@ -53,16 +53,16 @@ class SettingsPage extends StatelessWidget {
                         DropdownMenuItem(
                           value: ThemeMode.system,
                           child: Text(
-                            t.settings.systemTheme,
+                            translations.settings.systemTheme,
                           ),
                         ),
                         DropdownMenuItem(
                           value: ThemeMode.light,
-                          child: Text(t.settings.lightTheme),
+                          child: Text(translations.settings.lightTheme),
                         ),
                         DropdownMenuItem(
                           value: ThemeMode.dark,
-                          child: Text(t.settings.darkTheme),
+                          child: Text(translations.settings.darkTheme),
                         )
                       ],
                     ),
@@ -75,7 +75,7 @@ class SettingsPage extends StatelessWidget {
               BlocBuilder<SettingsCubit, SettingsState>(
                 builder: (context, state) {
                   return SwitchListTile(
-                    title: Text(t.settings.exitAfterCopy),
+                    title: Text(translations.settings.exitAfterCopy),
                     value: state.exitOnCopy,
                     onChanged: (value) => settingsCubit.updateExitOnCopy(value),
                   );
@@ -88,7 +88,7 @@ class SettingsPage extends StatelessWidget {
                 BlocBuilder<SettingsCubit, SettingsState>(
                   builder: (context, state) {
                     return SwitchListTile(
-                      title: Text(t.settings.showSystemTray),
+                      title: Text(translations.settings.showSystemTray),
                       value: state.showSystemTrayIcon,
                       onChanged: (value) =>
                           settingsCubit.updateShowSystemTrayIcon(value),
@@ -100,7 +100,7 @@ class SettingsPage extends StatelessWidget {
                 BlocBuilder<SettingsCubit, SettingsState>(
                   builder: (context, state) {
                     return SwitchListTile(
-                      title: Text(t.settings.hotkeyToggle),
+                      title: Text(translations.settings.hotkeyToggle),
                       value: state.hotKeyEnabled,
                       onChanged: (value) {
                         if (value) {
@@ -125,7 +125,7 @@ class SettingsPage extends StatelessWidget {
                           opacity: state.hotKeyEnabled ? 1.0 : 0.0,
                           duration: const Duration(milliseconds: 500),
                           //TODO: Replace with proper hotkey configuration
-                          child: Text(t.settings.shortcutUsage(
+                          child: Text(translations.settings.shortcutUsage(
                               modifierKey: KeyModifier.alt.keyLabel,
                               actionKey: KeyCode.period.keyLabel)),
                         ));
@@ -140,14 +140,14 @@ class SettingsPage extends StatelessWidget {
                     children: [
                       ListTile(
                         title: Text(
-                          '${t.settings.currentVersion}: ${state.runningVersion}',
+                          '${translations.settings.currentVersion}: ${state.runningVersion}',
                         ),
                       ),
                       ListTile(
                         title: Text(
                           (state.updateAvailable)
-                              ? '${t.settings.updateAvailable}: ${state.updateVersion}'
-                              : t.settings.upToDate,
+                              ? '${translations.settings.updateAvailable}: ${state.updateVersion}'
+                              : translations.settings.upToDate,
                         ),
                       ),
                     ],
@@ -160,12 +160,12 @@ class SettingsPage extends StatelessWidget {
               Column(
                 children: [
                   ListTile(
-                    title: Text(t.settings.homepage),
+                    title: Text(translations.settings.homepage),
                     trailing: const Icon(Icons.language),
                     onTap: () => AppCubit.instance.launchURL(kWebsiteUrl),
                   ),
                   ListTile(
-                    title: Text(t.settings.donate),
+                    title: Text(translations.settings.donate),
                     trailing: const Icon(
                       Icons.favorite,
                       color: Colors.red,

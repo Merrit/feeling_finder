@@ -61,13 +61,13 @@ class _AppState extends State<App> with TrayListener {
           // background. This is a setting relevent to mobile devices.
           restorationScopeId: 'app',
 
-          /// Setup for i18n, provider inherits from the device locale found
+          /// Setup for the app translations, the provider inherits from the device locale found in main.dart
           locale: TranslationProvider.of(context).flutterLocale,
           localizationsDelegates: GlobalMaterialLocalizations.delegates,
           supportedLocales: AppLocaleUtils.supportedLocales,
 
-          /// [t] is the generated translation class from the i18n plugin
-          onGenerateTitle: (BuildContext context) => t.appTitle,
+          /// [translations] is the generated accessor variable for all translations in a set Locale
+          title: translations.appTitle,
 
           // Define a light and dark color theme. Then, read the user's
           // preferred ThemeMode (light, dark, or system default) from the

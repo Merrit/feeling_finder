@@ -248,7 +248,7 @@ class CategoryListView extends StatelessWidget {
               } else {
                 final listTile = ListTile(
                   title: Text(
-                    category.localizedName(context),
+                    category.localizedName(),
                     textAlign: TextAlign.center,
                   ),
                   selected: (state.category == category),
