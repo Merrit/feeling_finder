@@ -13,6 +13,8 @@ analyzer:
   errors:
     # Ignore lints for @JsonKey on Freezed classes
     invalid_annotation_target: ignore
+    # Auto-removes unused imports with dart fix --apply
+    unused_import: error
   # Exclude generated files from analysis
   exclude:
     - "**/*.g.dart"

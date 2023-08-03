@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import '../localization/strings.g.dart';
 
 /// Top-level categories for emojis.
