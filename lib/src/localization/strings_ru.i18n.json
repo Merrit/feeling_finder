@@ -1,0 +1,29 @@
+{
+  "appTitle": "Feeling Finder",
+  "@AppTitle": "The title of the application",
+
+  "emojiCategories": {
+    "recent": "Недавние",
+    "all": "Все",
+    "smileys": "Смайлы и эмоции",
+    "peopleAndBody": "Люди и части тела",
+    "animalsAndNature": "Животные и природа",
+    "foodAndDrink": "Еда и напитки",
+    "travelAndPlaces": "Путешествие и места",
+    "activities": "Деятельность",
+    "objects": "Объекты",
+    "symbols": "Символы",
+    "flags": "Флаги"
+  },
+
+  "settings": {
+    "title": "Настройки",
+    "theme": "Тема",
+    "systemTheme": "Системная тема",
+    "lightTheme": "Светлая тема",
+    "darkTheme": "Тёмная тема",
+    "exitAfterCopy": "Закрыть после копирования"
+  },
+
+  "searchHintText": "Поиск.."
+}

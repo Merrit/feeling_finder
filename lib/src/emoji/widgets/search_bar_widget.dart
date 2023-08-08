@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../localization/gen/app_localizations.dart';
+import '../../localization/strings.g.dart';
 import '../cubit/emoji_cubit.dart';
 
 /// Widget that allows the user to search for emoji by keyword.
@@ -47,7 +47,7 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
       constraints: const BoxConstraints(minWidth: 360.0, maxWidth: 400.0),
       controller: searchTextController,
       focusNode: widget.focusNode,
-      hintText: AppLocalizations.of(context)!.searchHintText,
+      hintText: translations.searchHintText,
       leading: const Icon(Icons.search),
       onChanged: (value) async {
         if (value.isEmpty) {

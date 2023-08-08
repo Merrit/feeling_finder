@@ -1,0 +1,16 @@
+{
+  "appTitle": "Feeling Finder",
+  "@AppTitle": "The title of the application",
+
+  "settings": {
+    "title": "Einstellungen",
+    "theme": "Thema",
+    "systemTheme": "Systemthema",
+    "lightTheme": "Lichtthema",
+    "darkTheme": "Dunkles Thema",
+    "showSystemTray": "System Tray anzeigen",
+    "exitAfterCopy": "Beenden nach dem Kopieren"
+  },
+
+  "searchHintText": "Suche.."
+}

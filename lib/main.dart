@@ -2,6 +2,7 @@
 
 import 'dart:io';
 
+import 'package:feeling_finder/src/localization/strings.g.dart';
 import 'package:feeling_finder/src/system_tray/system_tray.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -26,6 +27,9 @@ import 'package:window_size/window_size.dart' as window_size;
 
 void main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  /// Initial configuration for the app locale.
+  LocaleSettings.useDeviceLocale();
 
   final bool verbose =
       args.contains('-v') || Platform.environment['VERBOSE'] == 'true';
@@ -94,7 +98,7 @@ void main(List<String> args) async {
             }
             exit(0);
           },
-          child: const App(),
+          child: TranslationProvider(child: const App()),
         ),
       ),
     ),

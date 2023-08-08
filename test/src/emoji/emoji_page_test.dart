@@ -2,7 +2,6 @@ import 'package:feeling_finder/src/app/cubit/app_cubit.dart';
 import 'package:feeling_finder/src/emoji/cubit/emoji_cubit.dart';
 import 'package:feeling_finder/src/emoji/emoji_page.dart';
 import 'package:feeling_finder/src/emoji/emoji_service.dart';
-import 'package:feeling_finder/src/localization/gen/app_localizations.dart';
 import 'package:feeling_finder/src/logs/logging_manager.dart';
 import 'package:feeling_finder/src/settings/cubit/settings_cubit.dart';
 import 'package:feeling_finder/src/settings/settings_service.dart';
@@ -84,12 +83,7 @@ void main() {
             BlocProvider.value(value: emojiCubit),
           ],
           child: const MaterialApp(
-            localizationsDelegates: [
-              AppLocalizations.delegate,
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-            ],
+            localizationsDelegates: GlobalMaterialLocalizations.delegates,
             home: EmojiPage(),
           ),
         ),
@@ -143,12 +137,7 @@ void main() {
             BlocProvider.value(value: emojiCubit),
           ],
           child: const MaterialApp(
-            localizationsDelegates: [
-              AppLocalizations.delegate,
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-            ],
+            localizationsDelegates: GlobalMaterialLocalizations.delegates,
             home: EmojiPage(),
           ),
         ),

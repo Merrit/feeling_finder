@@ -7,3 +7,10 @@ targets:
           # `@JsonSerializable`-annotated class in the package.
           any_map: true
           explicit_to_json: true
+      slang_build_runner:
+        options:
+          fallback_strategy: base_locale
+          input_directory: lib/src/localization
+          string_interpolation: braces
+          timestamp: false
+          translate_var: translations

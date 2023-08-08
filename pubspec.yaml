@@ -38,6 +38,8 @@ dependencies:
   package_info_plus: ^4.0.1
   path_provider: ^2.0.6
   pub_semver: ^2.1.4
+  slang: ^3.22.0
+  slang_flutter: ^3.22.0
   tray_manager: ^0.2.0
   tutorial_coach_mark: ^1.2.8
   unicode_emojis: ^0.3.0
@@ -70,6 +72,7 @@ dev_dependencies:
   json_serializable: ^6.7.0
   mockito: ^5.4.1
   msix: ^3.6.6
+  slang_build_runner: ^3.22.0
 
 flutter:
   uses-material-design: true

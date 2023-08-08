@@ -16,6 +16,7 @@ build-dir/
 generated*
 Generated*
 *.mocks.dart
+**/**/_unused_translations.json
 
 # Packaging
 dist/
@@ -38,7 +39,6 @@ lcov.info
 .buildlog/
 .history
 .svn/
-lib/src/localization/gen/*
 
 # IntelliJ related
 *.iml

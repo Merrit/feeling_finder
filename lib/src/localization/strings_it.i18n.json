@@ -1,0 +1,29 @@
+{
+  "appTitle": "Feeling Finder",
+  "@AppTitle": "The title of the application",
+
+  "emojiCategories": {
+    "recent": "Recente",
+    "all": "Tutto",
+    "smileys": "Faccine & Emotion",
+    "peopleAndBody": "Persone & Corpo",
+    "animalsAndNature": "Animali & Natura",
+    "foodAndDrink": "Cibo & Bevande",
+    "travelAndPlaces": "Viaggi & Luoghi",
+    "activities": "Attività",
+    "objects": "Oggetti",
+    "symbols": "Simboli",
+    "flags": "Bandiere"
+  },
+
+  "settings": {
+    "title": "Impostazioni",
+    "theme": "Tema",
+    "systemTheme": "Tema di sistema",
+    "lightTheme": "Tema Chiaro",
+    "darkTheme": "Tema Scuro",
+    "exitAfterCopy": "Esci dopo aver copiato"
+  },
+
+  "searchHintText": "Cerca.."
+}
