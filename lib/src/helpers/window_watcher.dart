@@ -1,7 +1,8 @@
-import 'package:feeling_finder/src/helpers/helpers.dart';
-import 'package:feeling_finder/src/shortcuts/app_hotkey.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:window_manager/window_manager.dart';
+
+import '../shortcuts/app_hotkey.dart';
+import 'helpers.dart';
 
 class WindowWatcher extends StatefulWidget {
   final Widget child;
