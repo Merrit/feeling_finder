@@ -27,7 +27,7 @@ class StorageService {
     try {
       _generalBox = await Hive.openBox('general');
     } on FileSystemException catch (e) {
-      log.e('Exception opening storage', e);
+      log.e('Exception opening storage', error: e);
     }
   }
 

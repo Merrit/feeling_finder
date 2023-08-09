@@ -14,7 +14,7 @@ class LoggingShortcutManager extends ShortcutManager {
   KeyEventResult handleKeypress(BuildContext context, RawKeyEvent event) {
     final KeyEventResult result = super.handleKeypress(context, event);
     if (result == KeyEventResult.handled) {
-      log.v('''Handled shortcut
+      log.t('''Handled shortcut
 Shortcut: $event
 Context: $context
       ''');
@@ -31,7 +31,7 @@ class LoggingActionDispatcher extends ActionDispatcher {
     covariant Intent intent, [
     BuildContext? context,
   ]) {
-    log.v('''Action invoked:
+    log.t('''Action invoked:
 Action: $action($intent)
 From: $context
     ''');
@@ -51,7 +51,7 @@ class NextCategoryIntent extends Intent {
 class NextCategoryAction extends Action<NextCategoryIntent> {
   @override
   Object? invoke(NextCategoryIntent intent) {
-    log.v('Next category requested.');
+    log.t('Next category requested.');
     EmojiCubit.instance.nextCategory();
     return null;
   }
@@ -66,7 +66,7 @@ class PreviousCategoryIntent extends Intent {
 class PreviousCategoryAction extends Action<PreviousCategoryIntent> {
   @override
   Object? invoke(PreviousCategoryIntent intent) {
-    log.v('Previous category requested.');
+    log.t('Previous category requested.');
     EmojiCubit.instance.previousCategory();
     return null;
   }
@@ -82,7 +82,7 @@ class QuitAction extends Action<QuitIntent> {
   @override
   Future<Object?> invoke(QuitIntent intent) async {
     await hotKeyService.unregisterBindings();
-    log.v('Quit requested, exiting.');
+    log.t('Quit requested, exiting.');
     exit(0);
   }
 }

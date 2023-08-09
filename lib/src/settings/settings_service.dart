@@ -59,7 +59,7 @@ class SettingsService {
         final emoji = Emoji.fromJson(emojiJson);
         _recentEmojis.add(emoji);
       } catch (e) {
-        log.e('Recent emoji from storage not valid', e);
+        log.e('Recent emoji from storage not valid', error: e);
         clearRecentEmojis();
       }
     }
