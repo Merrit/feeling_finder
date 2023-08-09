@@ -1,5 +1,3 @@
-import 'package:feeling_finder/src/helpers/helpers.dart';
-import 'package:feeling_finder/src/shortcuts/app_hotkey.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,7 +6,9 @@ import 'package:hotkey_manager/hotkey_manager.dart';
 
 import '../app/app.dart';
 import '../core/core.dart';
+import '../helpers/helpers.dart';
 import '../localization/strings.g.dart';
+import '../shortcuts/app_hotkey.dart';
 import 'cubit/settings_cubit.dart';
 
 /// Displays the various settings that can be customized by the user.

@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:feeling_finder/src/window/app_window.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,12 +11,13 @@ import '../../settings/cubit/settings_cubit.dart';
 import '../../settings/settings_service.dart';
 import '../../shortcuts/app_hotkey.dart';
 import '../../storage/storage_service.dart';
+import '../../window/app_window.dart';
 import '../emoji.dart';
 import '../emoji_category.dart';
 import '../emoji_service.dart';
 
-part 'emoji_state.dart';
 part 'emoji_cubit.freezed.dart';
+part 'emoji_state.dart';
 
 /// Controls the state of [EmojiPage] and connects the
 /// view to the [EmojiService].

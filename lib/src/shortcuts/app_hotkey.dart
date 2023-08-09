@@ -1,6 +1,7 @@
-import 'package:feeling_finder/src/settings/settings_service.dart';
 import 'package:hotkey_manager/hotkey_manager.dart';
 import 'package:window_manager/window_manager.dart';
+
+import '../settings/settings_service.dart';
 
 Stopwatch time = Stopwatch()..start();
 

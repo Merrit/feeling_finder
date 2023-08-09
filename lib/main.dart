@@ -2,12 +2,11 @@
 
 import 'dart:io';
 
-import 'package:feeling_finder/src/localization/strings.g.dart';
-import 'package:feeling_finder/src/system_tray/system_tray.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:helpers/helpers.dart';
 import 'package:http/http.dart' as http;
+import 'package:window_size/window_size.dart' as window_size;
 
 import 'src/app.dart';
 import 'src/app/app.dart';
@@ -15,15 +14,15 @@ import 'src/emoji/cubit/emoji_cubit.dart';
 import 'src/emoji/emoji_service.dart';
 import 'src/helpers/helpers.dart';
 import 'src/helpers/window_watcher.dart';
+import 'src/localization/strings.g.dart';
 import 'src/logs/logging_manager.dart';
 import 'src/settings/cubit/settings_cubit.dart';
 import 'src/settings/settings_service.dart';
 import 'src/shortcuts/app_hotkey.dart';
 import 'src/storage/storage_service.dart';
+import 'src/system_tray/system_tray.dart';
 import 'src/updates/updates.dart';
 import 'src/window/app_window.dart';
-
-import 'package:window_size/window_size.dart' as window_size;
 
 void main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();
