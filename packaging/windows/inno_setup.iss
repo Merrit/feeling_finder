@@ -1,6 +1,5 @@
 #define MyAppName "Feeling Finder"
 #define MyAppNameNoSpaces "FeelingFinder"
-#define MyAppVersion "0.9.0"
 #define MyAppPublisher "Merritt Codes"
 #define MyAppURL "https://merritt.codes/"
 #define MyAppExeName "feeling_finder.exe"
@@ -10,7 +9,7 @@
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
 AppId={{176DAEA0-CF9A-4413-AF92-1F1AA40AFB7E}
 AppName={#MyAppName}
-AppVersion={#MyAppVersion}
+AppVersion={#AppVersion}
 ;AppVerName={#MyAppName} {#MyAppVersion}
 AppPublisher={#MyAppPublisher}
 AppPublisherURL={#MyAppURL}
