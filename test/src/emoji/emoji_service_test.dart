@@ -11,9 +11,7 @@ void main() {
       expect(emojiService.allEmojis.length, 9);
     });
 
-    test(
-        'emojisByCategory() returns only emojis belonging to requested category',
-        () {
+    test('emojisByCategory() returns only emojis belonging to requested category', () {
       // Get the list of emojis.
       final emojis = emojiService.emojisByCategory(EmojiCategory.foodAndDrink);
 
@@ -21,7 +19,7 @@ void main() {
       expect(emojis.length, greaterThan(100));
 
       // Verify it contains only emojis from the Food & Drink category.
-      final otherCategoryEmojis = emojis
+      final otherCategoryEmojis = emojis //
           .where((element) => element.category != EmojiCategory.foodAndDrink)
           .toList();
       expect(otherCategoryEmojis, isEmpty);
