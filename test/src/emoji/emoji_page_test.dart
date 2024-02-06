@@ -93,8 +93,7 @@ void main() {
     });
 
     testWidgets('shows release notes', (tester) async {
-      when(mockStorageService.getValue('firstRun'))
-          .thenAnswer((_) => Future.value(false));
+      when(mockStorageService.getValue('firstRun')).thenAnswer((_) => Future.value(false));
 
       when(mockStorageService.getValue('lastReleaseNotesVersionShown'))
           .thenAnswer((_) => Future.value('v1.2.2'));

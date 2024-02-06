@@ -13,8 +13,7 @@ void setDeviceProperties(WidgetTester tester) {
   tester.view.devicePixelRatio = 1.0;
 }
 
-Future<ClipboardData?> getClipboardData() async =>
-    await Clipboard.getData('text/plain');
+Future<ClipboardData?> getClipboardData() async => await Clipboard.getData('text/plain');
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();

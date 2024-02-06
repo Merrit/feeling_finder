@@ -65,8 +65,7 @@ class AppCubit extends Cubit<AppState> {
       runningVersion: versionInfo.currentVersion,
       updateVersion: versionInfo.latestVersion,
       updateAvailable: versionInfo.updateAvailable,
-      showUpdateButton:
-          (defaultTargetPlatform.isDesktop && versionInfo.updateAvailable),
+      showUpdateButton: (defaultTargetPlatform.isDesktop && versionInfo.updateAvailable),
     ));
   }
 

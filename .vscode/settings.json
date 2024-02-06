@@ -2,5 +2,11 @@
     "git.pullTags": false,
     "dart.flutterTestAdditionalArgs": [
         "--coverage"
-    ]
+    ],
+    "dart.lineLength": 100,
+    "[dart]": {
+        "editor.rulers": [
+            100
+        ],
+    }
 }

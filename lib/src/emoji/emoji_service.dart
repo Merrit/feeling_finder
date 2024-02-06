@@ -14,8 +14,7 @@ class EmojiService {
 
   /// Builds the emoji set from the supplied json.
   factory EmojiService() {
-    final Map<EmojiCategory, List<Emoji>> emojiMap =
-        _buildEmojisFromUnicodePackage();
+    final Map<EmojiCategory, List<Emoji>> emojiMap = _buildEmojisFromUnicodePackage();
 
     return EmojiService._(emojiMap);
   }
@@ -25,7 +24,7 @@ class EmojiService {
 
   /// Returns all emojis whos description, aliases or tags match [searchString].
   List<Emoji> search(String keyword) {
-    final result = ue.UnicodeEmojis.search(keyword)
+    final result = ue.UnicodeEmojis.search(keyword) //
         .map((ue.Emoji emoji) => emoji.toEmoji())
         .toList();
 

@@ -110,8 +110,7 @@ class SettingsService {
 
   /// Whether the system tray icon should be shown.
   bool showSystemTrayIcon() {
-    final showSystemTrayIcon =
-        _storageService.getValue('showSystemTrayIcon') as bool?;
+    final showSystemTrayIcon = _storageService.getValue('showSystemTrayIcon') as bool?;
     return showSystemTrayIcon ?? true;
   }
 

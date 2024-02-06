@@ -90,8 +90,7 @@ class SettingsPage extends StatelessWidget {
                     return SwitchListTile(
                       title: Text(translations.settings.showSystemTray),
                       value: state.showSystemTrayIcon,
-                      onChanged: (value) =>
-                          settingsCubit.updateShowSystemTrayIcon(value),
+                      onChanged: (value) => settingsCubit.updateShowSystemTrayIcon(value),
                     );
                   },
                 ),

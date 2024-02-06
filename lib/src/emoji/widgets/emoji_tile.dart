@@ -48,11 +48,9 @@ class _EmojiTileState extends State<EmojiTile> {
       builder: (context, state) {
         final bool hasVariants = widget.emoji.variants?.isNotEmpty == true;
 
-        final bool categoryIsRecent =
-            EmojiCubit.instance.state.category == EmojiCategory.recent;
+        final bool categoryIsRecent = EmojiCubit.instance.state.category == EmojiCategory.recent;
 
-        final bool showVariantIndicator =
-            hasVariants && (!categoryIsRecent || state.isSearching);
+        final bool showVariantIndicator = hasVariants && (!categoryIsRecent || state.isSearching);
 
         final Decoration? hasVariantsIndicator;
         if (showVariantIndicator) {
@@ -61,8 +59,7 @@ class _EmojiTileState extends State<EmojiTile> {
           hasVariantsIndicator = null;
         }
 
-        final bool enableContextMenu =
-            showVariantIndicator || (isCustomEmoji && !categoryIsRecent);
+        final bool enableContextMenu = showVariantIndicator || (isCustomEmoji && !categoryIsRecent);
 
         final tileContents = Container(
           decoration: hasVariantsIndicator,
@@ -71,9 +68,7 @@ class _EmojiTileState extends State<EmojiTile> {
             // By default on mobile the tooltip is triggered on long press.
             // Since long-press is used to show the variants popup, we disable
             // the tooltip trigger on mobile.
-            triggerMode: defaultTargetPlatform.isMobile
-                ? TooltipTriggerMode.manual
-                : null,
+            triggerMode: defaultTargetPlatform.isMobile ? TooltipTriggerMode.manual : null,
             richMessage: TextSpan(
               text: widget.emoji.name,
               style: const TextStyle(fontSize: 12),
@@ -85,8 +80,7 @@ class _EmojiTileState extends State<EmojiTile> {
                 debugLabel: 'emojiTileShortcutFocusNode',
                 canRequestFocus: false,
                 onKey: (FocusNode focusNode, RawKeyEvent event) {
-                  if (event.logicalKey == LogicalKeyboardKey.contextMenu &&
-                      hasVariants) {
+                  if (event.logicalKey == LogicalKeyboardKey.contextMenu && hasVariants) {
                     _showVariantsPopup(enableContextMenu);
                     return KeyEventResult.handled;
                   } else {
@@ -97,9 +91,7 @@ class _EmojiTileState extends State<EmojiTile> {
                   widget.emoji.emoji,
                   style: TextStyle(
                     fontSize: fontSize,
-                    fontFamily: (widget.emoji.aliases.contains('custom'))
-                        ? null
-                        : emojiFont,
+                    fontFamily: (widget.emoji.aliases.contains('custom')) ? null : emojiFont,
                   ),
                 ),
               ),
@@ -159,13 +151,11 @@ class _EmojiTileState extends State<EmojiTile> {
     if (!enableContextMenu) return;
 
     final RenderBox button = context.findRenderObject() as RenderBox;
-    final RenderBox overlay =
-        Overlay.of(context).context.findRenderObject() as RenderBox;
+    final RenderBox overlay = Overlay.of(context).context.findRenderObject() as RenderBox;
     final RelativeRect position = RelativeRect.fromRect(
       Rect.fromPoints(
         button.localToGlobal(Offset.zero, ancestor: overlay),
-        button.localToGlobal(button.size.bottomRight(Offset.zero),
-            ancestor: overlay),
+        button.localToGlobal(button.size.bottomRight(Offset.zero), ancestor: overlay),
       ),
       Offset.zero & overlay.size,
     );
@@ -273,12 +263,9 @@ class _TrianglePainter extends BoxPainter {
       ..style = PaintingStyle.fill;
 
     final path = Path()
-      ..moveTo(offset.dx + configuration.size!.width,
-          offset.dy + configuration.size!.height)
-      ..lineTo(offset.dx + configuration.size!.width,
-          offset.dy + configuration.size!.height - 10)
-      ..lineTo(offset.dx + configuration.size!.width - 10,
-          offset.dy + configuration.size!.height)
+      ..moveTo(offset.dx + configuration.size!.width, offset.dy + configuration.size!.height)
+      ..lineTo(offset.dx + configuration.size!.width, offset.dy + configuration.size!.height - 10)
+      ..lineTo(offset.dx + configuration.size!.width - 10, offset.dy + configuration.size!.height)
       ..close();
 
     canvas.drawPath(path, paint);

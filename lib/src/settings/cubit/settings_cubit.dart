@@ -66,8 +66,7 @@ class SettingsCubit extends Cubit<SettingsState> {
       emit(state.copyWith(themeMode: systemThemeMode));
     }
 
-    _flatpakThemeModeStream =
-        flatpak?.themeModeStream.listen((ThemeMode? themeMode) {
+    _flatpakThemeModeStream = flatpak?.themeModeStream.listen((ThemeMode? themeMode) {
       if (themeMode == null) return;
 
       emit(state.copyWith(themeMode: themeMode));

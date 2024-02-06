@@ -144,8 +144,7 @@ class EmojiCubit extends Cubit<EmojiState> {
     // will not be shown, so we need to offset the index by 1.
     final bool haveRecentEmojis = _settingsService.recentEmojis().isNotEmpty;
     int previousCategoryIndex = state.category.index - 1;
-    if (previousCategoryIndex == 0 && !haveRecentEmojis ||
-        previousCategoryIndex < 0) {
+    if (previousCategoryIndex == 0 && !haveRecentEmojis || previousCategoryIndex < 0) {
       previousCategoryIndex = EmojiCategory.values.length - 1;
     }
     setCategory(EmojiCategory.values[previousCategoryIndex]);

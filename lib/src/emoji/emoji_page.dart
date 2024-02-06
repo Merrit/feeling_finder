@@ -50,10 +50,8 @@ class _EmojiPageState extends State<EmojiPage> {
   @override
   Widget build(BuildContext context) {
     final shortcuts = <ShortcutActivator, VoidCallback>{
-      const SingleActivator(LogicalKeyboardKey.enter): () =>
-          _handleEnterPressed(),
-      const SingleActivator(LogicalKeyboardKey.escape): () =>
-          _handleEscapePressed(),
+      const SingleActivator(LogicalKeyboardKey.enter): () => _handleEnterPressed(),
+      const SingleActivator(LogicalKeyboardKey.escape): () => _handleEscapePressed(),
       const SingleActivator(LogicalKeyboardKey.tab): () => _handleTabPressed(),
     };
 
@@ -67,13 +65,11 @@ class _EmojiPageState extends State<EmojiPage> {
 
         return FocusScope(
           debugLabel: 'emojiPageFocusScope',
-          onKey: (node, event) =>
-              _redirectSearchKeys(event, searchBoxFocusNode),
+          onKey: (node, event) => _redirectSearchKeys(event, searchBoxFocusNode),
           child: CallbackShortcuts(
             bindings: shortcuts,
             child: BlocBuilder<EmojiCubit, EmojiState>(
-              buildWhen: (previous, current) =>
-                  previous.category != current.category,
+              buildWhen: (previous, current) => previous.category != current.category,
               builder: (context, state) {
                 Widget? floatingActionButton;
                 if (state.category == EmojiCategory.custom) {
@@ -95,9 +91,7 @@ class _EmojiPageState extends State<EmojiPage> {
                       _SettingsButton(focusNode: settingsButtonFocusNode),
                     ],
                   ),
-                  drawer: (platformIsMobile())
-                      ? const Drawer(child: CategoryListView())
-                      : null,
+                  drawer: (platformIsMobile()) ? const Drawer(child: CategoryListView()) : null,
                   body: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -241,8 +235,7 @@ class CategoryListView extends StatelessWidget {
             itemCount: EmojiCategory.values.length,
             itemBuilder: (context, index) {
               final category = EmojiCategory.values[index];
-              if ((category == EmojiCategory.recent) &&
-                  !state.haveRecentEmojis) {
+              if ((category == EmojiCategory.recent) && !state.haveRecentEmojis) {
                 // Only show recent category if we have any recents.
                 return const SizedBox();
               } else {
@@ -326,8 +319,7 @@ class _EmojiGridViewState extends State<EmojiGridView> {
         controller: gridviewScrollController,
         thumbVisibility: true,
         child: BlocListener<EmojiCubit, EmojiState>(
-          listenWhen: (previous, current) =>
-              previous.copiedEmoji != current.copiedEmoji,
+          listenWhen: (previous, current) => previous.copiedEmoji != current.copiedEmoji,
           listener: (context, state) {
             // Show a notification when an emoji is copied to clipboard.
             if (state.copiedEmoji == null) return;
@@ -359,8 +351,7 @@ class _EmojiGridViewState extends State<EmojiGridView> {
                     !haveShownCustomEmojisTutorial) {
                   haveShownCustomEmojisTutorial = true;
                   // Small delay for the floating action button to animate in.
-                  Future.delayed(const Duration(milliseconds: 500))
-                      .then((value) {
+                  Future.delayed(const Duration(milliseconds: 500)).then((value) {
                     _showCustomEmojisTutorial(
                       context,
                       widget.floatingActionButtonKey,
@@ -379,8 +370,7 @@ class _EmojiGridViewState extends State<EmojiGridView> {
                   runSpacing: 10,
                   crossAxisAlignment: WrapCrossAlignment.center,
                   children: [
-                    for (var emoji in state.emojis)
-                      EmojiTile(emoji, state.emojis.indexOf(emoji)),
+                    for (var emoji in state.emojis) EmojiTile(emoji, state.emojis.indexOf(emoji)),
                   ],
                 ),
               );
@@ -481,8 +471,7 @@ class _AddCustomEmojiDialog extends StatelessWidget {
         final textField = CallbackShortcuts(
           bindings: <ShortcutActivator, VoidCallback>{
             // If the user presses enter, add the emoji.
-            const SingleActivator(LogicalKeyboardKey.enter): () =>
-                _addCustomEmoji(context),
+            const SingleActivator(LogicalKeyboardKey.enter): () => _addCustomEmoji(context),
             // If the user presses Shift+Enter, the shortcut doesn't catch
             // the event and the TextFormField should add a newline.
           },

@@ -45,8 +45,7 @@ Future<void> main() async {
     });
 
     test('first run', () async {
-      when(mockStorageService.getValue('firstRun'))
-          .thenAnswer((_) => Future.value(null));
+      when(mockStorageService.getValue('firstRun')).thenAnswer((_) => Future.value(null));
 
       final appCubit = AppCubit(
         mockStorageService,
@@ -61,8 +60,7 @@ Future<void> main() async {
     });
 
     test('not first run', () async {
-      when(mockStorageService.getValue('firstRun'))
-          .thenAnswer((_) => Future.value(false));
+      when(mockStorageService.getValue('firstRun')).thenAnswer((_) => Future.value(false));
 
       final appCubit = AppCubit(
         mockStorageService,
@@ -157,8 +155,7 @@ Future<void> main() async {
     });
 
     test('fetch release notes not checked on first run', () async {
-      when(mockStorageService.getValue('firstRun'))
-          .thenAnswer((_) => Future.value(null));
+      when(mockStorageService.getValue('firstRun')).thenAnswer((_) => Future.value(null));
 
       final appCubit = AppCubit(
         mockStorageService,
@@ -172,10 +169,8 @@ Future<void> main() async {
       await appCubit.close();
     });
 
-    test('fetch release notes not checked if already shown for current version',
-        () async {
-      when(mockStorageService.getValue('firstRun'))
-          .thenAnswer((_) => Future.value(false));
+    test('fetch release notes not checked if already shown for current version', () async {
+      when(mockStorageService.getValue('firstRun')).thenAnswer((_) => Future.value(false));
 
       when(mockUpdateService.getVersionInfo()).thenAnswer(
         (_) => Future.value(
@@ -203,8 +198,7 @@ Future<void> main() async {
     });
 
     test('fetch release notes works when release notes never shown', () async {
-      when(mockStorageService.getValue('firstRun'))
-          .thenAnswer((_) => Future.value(false));
+      when(mockStorageService.getValue('firstRun')).thenAnswer((_) => Future.value(false));
 
       when(mockUpdateService.getVersionInfo()).thenAnswer(
         (_) => Future.value(
@@ -242,10 +236,8 @@ Future<void> main() async {
       await appCubit.close();
     });
 
-    test('fetch release notes works when release notes shown for old version',
-        () async {
-      when(mockStorageService.getValue('firstRun'))
-          .thenAnswer((_) => Future.value(false));
+    test('fetch release notes works when release notes shown for old version', () async {
+      when(mockStorageService.getValue('firstRun')).thenAnswer((_) => Future.value(false));
 
       when(mockUpdateService.getVersionInfo()).thenAnswer(
         (_) => Future.value(

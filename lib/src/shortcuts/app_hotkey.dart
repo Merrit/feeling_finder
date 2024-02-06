@@ -25,8 +25,7 @@ class HotKeyService {
         scope: HotKeyScope.system, // Set as system-wide hotkey.
       );
 
-      await hotKeyManager.register(hideShortcut,
-          keyDownHandler: (hotKey) async {
+      await hotKeyManager.register(hideShortcut, keyDownHandler: (hotKey) async {
         if (time.elapsedMilliseconds > 250) {
           if (await windowManager.isMinimized()) {
             time.reset();
