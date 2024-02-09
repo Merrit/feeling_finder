@@ -35,6 +35,7 @@ void main() {
     late MockSystemTray mockSystemTray;
     late MockReleaseNotesService mockReleaseNotesService;
     late MockUpdateService mockUpdateService;
+    const mockWindowEventsStream = Stream<WindowEvent>.empty();
 
     setUpAll(() async {
       await LoggingManager.initialize(verbose: false);
@@ -61,6 +62,7 @@ void main() {
         mockStorageService,
         releaseNotesService: mockReleaseNotesService,
         updateService: mockUpdateService,
+        windowEvents: mockWindowEventsStream,
       );
 
       final settingsCubit = await SettingsCubit.init(
@@ -114,6 +116,7 @@ void main() {
         mockStorageService,
         releaseNotesService: mockReleaseNotesService,
         updateService: mockUpdateService,
+        windowEvents: mockWindowEventsStream,
       );
 
       final settingsCubit = await SettingsCubit.init(

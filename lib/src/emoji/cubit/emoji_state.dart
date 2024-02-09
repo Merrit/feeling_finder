@@ -16,8 +16,8 @@ class EmojiState with _$EmojiState {
     /// True if a list of recent emojis was loaded from storage.
     required bool haveRecentEmojis,
 
-    /// True if a search is currently active.
-    required bool isSearching,
+    /// The list of emojis found by the search.
+    required List<Emoji> searchResults,
   }) = _EmojiState;
 
   factory EmojiState.initial(List<Emoji> recentEmojis, List<Emoji> smileys) {
@@ -26,7 +26,7 @@ class EmojiState with _$EmojiState {
       category: (haveRecents) ? EmojiCategory.recent : EmojiCategory.smileys,
       emojis: (haveRecents) ? recentEmojis : smileys,
       haveRecentEmojis: haveRecents,
-      isSearching: false,
+      searchResults: const [],
     );
   }
 }

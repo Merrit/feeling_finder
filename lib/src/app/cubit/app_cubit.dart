@@ -11,6 +11,7 @@ import '../../logs/logging_manager.dart';
 import '../../shortcuts/app_hotkey.dart';
 import '../../storage/storage_service.dart';
 import '../../updates/updates.dart';
+import '../../window/app_window.dart';
 
 part 'app_state.dart';
 part 'app_cubit.freezed.dart';
@@ -25,6 +26,11 @@ class AppCubit extends Cubit<AppState> {
   /// Service for fetching version info.
   final UpdateService _updateService;
 
+  /// Stream of window events.
+  ///
+  /// Will be null on non-desktop platforms.
+  final Stream<WindowEvent>? windowEvents;
+
   /// Singleton instance.
   static late AppCubit instance;
 
@@ -32,6 +38,7 @@ class AppCubit extends Cubit<AppState> {
     this._storageService, {
     required ReleaseNotesService releaseNotesService,
     required UpdateService updateService,
+    required this.windowEvents,
   })  : _updateService = updateService,
         _releaseNotesService = releaseNotesService,
         super(AppState.initial()) {

@@ -1,7 +1,9 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:tray_manager/tray_manager.dart';
+import 'package:window_manager/window_manager.dart';
 
 import 'emoji/emoji_page.dart';
 import 'localization/strings.g.dart';
@@ -9,6 +11,7 @@ import 'settings/cubit/settings_cubit.dart';
 import 'settings/settings_page.dart';
 import 'shortcuts/app_shortcuts.dart';
 import 'theme/app_theme.dart';
+import 'window/app_window.dart';
 
 /// The base widget that configures the application.
 class App extends StatefulWidget {
@@ -20,16 +23,26 @@ class App extends StatefulWidget {
   State<App> createState() => _AppState();
 }
 
-class _AppState extends State<App> with TrayListener {
+class _AppState extends State<App> with TrayListener, WindowListener {
+  late final AppWindow? appWindow;
+
   @override
   void initState() {
+    if (defaultTargetPlatform == TargetPlatform.linux ||
+        defaultTargetPlatform == TargetPlatform.windows ||
+        defaultTargetPlatform == TargetPlatform.macOS) {
+      appWindow = context.read<AppWindow>();
+    }
+
     trayManager.addListener(this);
+    windowManager.addListener(this);
     super.initState();
   }
 
   @override
   void dispose() {
     trayManager.removeListener(this);
+    windowManager.removeListener(this);
     super.dispose();
   }
 
@@ -43,6 +56,18 @@ class _AppState extends State<App> with TrayListener {
   void onTrayIconRightMouseDown() {
     trayManager.popUpContextMenu();
     super.onTrayIconRightMouseDown();
+  }
+
+  @override
+  void onWindowBlur() {
+    appWindow?.addEvent(WindowEvent.unfocused);
+    super.onWindowBlur();
+  }
+
+  @override
+  void onWindowFocus() {
+    appWindow?.addEvent(WindowEvent.focused);
+    super.onWindowFocus();
   }
 
   @override

@@ -37,7 +37,9 @@ class _EmojiPageState extends State<EmojiPage> {
   final FocusNode searchBoxFocusNode = FocusNode(
     debugLabel: 'searchBoxFocusNode',
   );
-  final TextEditingController searchBoxTextController = TextEditingController();
+
+  final SearchController searchController = SearchController();
+
   final FocusNode settingsButtonFocusNode = FocusNode(
     debugLabel: 'settingsButtonFocusNode',
     skipTraversal: false,
@@ -49,12 +51,6 @@ class _EmojiPageState extends State<EmojiPage> {
 
   @override
   Widget build(BuildContext context) {
-    final shortcuts = <ShortcutActivator, VoidCallback>{
-      const SingleActivator(LogicalKeyboardKey.enter): () => _handleEnterPressed(),
-      const SingleActivator(LogicalKeyboardKey.escape): () => _handleEscapePressed(),
-      const SingleActivator(LogicalKeyboardKey.tab): () => _handleTabPressed(),
-    };
-
     return BlocBuilder<AppCubit, AppState>(
       builder: (context, state) {
         SchedulerBinding.instance.addPostFrameCallback((_) {
@@ -66,91 +62,45 @@ class _EmojiPageState extends State<EmojiPage> {
         return FocusScope(
           debugLabel: 'emojiPageFocusScope',
           onKey: (node, event) => _redirectSearchKeys(event, searchBoxFocusNode),
-          child: CallbackShortcuts(
-            bindings: shortcuts,
-            child: BlocBuilder<EmojiCubit, EmojiState>(
-              buildWhen: (previous, current) => previous.category != current.category,
-              builder: (context, state) {
-                Widget? floatingActionButton;
-                if (state.category == EmojiCategory.custom) {
-                  floatingActionButton = FloatingActionButton(
-                    key: floatingActionButtonKey,
-                    onPressed: () => _showAddCustomEmojiDialog(context),
-                    child: const Icon(Icons.add),
-                  );
-                }
-
-                return Scaffold(
-                  appBar: AppBar(
-                    centerTitle: true,
-                    title: SearchBarWidget(
-                      focusNode: searchBoxFocusNode,
-                      textController: searchBoxTextController,
-                    ),
-                    actions: [
-                      _SettingsButton(focusNode: settingsButtonFocusNode),
-                    ],
-                  ),
-                  drawer: (platformIsMobile()) ? const Drawer(child: CategoryListView()) : null,
-                  body: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Category buttons shown in a drawer on mobile.
-                      if (!platformIsMobile()) const CategoryListView(),
-                      EmojiGridView(floatingActionButtonKey, gridViewFocusNode),
-                    ],
-                  ),
-                  floatingActionButton: floatingActionButton,
+          child: BlocBuilder<EmojiCubit, EmojiState>(
+            buildWhen: (previous, current) => previous.category != current.category,
+            builder: (context, state) {
+              Widget? floatingActionButton;
+              if (state.category == EmojiCategory.custom) {
+                floatingActionButton = FloatingActionButton(
+                  key: floatingActionButtonKey,
+                  onPressed: () => _showAddCustomEmojiDialog(context),
+                  child: const Icon(Icons.add),
                 );
-              },
-            ),
+              }
+
+              return Scaffold(
+                appBar: AppBar(
+                  centerTitle: true,
+                  title: SearchBarWidget(
+                    focusNode: searchBoxFocusNode,
+                    searchController: searchController,
+                  ),
+                  actions: [
+                    _SettingsButton(focusNode: settingsButtonFocusNode),
+                  ],
+                ),
+                drawer: (platformIsMobile()) ? const Drawer(child: CategoryListView()) : null,
+                body: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Category buttons shown in a drawer on mobile.
+                    if (!platformIsMobile()) const CategoryListView(),
+                    EmojiGridView(floatingActionButtonKey, gridViewFocusNode),
+                  ],
+                ),
+                floatingActionButton: floatingActionButton,
+              );
+            },
           ),
         );
       },
     );
-  }
-
-  /// Focus the grid view.
-  ///
-  /// Will try to also focus the first emoji in the grid view.
-  void _focusGridView() {
-    gridViewFocusNode.requestFocus();
-    Future.delayed(const Duration(milliseconds: 10), () {
-      if (gridViewFocusNode.children.isEmpty) return;
-      gridViewFocusNode.children.first.requestFocus();
-    });
-  }
-
-  /// If the user presses the enter key while the search box is focused, focus
-  /// the grid view.
-  void _handleEnterPressed() {
-    if (searchBoxFocusNode.hasFocus) {
-      _focusGridView();
-    }
-  }
-
-  /// If the user presses the escape key, clear and unfocus the search box.
-  void _handleEscapePressed() {
-    searchBoxTextController.clear();
-    EmojiCubit.instance.search('');
-    _focusGridView();
-  }
-
-  /// Handles keyboard navigation with the tab key.
-  void _handleTabPressed() {
-    if (searchBoxFocusNode.hasFocus) {
-      // If the user presses the tab key while the search box is
-      // focused, focus the grid view.
-      _focusGridView();
-    } else if (gridViewFocusNode.hasFocus) {
-      // If the user presses the tab key while the grid view is
-      // focused, focus the AppBar's actions.
-      settingsButtonFocusNode.requestFocus();
-    } else if (settingsButtonFocusNode.hasFocus) {
-      // If the user presses the tab key while the AppBar's actions
-      // are focused, focus the search box.
-      searchBoxFocusNode.requestFocus();
-    }
   }
 
   /// Automatically focuses the search field when the user types.
@@ -168,6 +118,7 @@ class _EmojiPageState extends State<EmojiPage> {
       LogicalKeyboardKey.arrowDown,
       LogicalKeyboardKey.arrowLeft,
       LogicalKeyboardKey.arrowRight,
+      LogicalKeyboardKey.control,
       LogicalKeyboardKey.enter,
       LogicalKeyboardKey.escape,
       LogicalKeyboardKey.tab,
@@ -179,8 +130,8 @@ class _EmojiPageState extends State<EmojiPage> {
     if (isNavigationKey) {
       return KeyEventResult.ignored;
     } else {
-      searchBoxTextController.text = event.character ?? '';
-      searchBoxFocusNode.requestFocus();
+      searchController.text = event.character ?? '';
+      searchController.openView();
       return KeyEventResult.handled;
     }
   }
