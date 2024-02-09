@@ -55,6 +55,7 @@ void main(List<String> args) async {
       repository: 'merrit/feeling_finder',
     ),
     updateService: UpdateService(),
+    windowEvents: appWindow?.events,
   );
 
   // Initialize the settings service.

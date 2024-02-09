@@ -2,6 +2,7 @@ import 'package:feeling_finder/src/app/cubit/app_cubit.dart';
 import 'package:feeling_finder/src/logs/logging_manager.dart';
 import 'package:feeling_finder/src/storage/storage_service.dart';
 import 'package:feeling_finder/src/updates/updates.dart';
+import 'package:feeling_finder/src/window/app_window.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:helpers/helpers.dart';
@@ -20,6 +21,7 @@ Future<void> main() async {
     late MockStorageService mockStorageService;
     late MockReleaseNotesService mockReleaseNotesService;
     late MockUpdateService mockUpdateService;
+    const mockWindowEventsStream = Stream<WindowEvent>.empty();
 
     setUpAll(() async {
       await LoggingManager.initialize(verbose: false);
@@ -39,6 +41,7 @@ Future<void> main() async {
         mockStorageService,
         releaseNotesService: mockReleaseNotesService,
         updateService: mockUpdateService,
+        windowEvents: mockWindowEventsStream,
       );
 
       expect(appCubit.state, AppState.initial());
@@ -51,6 +54,7 @@ Future<void> main() async {
         mockStorageService,
         releaseNotesService: mockReleaseNotesService,
         updateService: mockUpdateService,
+        windowEvents: mockWindowEventsStream,
       );
 
       // Wait for the cubit to initialize.
@@ -66,6 +70,7 @@ Future<void> main() async {
         mockStorageService,
         releaseNotesService: mockReleaseNotesService,
         updateService: mockUpdateService,
+        windowEvents: mockWindowEventsStream,
       );
 
       // Wait for the cubit to initialize.
@@ -89,6 +94,7 @@ Future<void> main() async {
         mockStorageService,
         releaseNotesService: mockReleaseNotesService,
         updateService: mockUpdateService,
+        windowEvents: mockWindowEventsStream,
       );
 
       // Wait for the cubit to initialize.
@@ -117,6 +123,7 @@ Future<void> main() async {
         mockStorageService,
         releaseNotesService: mockReleaseNotesService,
         updateService: mockUpdateService,
+        windowEvents: mockWindowEventsStream,
       );
 
       // Wait for the cubit to initialize.
@@ -143,6 +150,7 @@ Future<void> main() async {
         mockStorageService,
         releaseNotesService: mockReleaseNotesService,
         updateService: mockUpdateService,
+        windowEvents: mockWindowEventsStream,
       );
 
       // Wait for the cubit to initialize.
@@ -161,6 +169,7 @@ Future<void> main() async {
         mockStorageService,
         releaseNotesService: mockReleaseNotesService,
         updateService: mockUpdateService,
+        windowEvents: mockWindowEventsStream,
       );
 
       // Wait for the cubit to initialize.
@@ -189,6 +198,7 @@ Future<void> main() async {
         mockStorageService,
         releaseNotesService: mockReleaseNotesService,
         updateService: mockUpdateService,
+        windowEvents: mockWindowEventsStream,
       );
 
       // Wait for the cubit to initialize.
@@ -228,6 +238,7 @@ Future<void> main() async {
         mockStorageService,
         releaseNotesService: mockReleaseNotesService,
         updateService: mockUpdateService,
+        windowEvents: mockWindowEventsStream,
       );
 
       // Wait for the cubit to initialize.
@@ -267,6 +278,7 @@ Future<void> main() async {
         mockStorageService,
         releaseNotesService: mockReleaseNotesService,
         updateService: mockUpdateService,
+        windowEvents: mockWindowEventsStream,
       );
 
       // Wait for the cubit to initialize.

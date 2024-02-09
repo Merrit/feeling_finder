@@ -13,12 +13,15 @@ import '../styles.dart';
 class EmojiTile extends StatefulWidget {
   final Emoji emoji;
   final int index;
+  final bool isSearchResult;
 
   const EmojiTile(
     this.emoji,
     this.index, {
     Key? key,
-  }) : super(key: key);
+    bool? isSearchResult,
+  })  : isSearchResult = isSearchResult ?? false,
+        super(key: key);
 
   @override
   State<EmojiTile> createState() => _EmojiTileState();
@@ -50,7 +53,8 @@ class _EmojiTileState extends State<EmojiTile> {
 
         final bool categoryIsRecent = EmojiCubit.instance.state.category == EmojiCategory.recent;
 
-        final bool showVariantIndicator = hasVariants && (!categoryIsRecent || state.isSearching);
+        final bool showVariantIndicator =
+            hasVariants && (!categoryIsRecent || widget.isSearchResult);
 
         final Decoration? hasVariantsIndicator;
         if (showVariantIndicator) {

@@ -87,16 +87,16 @@ class EmojiCubit extends Cubit<EmojiState> {
   /// Search and filter for all emojis that match [searchString].
   Future<void> search(String keyword) async {
     if (keyword.isEmpty) {
-      // Keyword is empty when the user clears the search field, so we
-      // reset the list of emojis to the current category.
-      setCategory(state.category);
-      emit(state.copyWith(isSearching: false));
+      emit(state.copyWith(
+        searchResults: const [],
+      ));
+
       return;
     }
 
+    final searchResults = _emojiService.search(keyword);
     emit(state.copyWith(
-      emojis: _emojiService.search(keyword),
-      isSearching: true,
+      searchResults: searchResults,
     ));
   }
 
