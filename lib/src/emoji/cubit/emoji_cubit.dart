@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -94,10 +95,16 @@ class EmojiCubit extends Cubit<EmojiState> {
       return;
     }
 
-    final searchResults = _emojiService.search(keyword);
-    emit(state.copyWith(
-      searchResults: searchResults,
-    ));
+    EasyDebounce.debounce(
+      'search',
+      const Duration(milliseconds: 300),
+      () {
+        final searchResults = _emojiService.search(keyword);
+        emit(state.copyWith(
+          searchResults: searchResults,
+        ));
+      },
+    );
   }
 
   /// Sets the list of loaded emojis to the requested [category].
