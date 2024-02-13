@@ -257,6 +257,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.4.1"
+  easy_debounce:
+    dependency: "direct main"
+    description:
+      name: easy_debounce
+      sha256: f082609cfb8f37defb9e37fc28bc978c6712dedf08d4c5a26f820fa10165a236
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.3"
   fake_async:
     dependency: transitive
     description:
@@ -1056,10 +1064,10 @@ packages:
     dependency: "direct main"
     description:
       name: unicode_emojis
-      sha256: "365a36a29924ac9b9d88e934215b23f318620033dc4a6f6b9499af37ceb99375"
+      sha256: "2f86d695420086dcf6f41c35bd81c33ef75c8e5fc0431fd9ca54066060086d19"
       url: "https://pub.dev"
     source: hosted
-    version: "0.3.0"
+    version: "0.4.0"
   url_launcher:
     dependency: "direct main"
     description:
