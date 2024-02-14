@@ -30,6 +30,14 @@ void main() {
 
       expect(matches, [
         const Emoji(
+          emoji: '🏴',
+          name: 'waving black flag',
+          category: EmojiCategory.flags,
+          aliases: [],
+          tags: [],
+          unicodeVersion: '1.0',
+        ),
+        const Emoji(
           emoji: '👋',
           name: 'waving hand sign',
           category: EmojiCategory.peopleAndBody,
@@ -78,14 +86,6 @@ void main() {
               unicodeVersion: '0.6',
             ),
           ],
-        ),
-        const Emoji(
-          emoji: '🏴',
-          name: 'waving black flag',
-          category: EmojiCategory.flags,
-          aliases: [],
-          tags: [],
-          unicodeVersion: '1.0',
         ),
         const Emoji(
           emoji: '🏳️',
