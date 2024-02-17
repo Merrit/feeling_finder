@@ -59,44 +59,52 @@ class _EmojiPageState extends State<EmojiPage> {
           }
         });
 
-        return FocusScope(
-          debugLabel: 'emojiPageFocusScope',
-          onKey: (node, event) => _redirectSearchKeys(event, searchBoxFocusNode),
-          child: BlocBuilder<EmojiCubit, EmojiState>(
-            buildWhen: (previous, current) => previous.category != current.category,
-            builder: (context, state) {
-              Widget? floatingActionButton;
-              if (state.category == EmojiCategory.custom) {
-                floatingActionButton = FloatingActionButton(
-                  key: floatingActionButtonKey,
-                  onPressed: () => _showAddCustomEmojiDialog(context),
-                  child: const Icon(Icons.add),
-                );
-              }
+        return GestureDetector(
+          onTap: () {
+            // When the background is clicked or tapped, remove focus from whatever has it.
+            ContextMenuController.removeAny();
+            emojiPageFocusScope.requestFocus();
+          },
+          child: FocusScope(
+            debugLabel: 'emojiPageFocusScope',
+            node: emojiPageFocusScope,
+            onKey: (node, event) => _redirectSearchKeys(event, searchBoxFocusNode),
+            child: BlocBuilder<EmojiCubit, EmojiState>(
+              buildWhen: (previous, current) => previous.category != current.category,
+              builder: (context, state) {
+                Widget? floatingActionButton;
+                if (state.category == EmojiCategory.custom) {
+                  floatingActionButton = FloatingActionButton(
+                    key: floatingActionButtonKey,
+                    onPressed: () => _showAddCustomEmojiDialog(context),
+                    child: const Icon(Icons.add),
+                  );
+                }
 
-              return Scaffold(
-                appBar: AppBar(
-                  centerTitle: true,
-                  title: SearchBarWidget(
-                    focusNode: searchBoxFocusNode,
-                    searchController: searchController,
+                return Scaffold(
+                  appBar: AppBar(
+                    centerTitle: true,
+                    title: SearchBarWidget(
+                      focusNode: searchBoxFocusNode,
+                      searchController: searchController,
+                    ),
+                    actions: [
+                      _SettingsButton(focusNode: settingsButtonFocusNode),
+                    ],
                   ),
-                  actions: [
-                    _SettingsButton(focusNode: settingsButtonFocusNode),
-                  ],
-                ),
-                drawer: (platformIsMobile()) ? const Drawer(child: CategoryListView()) : null,
-                body: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Category buttons shown in a drawer on mobile.
-                    if (!platformIsMobile()) const CategoryListView(),
-                    EmojiGridView(floatingActionButtonKey, gridViewFocusNode),
-                  ],
-                ),
-                floatingActionButton: floatingActionButton,
-              );
-            },
+                  drawer: (platformIsMobile()) ? const Drawer(child: CategoryListView()) : null,
+                  body: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Category buttons shown in a drawer on mobile.
+                      if (!platformIsMobile()) const CategoryListView(),
+                      EmojiGridView(floatingActionButtonKey, gridViewFocusNode),
+                    ],
+                  ),
+                  floatingActionButton: floatingActionButton,
+                );
+              },
+            ),
           ),
         );
       },
