@@ -149,6 +149,17 @@ class SettingsPage extends StatelessWidget {
                               : translations.settings.upToDate,
                         ),
                       ),
+                      ListTile(
+                        title: const Text('About'),
+                        onTap: () => showAboutDialog(
+                          context: context,
+                          applicationIcon: CircleAvatar(
+                            child: Image.asset('assets/icons/codes.merritt.FeelingFinder.png'),
+                          ),
+                          applicationName: 'Feeling Finder',
+                          applicationVersion: state.runningVersion,
+                        ),
+                      ),
                     ],
                   );
                 },
