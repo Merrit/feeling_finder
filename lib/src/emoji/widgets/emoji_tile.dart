@@ -85,7 +85,7 @@ class _EmojiTileState extends State<EmojiTile> {
               child: Focus(
                 debugLabel: 'emojiTileShortcutFocusNode',
                 canRequestFocus: false,
-                onKey: (FocusNode focusNode, RawKeyEvent event) {
+                onKeyEvent: (FocusNode focusNode, KeyEvent event) {
                   if (event.logicalKey == LogicalKeyboardKey.contextMenu && hasVariants) {
                     _showVariantsPopup(enableContextMenu);
                     return KeyEventResult.handled;
