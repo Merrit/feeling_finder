@@ -68,7 +68,7 @@ class _EmojiPageState extends State<EmojiPage> {
           child: FocusScope(
             debugLabel: 'emojiPageFocusScope',
             node: emojiPageFocusScope,
-            onKey: (node, event) => _redirectSearchKeys(event, searchBoxFocusNode),
+            onKeyEvent: (node, event) => _redirectSearchKeys(event, searchBoxFocusNode),
             child: BlocBuilder<EmojiCubit, EmojiState>(
               buildWhen: (previous, current) => previous.category != current.category,
               builder: (context, state) {
@@ -113,22 +113,32 @@ class _EmojiPageState extends State<EmojiPage> {
 
   /// Automatically focuses the search field when the user types.
   KeyEventResult _redirectSearchKeys(
-    RawKeyEvent event,
+    KeyEvent event,
     FocusNode searchBoxFocusNode,
   ) {
+    // Only handle key up events, to prevent multiple calls for the same key press.
+    if (event.runtimeType != KeyUpEvent) {
+      return KeyEventResult.ignored;
+    }
+
     if (searchBoxFocusNode.hasFocus) {
       return KeyEventResult.ignored;
     }
 
     const navigationKeys = <LogicalKeyboardKey>[
       LogicalKeyboardKey.altLeft,
+      LogicalKeyboardKey.altRight,
       LogicalKeyboardKey.arrowUp,
       LogicalKeyboardKey.arrowDown,
       LogicalKeyboardKey.arrowLeft,
       LogicalKeyboardKey.arrowRight,
+      LogicalKeyboardKey.contextMenu,
       LogicalKeyboardKey.control,
       LogicalKeyboardKey.enter,
       LogicalKeyboardKey.escape,
+      LogicalKeyboardKey.meta,
+      LogicalKeyboardKey.numLock,
+      LogicalKeyboardKey.shift,
       LogicalKeyboardKey.tab,
     ];
 
@@ -206,8 +216,8 @@ class CategoryListView extends StatelessWidget {
                   selected: (state.category == category),
                 );
 
+                // TODO: transition this MenuAnchor to ContextMenuRegion
                 return MenuAnchor(
-                  anchorTapClosesMenu: true,
                   menuChildren: [
                     /// If the category is [EmojiCategory.recent], show a
                     /// button to clear the recent emojis.
