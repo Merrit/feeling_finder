@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:helpers/helpers.dart';
 
+import '../../core/core.dart';
 import '../cubit/emoji_cubit.dart';
 import '../emoji.dart';
 import '../emoji_category.dart';
@@ -63,7 +64,8 @@ class _EmojiTileState extends State<EmojiTile> {
           hasVariantsIndicator = null;
         }
 
-        final bool enableContextMenu = showVariantIndicator || (isCustomEmoji && !categoryIsRecent);
+        final bool categoryIsCustom = EmojiCubit.instance.state.category == EmojiCategory.custom;
+        final bool enableContextMenu = showVariantIndicator || categoryIsRecent || categoryIsCustom;
 
         final tileContents = Container(
           decoration: hasVariantsIndicator,
@@ -126,7 +128,33 @@ class _EmojiTileState extends State<EmojiTile> {
           );
         }
 
-        return CallbackShortcuts(
+        final List<ContextMenuButtonItem> contextMenuItems = [];
+
+        if (categoryIsRecent) {
+          contextMenuItems.add(
+            ContextMenuButtonItem(
+              onPressed: () {
+                ContextMenuController.removeAny();
+                EmojiCubit.instance.removeRecentEmoji(widget.emoji);
+              },
+              label: 'Remove from recents',
+            ),
+          );
+        } else if (isCustomEmoji) {
+          contextMenuItems.add(
+            ContextMenuButtonItem(
+              onPressed: () {
+                ContextMenuController.removeAny();
+                _showRemoveCustomEmojiDialog();
+              },
+              label: 'Remove custom emoji',
+            ),
+          );
+        }
+
+        final bool categorySupportsVariants = !categoryIsRecent && !categoryIsCustom;
+
+        final basicTileContents = CallbackShortcuts(
           bindings: <ShortcutActivator, VoidCallback>{
             const SingleActivator(LogicalKeyboardKey.enter): () async {
               await EmojiCubit.instance.userSelectedEmoji(widget.emoji);
@@ -141,11 +169,29 @@ class _EmojiTileState extends State<EmojiTile> {
               await EmojiCubit.instance.userSelectedEmoji(widget.emoji);
               focusNode.unfocus();
             },
-            onLongPress: () => _showVariantsPopup(enableContextMenu),
-            onSecondaryTap: () => _showVariantsPopup(enableContextMenu),
+            onLongPress: (categorySupportsVariants) //
+                ? () => _showVariantsPopup(enableContextMenu)
+                : null,
+            onSecondaryTapUp: (categorySupportsVariants)
+                ? (details) => _showVariantsPopup(enableContextMenu)
+                : null,
             child: tileWrapper,
           ),
         );
+
+        if (categorySupportsVariants) {
+          return basicTileContents;
+        } else {
+          return ContextMenuRegion(
+            contextMenuBuilder: (context, offset) {
+              return AdaptiveTextSelectionToolbar.buttonItems(
+                anchors: TextSelectionToolbarAnchors(primaryAnchor: offset),
+                buttonItems: contextMenuItems,
+              );
+            },
+            child: basicTileContents,
+          );
+        }
       },
     );
   }
@@ -165,39 +211,22 @@ class _EmojiTileState extends State<EmojiTile> {
     );
 
     final List<PopupMenuItem<String>> items = [];
-    if (widget.emoji.aliases.contains('custom')) {
-      // Button to remove the custom emoji.
+
+    for (final variant in widget.emoji.variants!) {
       items.add(
         PopupMenuItem(
-          value: 'remove',
+          value: variant.emoji,
           child: Center(
             child: Text(
-              'Remove',
+              variant.emoji,
               style: TextStyle(
-                fontSize: 20,
+                fontSize: 35,
                 fontFamily: emojiFont,
               ),
             ),
           ),
         ),
       );
-    } else {
-      for (final variant in widget.emoji.variants!) {
-        items.add(
-          PopupMenuItem(
-            value: variant.emoji,
-            child: Center(
-              child: Text(
-                variant.emoji,
-                style: TextStyle(
-                  fontSize: 35,
-                  fontFamily: emojiFont,
-                ),
-              ),
-            ),
-          ),
-        );
-      }
     }
 
     final String? selectedValue = await showMenu<String>(
@@ -206,18 +235,13 @@ class _EmojiTileState extends State<EmojiTile> {
       items: items,
     );
 
-    switch (selectedValue) {
-      case null:
-        break;
-      case 'remove':
-        _showRemoveCustomEmojiDialog();
-        break;
-      default:
-        final selectedEmoji = widget.emoji.variants!.firstWhere(
-          (variant) => variant.emoji == selectedValue,
-        );
-        EmojiCubit.instance.userSelectedEmoji(selectedEmoji);
-    }
+    if (selectedValue == null) return;
+
+    final selectedEmoji = widget.emoji.variants!.firstWhere(
+      (variant) => variant.emoji == selectedValue,
+    );
+
+    EmojiCubit.instance.userSelectedEmoji(selectedEmoji);
   }
 
   /// Shows a dialog to confirm the removal of a custom emoji.

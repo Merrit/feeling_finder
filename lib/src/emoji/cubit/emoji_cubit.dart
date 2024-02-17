@@ -174,6 +174,24 @@ class EmojiCubit extends Cubit<EmojiState> {
     await _settingsService.removeRecentEmoji(emoji);
   }
 
+  /// Remove the given [emoji] from the list of recent emojis.
+  Future<void> removeRecentEmoji(Emoji emoji) async {
+    await _settingsService.removeRecentEmoji(emoji);
+
+    final recentEmojis = _settingsService.recentEmojis();
+
+    // Emitting an empty list to try and work around a bug where sometimes
+    // removing a recent emoji doesn't update the list immediately.
+    emit(state.copyWith(
+      emojis: [],
+    ));
+
+    emit(state.copyWith(
+      emojis: [...recentEmojis],
+      haveRecentEmojis: recentEmojis.isNotEmpty,
+    ));
+  }
+
   /// The user has clicked or tapped an emoji to be copied.
   Future<void> userSelectedEmoji(Emoji emoji) async {
     // Copy emoji to clipboard.
