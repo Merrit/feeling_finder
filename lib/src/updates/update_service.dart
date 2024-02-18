@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:collection/collection.dart';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:pub_semver/pub_semver.dart';
@@ -43,14 +44,26 @@ class UpdateService {
 
   /// Gets the latest version of the app.
   Future<Version?> _getLatestVersion() async {
+    // We don't request network access on Android.
+    if (defaultTargetPlatform == TargetPlatform.android) {
+      return null;
+    }
+
     final uri = Uri.parse(
       'https://api.github.com/repos/merrit/feeling_finder/releases',
     );
 
-    final response = await http.get(
-      uri,
-      headers: {'Accept': 'application/vnd.github.v3+json'},
-    );
+    final http.Response response;
+
+    try {
+      response = await http.get(
+        uri,
+        headers: {'Accept': 'application/vnd.github.v3+json'},
+      );
+    } on Exception catch (e) {
+      log.e('Issue getting latest version info from GitHub: $e');
+      return null;
+    }
 
     if (response.statusCode == 200) {
       final json = jsonDecode(response.body) as List;
