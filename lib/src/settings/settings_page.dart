@@ -142,13 +142,14 @@ class SettingsPage extends StatelessWidget {
                           '${translations.settings.currentVersion}: ${state.runningVersion}',
                         ),
                       ),
-                      ListTile(
-                        title: Text(
-                          (state.updateAvailable)
-                              ? '${translations.settings.updateAvailable}: ${state.updateVersion}'
-                              : translations.settings.upToDate,
+                      if (state.updateVersion != null)
+                        ListTile(
+                          title: Text(
+                            (state.updateAvailable)
+                                ? '${translations.settings.updateAvailable}: ${state.updateVersion}'
+                                : translations.settings.upToDate,
+                          ),
                         ),
-                      ),
                       ListTile(
                         title: const Text('About'),
                         onTap: () => showAboutDialog(
