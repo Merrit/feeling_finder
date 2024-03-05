@@ -61,7 +61,7 @@ dev_dependencies:
   flutter_app_builder:
     git:
       url: https://github.com/Merrit/flutter_app_builder.git
-      ref: 795f1162c3ac20150a5b2a8662f1c1cd25f13acc
+      ref: ef15a4fee304cf0d3ae408de6788aa199c07af63
   flutter_gen: ^5.3.1
   flutter_launcher_icons: ^0.13.1
   flutter_lints: ^2.0.1
