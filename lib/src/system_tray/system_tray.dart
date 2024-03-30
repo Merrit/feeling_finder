@@ -3,6 +3,7 @@ import 'package:helpers/helpers.dart';
 import 'package:tray_manager/tray_manager.dart';
 
 import '../core/core.dart';
+import '../logs/logging_manager.dart';
 import '../window/app_window.dart';
 
 /// Manages the system tray icon.
@@ -33,10 +34,18 @@ class SystemTray {
 
   /// Shows the system tray icon.
   Future<void> show() async {
-    final String iconPath = (defaultTargetPlatform.isWindows) //
-        ? AppIcons.windows
-        : AppIcons.linux;
+    final String iconPath;
 
+    if (runningInFlatpak() || runningInSnap()) {
+      // When running in Flatpak the icon must be specified by the icon's name, not the path.
+      iconPath = kPackageId;
+    } else {
+      iconPath = (defaultTargetPlatform.isWindows) //
+          ? AppIcons.windows
+          : AppIcons.linux;
+    }
+
+    log.t('Setting system tray icon to $iconPath');
     await trayManager.setIcon(iconPath);
   }
 }
