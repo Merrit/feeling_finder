@@ -23,13 +23,13 @@ class AppShortcuts extends StatelessWidget {
       LogicalKeyboardKey.arrowDown,
       alt: true,
     ): const NextCategoryIntent(),
-    LogicalKeySet(
-      LogicalKeyboardKey.control,
+    const SingleActivator(
       LogicalKeyboardKey.keyQ,
+      control: true,
     ): const QuitIntent(),
-    LogicalKeySet(
-      LogicalKeyboardKey.control,
+    const SingleActivator(
       LogicalKeyboardKey.keyW,
+      control: true,
     ): const QuitIntent(),
   };
 
