@@ -30,7 +30,9 @@ void main(List<String> args) async {
   /// Initial configuration for the app locale.
   LocaleSettings.useDeviceLocale();
 
-  final bool verbose = args.contains('-v') || Platform.environment['VERBOSE'] == 'true';
+  final bool verbose = args.contains('-v') ||
+      args.contains('--verbose') ||
+      const String.fromEnvironment('VERBOSE') == 'true';
 
   await LoggingManager.initialize(verbose: verbose);
   await closeExistingSessions();
