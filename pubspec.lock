@@ -453,8 +453,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: cf08d198e9cefe6556ffb5d389e29ca14d32408a
-      resolved-ref: cf08d198e9cefe6556ffb5d389e29ca14d32408a
+      ref: "792c63d8dddaf89a3ead5a0c44e40f3a3e5ffae5"
+      resolved-ref: "792c63d8dddaf89a3ead5a0c44e40f3a3e5ffae5"
       url: "https://github.com/Merrit/helpers.git"
     source: git
     version: "0.0.1"
@@ -1063,10 +1063,11 @@ packages:
   tray_manager:
     dependency: "direct main"
     description:
-      name: tray_manager
-      sha256: "4ab709d70a4374af172f8c39e018db33a4271265549c6fc9d269a65e5f4b0225"
-      url: "https://pub.dev"
-    source: hosted
+      path: "."
+      ref: "42d0d7dcb9b10f470eba9a5b7c3f16da716a6739"
+      resolved-ref: "42d0d7dcb9b10f470eba9a5b7c3f16da716a6739"
+      url: "https://github.com/Merrit/tray_manager.git"
+    source: git
     version: "0.2.1"
   tutorial_coach_mark:
     dependency: "direct main"
