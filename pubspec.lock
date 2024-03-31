@@ -1063,12 +1063,11 @@ packages:
   tray_manager:
     dependency: "direct main"
     description:
-      path: "."
-      ref: "42d0d7dcb9b10f470eba9a5b7c3f16da716a6739"
-      resolved-ref: "42d0d7dcb9b10f470eba9a5b7c3f16da716a6739"
-      url: "https://github.com/Merrit/tray_manager.git"
-    source: git
-    version: "0.2.1"
+      name: tray_manager
+      sha256: e0ac9a88b2700f366b8629b97e8663b6ef450a2f169560a685dc167bfe9c9c29
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.2.2"
   tutorial_coach_mark:
     dependency: "direct main"
     description:
