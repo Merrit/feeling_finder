@@ -97,7 +97,7 @@ flutter_app_builder:
   app_display_name: "Feeling Finder"
   author: "Merritt Codes"
   identifier: codes.merritt.FeelingFinder
-  msix_identity_name: codes.merritt.FeelingFinder
+  msix_identity_name: 33694MerrittCodes.FeelingFinder
   msix_publisher: CN=0AA9BC0E-36DF-4B4F-BFF4-E300B746CB9D
   msix_icon_path: assets\icons\codes.merritt.FeelingFinder.png
   msix_capabilities: internetClient
