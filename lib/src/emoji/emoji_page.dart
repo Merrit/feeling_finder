@@ -65,93 +65,68 @@ class _EmojiPageState extends State<EmojiPage> {
             ContextMenuController.removeAny();
             emojiPageFocusScope.requestFocus();
           },
-          child: FocusScope(
-            debugLabel: 'emojiPageFocusScope',
-            node: emojiPageFocusScope,
-            onKeyEvent: (node, event) => _redirectSearchKeys(event, searchBoxFocusNode),
-            child: BlocBuilder<EmojiCubit, EmojiState>(
-              buildWhen: (previous, current) => previous.category != current.category,
-              builder: (context, state) {
-                Widget? floatingActionButton;
-                if (state.category == EmojiCategory.custom) {
-                  floatingActionButton = FloatingActionButton(
-                    key: floatingActionButtonKey,
-                    onPressed: () => _showAddCustomEmojiDialog(context),
-                    child: const Icon(Icons.add),
-                  );
+          child: CallbackShortcuts(
+            bindings: <ShortcutActivator, VoidCallback>{
+              // If the user presses the Escape key, remove focus from the search box.
+              const SingleActivator(
+                LogicalKeyboardKey.escape,
+              ): () {
+                if (searchBoxFocusNode.hasFocus) {
+                  searchBoxFocusNode.unfocus();
                 }
-
-                return Scaffold(
-                  appBar: AppBar(
-                    centerTitle: true,
-                    title: SearchBarWidget(
-                      focusNode: searchBoxFocusNode,
-                      searchController: searchController,
-                    ),
-                    actions: [
-                      _SettingsButton(focusNode: settingsButtonFocusNode),
-                    ],
-                  ),
-                  drawer: (platformIsMobile()) ? const Drawer(child: CategoryListView()) : null,
-                  body: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Category buttons shown in a drawer on mobile.
-                      if (!platformIsMobile()) const CategoryListView(),
-                      EmojiGridView(floatingActionButtonKey, gridViewFocusNode),
-                    ],
-                  ),
-                  floatingActionButton: floatingActionButton,
-                );
               },
+              // If the user presses Ctrl+F, focus the search box.
+              const SingleActivator(
+                LogicalKeyboardKey.keyF,
+                control: true,
+              ): () {
+                searchController.openView();
+              },
+            },
+            child: FocusScope(
+              debugLabel: 'emojiPageFocusScope',
+              node: emojiPageFocusScope,
+              child: BlocBuilder<EmojiCubit, EmojiState>(
+                buildWhen: (previous, current) => previous.category != current.category,
+                builder: (context, state) {
+                  Widget? floatingActionButton;
+                  if (state.category == EmojiCategory.custom) {
+                    floatingActionButton = FloatingActionButton(
+                      key: floatingActionButtonKey,
+                      onPressed: () => _showAddCustomEmojiDialog(context),
+                      child: const Icon(Icons.add),
+                    );
+                  }
+
+                  return Scaffold(
+                    appBar: AppBar(
+                      centerTitle: true,
+                      title: SearchBarWidget(
+                        focusNode: searchBoxFocusNode,
+                        searchController: searchController,
+                      ),
+                      actions: [
+                        _SettingsButton(focusNode: settingsButtonFocusNode),
+                      ],
+                    ),
+                    drawer: (platformIsMobile()) ? const Drawer(child: CategoryListView()) : null,
+                    body: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Category buttons shown in a drawer on mobile.
+                        if (!platformIsMobile()) const CategoryListView(),
+                        EmojiGridView(floatingActionButtonKey, gridViewFocusNode),
+                      ],
+                    ),
+                    floatingActionButton: floatingActionButton,
+                  );
+                },
+              ),
             ),
           ),
         );
       },
     );
-  }
-
-  /// Automatically focuses the search field when the user types.
-  KeyEventResult _redirectSearchKeys(
-    KeyEvent event,
-    FocusNode searchBoxFocusNode,
-  ) {
-    // Only handle key up events, to prevent multiple calls for the same key press.
-    if (event.runtimeType != KeyUpEvent) {
-      return KeyEventResult.ignored;
-    }
-
-    if (searchBoxFocusNode.hasFocus) {
-      return KeyEventResult.ignored;
-    }
-
-    const navigationKeys = <LogicalKeyboardKey>[
-      LogicalKeyboardKey.altLeft,
-      LogicalKeyboardKey.altRight,
-      LogicalKeyboardKey.arrowUp,
-      LogicalKeyboardKey.arrowDown,
-      LogicalKeyboardKey.arrowLeft,
-      LogicalKeyboardKey.arrowRight,
-      LogicalKeyboardKey.contextMenu,
-      LogicalKeyboardKey.control,
-      LogicalKeyboardKey.enter,
-      LogicalKeyboardKey.escape,
-      LogicalKeyboardKey.meta,
-      LogicalKeyboardKey.numLock,
-      LogicalKeyboardKey.shift,
-      LogicalKeyboardKey.tab,
-    ];
-
-    final isNavigationKey = navigationKeys.contains(event.logicalKey);
-
-    // If the key is not for navigating, start searching.
-    if (isNavigationKey) {
-      return KeyEventResult.ignored;
-    } else {
-      searchController.text = event.character ?? '';
-      searchController.openView();
-      return KeyEventResult.handled;
-    }
   }
 
   Future<void> _showReleaseNotesDialog(
