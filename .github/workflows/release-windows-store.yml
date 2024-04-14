@@ -12,6 +12,9 @@ concurrency:
     group: ci-release-${{ github.ref }}-1
     cancel-in-progress: true
 
+env:
+  msix-filename-prefix: "FeelingFinder"
+
 jobs:
     call-build-windows:
         uses: ./.github/workflows/build-windows.yml
@@ -19,23 +22,53 @@ jobs:
           pre-release: false
         secrets: inherit
 
-    docker:
+    publish-windows-store:
         needs: call-build-windows
-        runs-on: ubuntu-latest
+        runs-on: windows-latest
         steps:
           - name: Download artifacts
             uses: actions/download-artifact@v3
             with:
               path: artifacts
 
+          - name: Setup MSbuild
+            uses: microsoft/setup-msbuild@v1.3.1
+
+          - name: Configure the Microsoft Store CLI
+            run: |
+              Install-Module -Name StoreBroker -Force
+
           - name: Publish to Store
-            uses: isaacrlevin/windows-store-action@main
-            with:
-                tenant-id: ${{ secrets.AZURE_AD_TENANT_ID }}
-                client-id: ${{ secrets.AZURE_AD_APPLICATION_CLIENT_ID }}
-                client-secret: ${{ secrets.AZURE_AD_APPLICATION_SECRET }}
-                # "app-id" is the Store ID as listed in Partner Center
-                # https://github.com/isaacrlevin/windows-store-action/issues/5#issuecomment-1086893615
-                app-id: ${{ secrets.MICROSOFT_STORE_APP_ID }}
-                package-path: "${{ github.workspace }}/artifacts/windows-store-artifact/"
-                delete-pending: true
+            env:
+              CLIENT_ID: ${{ secrets.AZURE_AD_APPLICATION_CLIENT_ID }}
+              CLIENT_SECRET: ${{ secrets.AZURE_AD_APPLICATION_SECRET }}
+              TENANT_ID: ${{ secrets.AZURE_AD_TENANT_ID }}
+              APP_ID: ${{ secrets.MICROSOFT_STORE_APP_ID }}
+            run: |
+              # Login
+              $user = $Env:CLIENT_ID
+              $password = ConvertTo-SecureString $Env:CLIENT_SECRET -AsPlainText -Force
+              $Cred = New-Object System.Management.Automation.PSCredential($user, $password)
+              Set-StoreBrokerAuthentication -TenantId $Env:TENANT_ID -Credential $Cred
+              $appId = $Env:APP_ID
+              # Get config json
+              New-StoreBrokerConfigFile -Path .\submission.json -AppId $appId
+              # Create submission package
+              # New-SubmissionPackage -ConfigPath .\submission.json -AppxPath .\Tonbrett.msix -OutPath out -OutName package
+              New-SubmissionPackage -ConfigPath .\submission.json -AppxPath .\artifacts\windows-store-artifact\${{ env.msix-filename-prefix }}-Windows-Store-Installer.msix -OutPath out -OutName package
+              # Create new submission
+              $sub = New-ApplicationSubmission -AppId $appId -Force
+              # Parse submission meta
+              $json = (Get-Content out\package.json -Encoding UTF8) | ConvertFrom-Json
+              # Delete old packages
+              foreach ($package in $sub.applicationPackages) {
+                $package.fileStatus = "PendingDelete"
+              }
+              # add new packages
+              $sub.applicationPackages += $json.applicationPackages
+              # Upload submission meta
+              Set-ApplicationSubmission -AppId $appId -UpdatedSubmission $sub
+              # Upload submission package
+              Set-SubmissionPackage -PackagePath out\package.zip -UploadUrl ($sub.fileUploadUrl)
+              # Commit changes
+              Complete-ApplicationSubmission -AppId $appId -SubmissionId ($sub.id)
