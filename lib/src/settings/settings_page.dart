@@ -86,7 +86,7 @@ class SettingsPage extends StatelessWidget {
           value: state.hotKeyEnabled,
           onChanged: (value) {
             if (value) {
-              hotKeyService.initHotkeyRegistration();
+              hotKeyService.initHotkeyRegistration(context.read<AppWindow>());
             } else {
               hotKeyService.unregisterBindings();
             }
