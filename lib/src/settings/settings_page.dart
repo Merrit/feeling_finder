@@ -9,6 +9,7 @@ import '../core/core.dart';
 import '../helpers/helpers.dart';
 import '../localization/strings.g.dart';
 import '../shortcuts/app_hotkey.dart';
+import '../window/app_window.dart';
 import 'cubit/settings_cubit.dart';
 
 /// Displays the various settings that can be customized by the user.
@@ -75,6 +76,16 @@ class SettingsPage extends StatelessWidget {
           title: Text(translations.settings.showSystemTray),
           value: state.showSystemTrayIcon,
           onChanged: (value) => settingsCubit.updateShowSystemTrayIcon(value),
+        );
+      },
+    );
+
+    final Widget closeToTrayTile = BlocBuilder<SettingsCubit, SettingsState>(
+      builder: (context, state) {
+        return SwitchListTile(
+          title: Text(translations.settings.closeToTray),
+          value: state.closeToTray,
+          onChanged: (value) => settingsCubit.updateCloseToTray(value),
         );
       },
     );
@@ -174,6 +185,7 @@ class SettingsPage extends StatelessWidget {
               const Divider(),
               exitAfterCopyTile,
               if (defaultTargetPlatform.isDesktop) showTrayTile,
+              if (defaultTargetPlatform.isDesktop) closeToTrayTile,
               if (runsX11) hotkeyEnabledTile,
               if (runsX11) hotkeyConfigurationTile,
               const Divider(),

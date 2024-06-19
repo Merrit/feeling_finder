@@ -19,9 +19,11 @@ class SettingsCubit extends Cubit<SettingsState> {
   SettingsCubit._(
     this._settingsService,
     this._systemTray, {
+    required bool closeToTray,
     required ThemeMode userThemePreference,
   }) : super(
           SettingsState(
+            closeToTray: closeToTray,
             exitOnCopy: _settingsService.exitOnCopy(),
             hotKeyEnabled: _settingsService.hotKeyEnabled(),
             showSystemTrayIcon: _settingsService.showSystemTrayIcon(),
@@ -40,9 +42,12 @@ class SettingsCubit extends Cubit<SettingsState> {
     SettingsService settingsService,
     SystemTray? systemTray,
   ) async {
+    final bool closeToTray = await settingsService.closeToTray();
+
     return SettingsCubit._(
       settingsService,
       systemTray,
+      closeToTray: closeToTray,
       userThemePreference: await settingsService.themeMode(),
     );
   }
@@ -71,6 +76,13 @@ class SettingsCubit extends Cubit<SettingsState> {
 
       emit(state.copyWith(themeMode: themeMode));
     });
+  }
+
+  Future<void> updateCloseToTray([bool? closeToTray]) async {
+    if (closeToTray == null) return;
+
+    await _settingsService.saveCloseToTray(closeToTray);
+    emit(state.copyWith(closeToTray: closeToTray));
   }
 
   /// Update and persist whether the app should exit after copy.
