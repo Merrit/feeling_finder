@@ -35,7 +35,7 @@ void main() {
       await LoggingManager.initialize(verbose: false);
 
       appWindow = MockAppWindow();
-      when(appWindow.focus()).thenAnswer((_) async {});
+      when(appWindow.isFocused()).thenAnswer((_) async => true);
       when(appWindow.hide()).thenAnswer((_) async {});
       when(appWindow.show()).thenAnswer((_) async {});
 
