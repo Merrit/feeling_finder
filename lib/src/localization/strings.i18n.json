@@ -1,7 +1,6 @@
 {
   "appTitle": "Feeling Finder",
   "@AppTitle": "The title of the application",
-
   "emojiCategories": {
     "recent": "Recent",
     "all": "All",
@@ -16,9 +15,9 @@
     "flags": "Flags",
     "custom": "Custom"
   },
-
   "settings": {
     "title": "Settings",
+    "closeToTray": "Close to system tray",
     "theme": "Theme",
     "systemTheme": "System",
     "lightTheme": "Light",
@@ -33,6 +32,5 @@
     "hotkeyToggle": "Toggle visibility with a keyboard shortcut",
     "shortcutUsage": "Press {modifierKey} + {actionKey} to use the shortcut"
   },
-
   "searchHintText": "Type to search"
 }

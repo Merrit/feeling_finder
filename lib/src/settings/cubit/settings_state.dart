@@ -3,6 +3,9 @@ part of 'settings_cubit.dart';
 @freezed
 class SettingsState with _$SettingsState {
   const factory SettingsState({
+    /// Whether the app should continue running in the tray when closed.
+    required bool closeToTray,
+
     /// Whether the app should exit automatically after copying an emoji.
     required bool exitOnCopy,
 

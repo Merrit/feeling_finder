@@ -17,6 +17,16 @@ class SettingsService {
   /// Singleton instance of the SettingsService.
   static late SettingsService instance;
 
+  /// Whether the app should continue running in the tray when closed.
+  Future<bool> closeToTray() async {
+    final closeToTray = _storageService.getValue('closeToTray') as bool?;
+    return closeToTray ?? false;
+  }
+
+  Future<void> saveCloseToTray(bool value) async {
+    await _storageService.saveValue(key: 'closeToTray', value: value);
+  }
+
   bool exitOnCopy() {
     final shouldExit = _storageService.getValue('exitOnCopy') as bool?;
     return shouldExit ?? false;

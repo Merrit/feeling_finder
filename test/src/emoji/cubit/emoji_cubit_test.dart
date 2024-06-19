@@ -41,6 +41,7 @@ void main() {
 
       settingsCubit = MockSettingsCubit();
       when(settingsCubit.state).thenReturn(const SettingsState(
+        closeToTray: false,
         exitOnCopy: false,
         hotKeyEnabled: false,
         showSystemTrayIcon: false,
