@@ -34,18 +34,6 @@ class _AppState extends State<App> with TrayListener {
   }
 
   @override
-  void onTrayIconMouseDown() {
-    trayManager.popUpContextMenu();
-    super.onTrayIconMouseDown();
-  }
-
-  @override
-  void onTrayIconRightMouseDown() {
-    trayManager.popUpContextMenu();
-    super.onTrayIconRightMouseDown();
-  }
-
-  @override
   Widget build(BuildContext context) {
     // The BlocBuilder widget will rebuild the
     // MaterialApp whenever the ThemeMode is changed.
