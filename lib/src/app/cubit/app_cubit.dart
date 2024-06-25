@@ -55,11 +55,22 @@ class AppCubit extends Cubit<AppState> {
   /// Lazy loading is used instead of awaiting on a constructor to avoid
   /// blocking the UI, since none of the data fetched here is critical.
   Future<void> _init() async {
-    await _appWindow?.show();
+    await _showWindow();
     _appWindow?.events.listen(_handleWindowEvent);
     await _checkForFirstRun();
     await _fetchVersionData();
     await _fetchReleaseNotes();
+  }
+
+  /// Shows the app window at startup if not configured to start hidden.
+  Future<void> _showWindow() async {
+    final bool startHiddenInTray = _settingsService.startHiddenInTray();
+
+    if (startHiddenInTray) {
+      return;
+    }
+
+    await _appWindow?.show();
   }
 
   /// Checks if this is the first run of the app.

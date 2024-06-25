@@ -45,6 +45,7 @@ void main() {
         exitOnCopy: false,
         hotKeyEnabled: false,
         showSystemTrayIcon: false,
+        startHiddenInTray: false,
         themeMode: ThemeMode.system,
         userThemePreference: ThemeMode.dark,
       ));

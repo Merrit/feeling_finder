@@ -15,6 +15,9 @@ class SettingsState with _$SettingsState {
     /// Whether the system tray icon should be shown.
     required bool showSystemTrayIcon,
 
+    /// Whether the app should start hidden in the system tray.
+    required bool startHiddenInTray,
+
     /// The currently loaded [ThemeMode].
     required ThemeMode themeMode,
 

@@ -20,6 +20,7 @@ class SettingsCubit extends Cubit<SettingsState> {
     this._settingsService,
     this._systemTray, {
     required bool closeToTray,
+    required bool startHiddenInTray,
     required ThemeMode userThemePreference,
   }) : super(
           SettingsState(
@@ -27,6 +28,7 @@ class SettingsCubit extends Cubit<SettingsState> {
             exitOnCopy: _settingsService.exitOnCopy(),
             hotKeyEnabled: _settingsService.hotKeyEnabled(),
             showSystemTrayIcon: _settingsService.showSystemTrayIcon(),
+            startHiddenInTray: startHiddenInTray,
             themeMode: userThemePreference,
             userThemePreference: userThemePreference,
           ),
@@ -43,11 +45,13 @@ class SettingsCubit extends Cubit<SettingsState> {
     SystemTray? systemTray,
   ) async {
     final bool closeToTray = await settingsService.closeToTray();
+    final bool startHiddenInTray = settingsService.startHiddenInTray();
 
     return SettingsCubit._(
       settingsService,
       systemTray,
       closeToTray: closeToTray,
+      startHiddenInTray: startHiddenInTray,
       userThemePreference: await settingsService.themeMode(),
     );
   }
@@ -102,6 +106,12 @@ class SettingsCubit extends Cubit<SettingsState> {
     emit(state.copyWith(showSystemTrayIcon: showTray));
     showTray ? _systemTray?.show() : _systemTray?.remove();
     await _settingsService.saveShowSystemTrayIcon(showTray);
+  }
+
+  /// Update and persist whether the app should start hidden in the system tray.
+  Future<void> updateStartHiddenInTray(bool startHidden) async {
+    emit(state.copyWith(startHiddenInTray: startHidden));
+    await _settingsService.saveStartHiddenInTray(startHidden);
   }
 
   /// Update and persist the ThemeMode based on the user's selection.

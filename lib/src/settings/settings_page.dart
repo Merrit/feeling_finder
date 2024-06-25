@@ -90,6 +90,18 @@ class SettingsPage extends StatelessWidget {
       },
     );
 
+    final Widget startHiddenInTrayTile = BlocBuilder<SettingsCubit, SettingsState>(
+      builder: (context, state) {
+        return SwitchListTile(
+          title: Text(translations.settings.startHiddenInTray),
+          value: state.startHiddenInTray,
+          onChanged: state.showSystemTrayIcon
+              ? (value) => settingsCubit.updateStartHiddenInTray(value)
+              : null,
+        );
+      },
+    );
+
     final Widget hotkeyEnabledTile = BlocBuilder<SettingsCubit, SettingsState>(
       builder: (context, state) {
         return SwitchListTile(
@@ -186,6 +198,7 @@ class SettingsPage extends StatelessWidget {
               exitAfterCopyTile,
               if (defaultTargetPlatform.isDesktop) showTrayTile,
               if (defaultTargetPlatform.isDesktop) closeToTrayTile,
+              if (defaultTargetPlatform.isDesktop) startHiddenInTrayTile,
               if (runsX11) hotkeyEnabledTile,
               if (runsX11) hotkeyConfigurationTile,
               const Divider(),
