@@ -30,7 +30,8 @@
     "homepage": "Homepage",
     "currentVersion": "Current version",
     "hotkeyToggle": "Toggle visibility with a keyboard shortcut",
-    "shortcutUsage": "Press {modifierKey} + {actionKey} to use the shortcut"
+    "shortcutUsage": "Press {modifierKey} + {actionKey} to use the shortcut",
+    "startHiddenInTray": "Start hidden in system tray"
   },
   "searchHintText": "Type to search"
 }

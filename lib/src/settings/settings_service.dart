@@ -124,6 +124,15 @@ class SettingsService {
     return showSystemTrayIcon ?? true;
   }
 
+  bool startHiddenInTray() {
+    final startHidden = _storageService.getValue('startHiddenInTray') as bool?;
+    return startHidden ?? false;
+  }
+
+  Future<void> saveStartHiddenInTray(bool value) async {
+    await _storageService.saveValue(key: 'startHiddenInTray', value: value);
+  }
+
   /// Remove all emojis from the recents list.
   Future<void> clearRecentEmojis() async {
     _recentEmojis.clear();
