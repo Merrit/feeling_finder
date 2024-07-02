@@ -26,6 +26,7 @@ class SettingsCubit extends Cubit<SettingsState> {
           SettingsState(
             closeToTray: closeToTray,
             exitOnCopy: _settingsService.exitOnCopy(),
+            hideOnCopy: _settingsService.hideOnCopy(),
             hotKeyEnabled: _settingsService.hotKeyEnabled(),
             showSystemTrayIcon: _settingsService.showSystemTrayIcon(),
             startHiddenInTray: startHiddenInTray,
@@ -91,8 +92,30 @@ class SettingsCubit extends Cubit<SettingsState> {
 
   /// Update and persist whether the app should exit after copy.
   Future<void> updateExitOnCopy(bool value) async {
-    emit(state.copyWith(exitOnCopy: value));
+    // Only one of the two can be enabled at a time.
+    final hideOnCopy = value ? false : state.hideOnCopy;
+
+    emit(state.copyWith(
+      exitOnCopy: value,
+      hideOnCopy: hideOnCopy,
+    ));
+
     await _settingsService.saveExitOnCopy(value);
+    await _settingsService.saveHideOnCopy(hideOnCopy);
+  }
+
+  /// Update and persist whether the app should hide after copy.
+  Future<void> updateHideOnCopy(bool value) async {
+    // Only one of the two can be enabled at a time.
+    final exitOnCopy = value ? false : state.exitOnCopy;
+
+    emit(state.copyWith(
+      exitOnCopy: exitOnCopy,
+      hideOnCopy: value,
+    ));
+
+    await _settingsService.saveHideOnCopy(value);
+    await _settingsService.saveExitOnCopy(exitOnCopy);
   }
 
   /// Update and persist whether the app uses the Keybind for visibility toggling.

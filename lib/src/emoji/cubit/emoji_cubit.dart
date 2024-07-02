@@ -206,23 +206,21 @@ class EmojiCubit extends Cubit<EmojiState> {
           'Actual: ${updatedClipboard?.text}');
     }
 
-    // Check if the preference to exit on copy is set.
-    final shouldExitApp = _settingsCubit.state.exitOnCopy;
-
-    if (!shouldExitApp) {
-      // Trigger copy notification.
-      // We don't want to bother if the app will be closing immediately.
-      emit(state.copyWith(copiedEmoji: emoji.emoji));
-    }
+    // Trigger copy notification.
+    emit(state.copyWith(copiedEmoji: emoji.emoji));
 
     // Update the list of recent emojis.
     await _settingsService.saveRecentEmoji(emoji);
 
-    // Exit the app if the preference for that is true.
-    if (shouldExitApp) {
-      // Hide the window because it has a small delay before closing to
-      // allow the logger to finish writing to the file.
+    final shouldExitApp = _settingsCubit.state.exitOnCopy;
+    final shouldHideApp = _settingsCubit.state.hideOnCopy;
+
+    if (shouldExitApp || shouldHideApp) {
+      // Hide the window even when exiting to give a feeling of responsiveness.
       await _appWindow?.hide();
+    }
+
+    if (shouldExitApp) {
       log.i('Exiting app after copying emoji');
       await LoggingManager.instance.close();
       await hotKeyService.unregisterBindings();

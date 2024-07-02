@@ -9,6 +9,9 @@ class SettingsState with _$SettingsState {
     /// Whether the app should exit automatically after copying an emoji.
     required bool exitOnCopy,
 
+    /// Whether the app should hide to the system tray automatically after copying an emoji.
+    required bool hideOnCopy,
+
     /// Whether the app should use the hotkey to show and hide the app.
     required bool hotKeyEnabled,
 
@@ -28,4 +31,15 @@ class SettingsState with _$SettingsState {
     /// preference is system, but [SettingsState.themeMode] is dark/light.
     required ThemeMode userThemePreference,
   }) = _SettingsState;
+
+  static const initial = SettingsState(
+    closeToTray: false,
+    exitOnCopy: false,
+    hideOnCopy: false,
+    hotKeyEnabled: false,
+    showSystemTrayIcon: false,
+    startHiddenInTray: false,
+    themeMode: ThemeMode.system,
+    userThemePreference: ThemeMode.system,
+  );
 }

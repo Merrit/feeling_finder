@@ -80,6 +80,16 @@ class SettingsPage extends StatelessWidget {
       },
     );
 
+    final Widget hideOnCopyTile = BlocBuilder<SettingsCubit, SettingsState>(
+      builder: (context, state) {
+        return SwitchListTile(
+          title: Text(translations.settings.hideOnCopy),
+          value: state.hideOnCopy,
+          onChanged: (value) => settingsCubit.updateHideOnCopy(value),
+        );
+      },
+    );
+
     final Widget closeToTrayTile = BlocBuilder<SettingsCubit, SettingsState>(
       builder: (context, state) {
         return SwitchListTile(
@@ -197,6 +207,7 @@ class SettingsPage extends StatelessWidget {
               const Divider(),
               exitAfterCopyTile,
               if (defaultTargetPlatform.isDesktop) showTrayTile,
+              if (defaultTargetPlatform.isDesktop) hideOnCopyTile,
               if (defaultTargetPlatform.isDesktop) closeToTrayTile,
               if (defaultTargetPlatform.isDesktop) startHiddenInTrayTile,
               if (runsX11) hotkeyEnabledTile,
