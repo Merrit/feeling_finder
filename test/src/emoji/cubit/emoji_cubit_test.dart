@@ -9,7 +9,6 @@ import 'package:feeling_finder/src/settings/cubit/settings_cubit.dart';
 import 'package:feeling_finder/src/settings/settings_service.dart';
 import 'package:feeling_finder/src/storage/storage_service.dart';
 import 'package:feeling_finder/src/window/app_window.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -40,15 +39,7 @@ void main() {
       when(appWindow.show()).thenAnswer((_) async {});
 
       settingsCubit = MockSettingsCubit();
-      when(settingsCubit.state).thenReturn(const SettingsState(
-        closeToTray: false,
-        exitOnCopy: false,
-        hotKeyEnabled: false,
-        showSystemTrayIcon: false,
-        startHiddenInTray: false,
-        themeMode: ThemeMode.system,
-        userThemePreference: ThemeMode.dark,
-      ));
+      when(settingsCubit.state).thenReturn(SettingsState.initial);
 
       emojiService = EmojiService();
     });

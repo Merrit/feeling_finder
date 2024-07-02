@@ -36,6 +36,15 @@ class SettingsService {
     await _storageService.saveValue(key: 'exitOnCopy', value: value);
   }
 
+  bool hideOnCopy() {
+    final shouldHide = _storageService.getValue('hideOnCopy') as bool?;
+    return shouldHide ?? false;
+  }
+
+  Future<void> saveHideOnCopy(bool value) async {
+    await _storageService.saveValue(key: 'hideOnCopy', value: value);
+  }
+
   bool hotKeyEnabled() {
     final useHotKey = _storageService.getValue('useHotKey') as bool?;
     return useHotKey ?? false;
