@@ -35,13 +35,12 @@ void main() {
     late MockSystemTray mockSystemTray;
     late MockReleaseNotesService mockReleaseNotesService;
     late MockUpdateService mockUpdateService;
-    const mockWindowEventsStream = Stream<WindowEvent>.empty();
 
     setUpAll(() async {
       await LoggingManager.initialize(verbose: false);
 
       appWindow = MockAppWindow();
-      when(appWindow.focus()).thenAnswer((_) async {});
+      when(appWindow.isFocused()).thenAnswer((_) async => true);
       when(appWindow.hide()).thenAnswer((_) async {});
       when(appWindow.show()).thenAnswer((_) async {});
     });
@@ -59,10 +58,10 @@ void main() {
 
     testWidgets('initial state', (tester) async {
       final appCubit = AppCubit(
+        mockSettingsService,
         mockStorageService,
         releaseNotesService: mockReleaseNotesService,
         updateService: mockUpdateService,
-        windowEvents: mockWindowEventsStream,
       );
 
       final settingsCubit = await SettingsCubit.init(
@@ -113,10 +112,10 @@ void main() {
       );
 
       final appCubit = AppCubit(
+        mockSettingsService,
         mockStorageService,
         releaseNotesService: mockReleaseNotesService,
         updateService: mockUpdateService,
-        windowEvents: mockWindowEventsStream,
       );
 
       final settingsCubit = await SettingsCubit.init(

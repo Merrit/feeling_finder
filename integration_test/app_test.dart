@@ -23,7 +23,7 @@ void main() {
 
     // Launch the app.
     app.main([]);
-    await tester.pumpAndSettle();
+    await tester.pumpAndSettle(const Duration(seconds: 2));
 
     // Verify there is no notification shown at start.
     expect(find.byType(SnackBar), findsNothing);
@@ -39,6 +39,7 @@ void main() {
     await tester.pumpAndSettle();
 
     // Verify the emoji we want to copy is not in the clipboard.
+    await Clipboard.setData(const ClipboardData(text: ''));
     ClipboardData? clipboardData = await getClipboardData();
     expect(clipboardData?.text, isNot('😃'));
 

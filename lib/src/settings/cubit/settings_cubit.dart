@@ -19,12 +19,17 @@ class SettingsCubit extends Cubit<SettingsState> {
   SettingsCubit._(
     this._settingsService,
     this._systemTray, {
+    required bool closeToTray,
+    required bool startHiddenInTray,
     required ThemeMode userThemePreference,
   }) : super(
           SettingsState(
+            closeToTray: closeToTray,
             exitOnCopy: _settingsService.exitOnCopy(),
+            hideOnCopy: _settingsService.hideOnCopy(),
             hotKeyEnabled: _settingsService.hotKeyEnabled(),
             showSystemTrayIcon: _settingsService.showSystemTrayIcon(),
+            startHiddenInTray: startHiddenInTray,
             themeMode: userThemePreference,
             userThemePreference: userThemePreference,
           ),
@@ -40,9 +45,14 @@ class SettingsCubit extends Cubit<SettingsState> {
     SettingsService settingsService,
     SystemTray? systemTray,
   ) async {
+    final bool closeToTray = await settingsService.closeToTray();
+    final bool startHiddenInTray = settingsService.startHiddenInTray();
+
     return SettingsCubit._(
       settingsService,
       systemTray,
+      closeToTray: closeToTray,
+      startHiddenInTray: startHiddenInTray,
       userThemePreference: await settingsService.themeMode(),
     );
   }
@@ -73,10 +83,39 @@ class SettingsCubit extends Cubit<SettingsState> {
     });
   }
 
+  Future<void> updateCloseToTray([bool? closeToTray]) async {
+    if (closeToTray == null) return;
+
+    await _settingsService.saveCloseToTray(closeToTray);
+    emit(state.copyWith(closeToTray: closeToTray));
+  }
+
   /// Update and persist whether the app should exit after copy.
   Future<void> updateExitOnCopy(bool value) async {
-    emit(state.copyWith(exitOnCopy: value));
+    // Only one of the two can be enabled at a time.
+    final hideOnCopy = value ? false : state.hideOnCopy;
+
+    emit(state.copyWith(
+      exitOnCopy: value,
+      hideOnCopy: hideOnCopy,
+    ));
+
     await _settingsService.saveExitOnCopy(value);
+    await _settingsService.saveHideOnCopy(hideOnCopy);
+  }
+
+  /// Update and persist whether the app should hide after copy.
+  Future<void> updateHideOnCopy(bool value) async {
+    // Only one of the two can be enabled at a time.
+    final exitOnCopy = value ? false : state.exitOnCopy;
+
+    emit(state.copyWith(
+      exitOnCopy: exitOnCopy,
+      hideOnCopy: value,
+    ));
+
+    await _settingsService.saveHideOnCopy(value);
+    await _settingsService.saveExitOnCopy(exitOnCopy);
   }
 
   /// Update and persist whether the app uses the Keybind for visibility toggling.
@@ -90,6 +129,12 @@ class SettingsCubit extends Cubit<SettingsState> {
     emit(state.copyWith(showSystemTrayIcon: showTray));
     showTray ? _systemTray?.show() : _systemTray?.remove();
     await _settingsService.saveShowSystemTrayIcon(showTray);
+  }
+
+  /// Update and persist whether the app should start hidden in the system tray.
+  Future<void> updateStartHiddenInTray(bool startHidden) async {
+    emit(state.copyWith(startHiddenInTray: startHidden));
+    await _settingsService.saveStartHiddenInTray(startHidden);
   }
 
   /// Update and persist the ThemeMode based on the user's selection.

@@ -3,14 +3,23 @@ part of 'settings_cubit.dart';
 @freezed
 class SettingsState with _$SettingsState {
   const factory SettingsState({
+    /// Whether the app should continue running in the tray when closed.
+    required bool closeToTray,
+
     /// Whether the app should exit automatically after copying an emoji.
     required bool exitOnCopy,
+
+    /// Whether the app should hide to the system tray automatically after copying an emoji.
+    required bool hideOnCopy,
 
     /// Whether the app should use the hotkey to show and hide the app.
     required bool hotKeyEnabled,
 
     /// Whether the system tray icon should be shown.
     required bool showSystemTrayIcon,
+
+    /// Whether the app should start hidden in the system tray.
+    required bool startHiddenInTray,
 
     /// The currently loaded [ThemeMode].
     required ThemeMode themeMode,
@@ -22,4 +31,15 @@ class SettingsState with _$SettingsState {
     /// preference is system, but [SettingsState.themeMode] is dark/light.
     required ThemeMode userThemePreference,
   }) = _SettingsState;
+
+  static const initial = SettingsState(
+    closeToTray: false,
+    exitOnCopy: false,
+    hideOnCopy: false,
+    hotKeyEnabled: false,
+    showSystemTrayIcon: false,
+    startHiddenInTray: false,
+    themeMode: ThemeMode.system,
+    userThemePreference: ThemeMode.system,
+  );
 }

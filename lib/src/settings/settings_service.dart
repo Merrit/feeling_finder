@@ -17,6 +17,16 @@ class SettingsService {
   /// Singleton instance of the SettingsService.
   static late SettingsService instance;
 
+  /// Whether the app should continue running in the tray when closed.
+  Future<bool> closeToTray() async {
+    final closeToTray = _storageService.getValue('closeToTray') as bool?;
+    return closeToTray ?? false;
+  }
+
+  Future<void> saveCloseToTray(bool value) async {
+    await _storageService.saveValue(key: 'closeToTray', value: value);
+  }
+
   bool exitOnCopy() {
     final shouldExit = _storageService.getValue('exitOnCopy') as bool?;
     return shouldExit ?? false;
@@ -24,6 +34,15 @@ class SettingsService {
 
   Future<void> saveExitOnCopy(bool value) async {
     await _storageService.saveValue(key: 'exitOnCopy', value: value);
+  }
+
+  bool hideOnCopy() {
+    final shouldHide = _storageService.getValue('hideOnCopy') as bool?;
+    return shouldHide ?? false;
+  }
+
+  Future<void> saveHideOnCopy(bool value) async {
+    await _storageService.saveValue(key: 'hideOnCopy', value: value);
   }
 
   bool hotKeyEnabled() {
@@ -112,6 +131,15 @@ class SettingsService {
   bool showSystemTrayIcon() {
     final showSystemTrayIcon = _storageService.getValue('showSystemTrayIcon') as bool?;
     return showSystemTrayIcon ?? true;
+  }
+
+  bool startHiddenInTray() {
+    final startHidden = _storageService.getValue('startHiddenInTray') as bool?;
+    return startHidden ?? false;
+  }
+
+  Future<void> saveStartHiddenInTray(bool value) async {
+    await _storageService.saveValue(key: 'startHiddenInTray', value: value);
   }
 
   /// Remove all emojis from the recents list.

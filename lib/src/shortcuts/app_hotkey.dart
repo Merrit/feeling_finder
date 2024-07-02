@@ -1,7 +1,7 @@
 import 'package:hotkey_manager/hotkey_manager.dart';
-import 'package:window_manager/window_manager.dart';
 
 import '../settings/settings_service.dart';
+import '../window/app_window.dart';
 
 Stopwatch time = Stopwatch()..start();
 
@@ -13,7 +13,7 @@ class HotKeyService {
 
   static final HotKeyService instance = HotKeyService();
 
-  Future<void> initHotkeyRegistration() async {
+  Future<void> initHotkeyRegistration(AppWindow appWindow) async {
     await hotKeyManager.unregisterAll();
 
     final useHotKey = SettingsService.instance.hotKeyEnabled();
@@ -27,18 +27,21 @@ class HotKeyService {
 
       await hotKeyManager.register(hideShortcut, keyDownHandler: (hotKey) async {
         if (time.elapsedMilliseconds > 250) {
-          if (await windowManager.isMinimized()) {
-            time.reset();
-            await windowManager.show(inactive: true);
-            return;
-          }
+          final isFocused = await appWindow.isFocused();
 
-          if (await windowManager.isVisible()) {
+          // TODO: This currently only checks if the window is _visible_, not if it's focused.
+          // This means that if the window is visible but not focused, the window will remain
+          // unfocused. We'd prefer to set it focused in this case.
+          //
+          // The `window_size` plugin doesn't provide a way to set focus, and the `window_manager`
+          // plugin currently breaks the `onExitRequested` event.
+          // See: https://github.com/leanflutter/window_manager/issues/466
+          if (isFocused) {
             time.reset();
-            await windowManager.hide();
+            await appWindow.hide();
           } else {
             time.reset();
-            await windowManager.show();
+            await appWindow.show();
           }
         }
       });

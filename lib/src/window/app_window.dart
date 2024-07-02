@@ -1,29 +1,39 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:helpers/helpers.dart';
-import 'package:window_manager/window_manager.dart';
+import 'package:window_size/window_size.dart' as window_size;
 
 class AppWindow {
-  AppWindow._();
+  /// The app lifecycle listener.
+  late final AppLifecycleListener _appLifecycleListener;
+
+  AppWindow._() {
+    _appLifecycleListener = AppLifecycleListener(
+      onExitRequested: _handleExitRequest,
+    );
+  }
 
   static Future<AppWindow?> initialize() async {
     if (!defaultTargetPlatform.isDesktop) return null;
-    await windowManager.ensureInitialized();
     return AppWindow._();
   }
 
-  /// Listener notifies when there is a change in the window.
-  void addEvent(WindowEvent event) {
-    switch (event) {
-      case WindowEvent.focused:
-        _windowEventController.add(WindowEvent.focused);
-        break;
-      case WindowEvent.unfocused:
-        _windowEventController.add(WindowEvent.unfocused);
-        break;
-    }
+  /// To be called when the app is going to exit.
+  Future<void> dispose() async {
+    _appLifecycleListener.dispose();
+    await _windowEventController.close();
+  }
+
+  Future<AppExitResponse> _handleExitRequest() async {
+    // Emit an event informing the app that the window was requested to close.
+    _windowEventController.add(WindowEvent.closeRequested);
+
+    return AppExitResponse.cancel;
   }
 
   /// Exits the app.
@@ -36,15 +46,16 @@ class AppWindow {
   final StreamController<WindowEvent> _windowEventController =
       StreamController<WindowEvent>.broadcast();
 
-  /// Focuses the window.
-  Future<void> focus() async => await windowManager.focus();
+  Future<bool> isFocused() async =>
+      SchedulerBinding.instance.lifecycleState == AppLifecycleState.resumed;
 
-  Future<void> hide() async => await windowManager.hide();
+  Future<void> hide() async => window_size.setWindowVisibility(visible: false);
 
-  Future<void> show() async => await windowManager.show();
+  Future<void> show() async => window_size.setWindowVisibility(visible: true);
 }
 
 enum WindowEvent {
+  closeRequested,
   focused,
   unfocused,
 }
