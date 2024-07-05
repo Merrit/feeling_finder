@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:helpers/helpers.dart';
 import 'package:tray_manager/tray_manager.dart';
 
@@ -34,15 +35,23 @@ class SystemTray {
 
   /// Shows the system tray icon.
   Future<void> show() async {
+    // TODO: Brightness should be passed as a parameter, then this method should be called when the
+    // brightness changes. As of now, the icon is set only once when the app starts.
+    final Brightness brightness = WidgetsBinding.instance.platformDispatcher.platformBrightness;
+
     final String iconPath;
 
     if (runningInFlatpak() || runningInSnap()) {
       // When running in Flatpak the icon must be specified by the icon's name, not the path.
       iconPath = kPackageId;
     } else {
-      iconPath = (defaultTargetPlatform.isWindows) //
-          ? AppIcons.windows
-          : AppIcons.linux;
+      final bool isWindows = defaultTargetPlatform.isWindows;
+
+      if (brightness == Brightness.light) {
+        iconPath = isWindows ? AppIcons.icoSymbolicDark : AppIcons.svgSymbolicDark;
+      } else {
+        iconPath = isWindows ? AppIcons.icoSymbolicLight : AppIcons.svgSymbolicLight;
+      }
     }
 
     log.t('Setting system tray icon to $iconPath');
