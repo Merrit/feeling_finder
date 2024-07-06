@@ -1,7 +1,6 @@
 {
   "appTitle": "Feeling Finder",
   "@AppTitle": "The title of the application",
-
   "emojiCategories": {
     "recent": "Recente",
     "all": "Tutto",
@@ -14,16 +13,26 @@
     "objects": "Oggetti",
     "symbols": "Simboli",
     "flags": "Bandiere"
+    "custom": "Personalizzato"
   },
-
   "settings": {
     "title": "Impostazioni",
+    "closeToTray": "Vicino alla barra delle applicazioni",
     "theme": "Tema",
     "systemTheme": "Tema di sistema",
     "lightTheme": "Tema Chiaro",
     "darkTheme": "Tema Scuro",
+    "showSystemTray": "Mostra l'icona nella barra delle applicazioni",
     "exitAfterCopy": "Esci dopo aver copiato"
+    "hideOnCopy": "Nascondi l'app dopo aver copiato le emoji",
+    "updateAvailable": "Aggiornamento disponibile",
+    "upToDate": "Aggiornato",
+    "donate": "Donazione",
+    "homepage": "Homepage",
+    "currentVersion": "Versione corrente",
+    "hotkeyToggle": "Attiva visibilità con una scorciatoia da tastiera",
+    "shortcutUsage": "Premere {modifierKey} + {actionKey} per utilizzare la scorciatoia",
+    "startHiddenInTray": "Inizia nascosto nella barra delle applicazioni"
   },
-
-  "searchHintText": "Cerca.."
+  "searchHintText": "Digita per cercare.."
 }
