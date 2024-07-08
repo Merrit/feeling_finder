@@ -176,4 +176,7 @@ class AppCubit extends Cubit<AppState> {
     await hotKeyService.unregisterBindings();
     exit(0);
   }
+
+  /// Reset the window to the default size.
+  void resetWindowSize() async => await _appWindow?.resetSize();
 }

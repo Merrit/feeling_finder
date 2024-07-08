@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
@@ -106,6 +107,7 @@ class _EmojiPageState extends State<EmojiPage> {
                         searchController: searchController,
                       ),
                       actions: [
+                        _DebugButton(),
                         _SettingsButton(focusNode: settingsButtonFocusNode),
                       ],
                     ),
@@ -529,6 +531,53 @@ void _showCustomEmojisTutorial(
   );
 
   tutorial?.show(context: context);
+}
+
+/// A button that shows the debug menu.
+class _DebugButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    if (!kDebugMode) return const SizedBox();
+
+    return IconButton(
+      onPressed: () {
+        ContextMenuController.removeAny();
+        showDebugMenu(context);
+      },
+      icon: const Icon(Icons.bug_report),
+    );
+  }
+
+  void showDebugMenu(BuildContext context) {
+    final emojiCubit = EmojiCubit.instance;
+
+    final List<Widget> children = [
+      ListTile(
+        title: const Text('Clear recent emojis'),
+        onTap: () {
+          emojiCubit.clearRecentEmojis();
+          Navigator.pop(context);
+        },
+      ),
+      ListTile(
+        title: const Text('Reset window size'),
+        onTap: () => context.read<AppCubit>().resetWindowSize(),
+      ),
+    ];
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Debug menu'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: children,
+          ),
+        );
+      },
+    );
+  }
 }
 
 class _SettingsButton extends StatelessWidget {

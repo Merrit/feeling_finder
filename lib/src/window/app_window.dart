@@ -51,6 +51,21 @@ class AppWindow {
 
   Future<void> hide() async => window_size.setWindowVisibility(visible: false);
 
+  /// Resets the window size to the default size.
+  Future<void> resetSize() async {
+    final windowInfo = await window_size.getWindowInfo();
+    final currentFrame = windowInfo.frame;
+
+    window_size.setWindowFrame(
+      Rect.fromLTWH(
+        currentFrame.left,
+        currentFrame.top,
+        640,
+        700,
+      ),
+    );
+  }
+
   Future<void> show() async => window_size.setWindowVisibility(visible: true);
 }
 
