@@ -12,7 +12,7 @@
     "activities": "Attività",
     "objects": "Oggetti",
     "symbols": "Simboli",
-    "flags": "Bandiere"
+    "flags": "Bandiere",
     "custom": "Personalizzato"
   },
   "settings": {
@@ -23,7 +23,7 @@
     "lightTheme": "Tema Chiaro",
     "darkTheme": "Tema Scuro",
     "showSystemTray": "Mostra l'icona nella barra delle applicazioni",
-    "exitAfterCopy": "Esci dopo aver copiato"
+    "exitAfterCopy": "Esci dopo aver copiato",
     "hideOnCopy": "Nascondi l'app dopo aver copiato le emoji",
     "updateAvailable": "Aggiornamento disponibile",
     "upToDate": "Aggiornato",
