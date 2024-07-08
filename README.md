@@ -15,7 +15,7 @@ A fast and beautiful app to help convey emotion in text communication.
 - Browse emoji categories
 - Hover emoji for description
 - Keyboard shortcuts
-  - Start typing to search
+  - `Ctrl` + `F` to focus search
   - Select emoji with arrow keys
   - Press `Enter` or click/tap an emoji to copy to clipboard
   - Right-click or `Menu` key to show variant / skin tone menu
