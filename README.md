@@ -36,6 +36,7 @@ A fast and beautiful app to help convey emotion in text communication.
   - [Portable](https://github.com/Merrit/feeling_finder/releases/latest/download/FeelingFinder-Linux-Portable.tar.gz)
 
 **Windows**
+- [Microsoft Store](https://apps.microsoft.com/detail/9pc74560s0fj?launch=true%20&mode=mini)
 - [Installer](https://github.com/Merrit/feeling_finder/releases/latest/download/FeelingFinder-Windows-Installer.msix)
 - [Portable](https://github.com/Merrit/feeling_finder/releases/latest/download/FeelingFinder-Windows-Portable.zip)
 
