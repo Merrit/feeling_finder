@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:helpers/helpers.dart';
 import 'package:http/http.dart' as http;
 
@@ -32,6 +33,8 @@ void main(List<String> args) async {
 
   await LoggingManager.initialize(verbose: verbose);
   await closeExistingSessions();
+
+  GoogleFonts.config.allowRuntimeFetching = false;
 
   // Initialize the storage service.
   final storageService = StorageService();
