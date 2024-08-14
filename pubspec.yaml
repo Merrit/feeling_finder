@@ -24,19 +24,19 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   freezed_annotation: ^2.2.0
-  google_fonts: ^4.0.4
+  google_fonts: ^6.2.1
   helpers:
     git:
       url: https://github.com/Merrit/helpers.git
-      ref: 792c63d8dddaf89a3ead5a0c44e40f3a3e5ffae5
+      ref: 804cf94cda4b7003740fdb0c3e30909d31c2fb18
   hive: ^2.0.4
   hive_flutter: ^1.1.0
-  hotkey_manager: ^0.1.8
+  hotkey_manager: ^0.2.3
   http: ^1.0.0
-  intl: ^0.18.0
+  intl: ^0.19.0
   json_annotation: ^4.8.1
   logger: ^2.0.1
-  package_info_plus: ^4.0.1
+  package_info_plus: ^8.0.2
   path_provider: ^2.0.6
   pub_semver: ^2.1.4
   slang: ^3.22.0
@@ -60,7 +60,7 @@ dev_dependencies:
       ref: a70df0728d9d7d8fd528553ff7d88be01a789a38
   flutter_gen: ^5.3.1
   flutter_launcher_icons: ^0.13.1
-  flutter_lints: ^2.0.1
+  flutter_lints: ^4.0.0
   flutter_test:
     sdk: flutter
   freezed: ^2.3.4
