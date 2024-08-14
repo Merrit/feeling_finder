@@ -9,10 +9,10 @@ class SearchBarWidget extends StatefulWidget {
   final SearchController searchController;
 
   const SearchBarWidget({
-    Key? key,
+    super.key,
     required this.focusNode,
     required this.searchController,
-  }) : super(key: key);
+  });
 
   @override
   State<SearchBarWidget> createState() => _SearchBarWidgetState();

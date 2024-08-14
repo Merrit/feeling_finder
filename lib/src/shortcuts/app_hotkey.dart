@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:hotkey_manager/hotkey_manager.dart';
 
 import '../settings/settings_service.dart';
@@ -6,7 +7,7 @@ import '../window/app_window.dart';
 Stopwatch time = Stopwatch()..start();
 
 //TODO: Make it configurable
-KeyCode? keyCode;
+PhysicalKeyboardKey? _key;
 
 class HotKeyService {
   HotKeyService();
@@ -20,8 +21,8 @@ class HotKeyService {
 
     if (time.elapsedMilliseconds >= 0 && useHotKey) {
       final HotKey hideShortcut = HotKey(
-        keyCode ?? KeyCode.period,
-        modifiers: [KeyModifier.alt],
+        key: _key ?? PhysicalKeyboardKey.period,
+        modifiers: [HotKeyModifier.alt],
         scope: HotKeyScope.system, // Set as system-wide hotkey.
       );
 

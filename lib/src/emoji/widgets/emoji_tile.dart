@@ -19,10 +19,9 @@ class EmojiTile extends StatefulWidget {
   const EmojiTile(
     this.emoji,
     this.index, {
-    Key? key,
+    super.key,
     bool? isSearchResult,
-  })  : isSearchResult = isSearchResult ?? false,
-        super(key: key);
+  }) : isSearchResult = isSearchResult ?? false;
 
   @override
   State<EmojiTile> createState() => _EmojiTileState();

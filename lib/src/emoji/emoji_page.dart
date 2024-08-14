@@ -21,8 +21,8 @@ class EmojiPage extends StatefulWidget {
   static const routeName = '/';
 
   const EmojiPage({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<EmojiPage> createState() => _EmojiPageState();
@@ -163,7 +163,7 @@ class _EmojiPageState extends State<EmojiPage> {
 
 /// A list of buttons to change the emoji category.
 class CategoryListView extends StatelessWidget {
-  const CategoryListView({Key? key}) : super(key: key);
+  const CategoryListView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -244,8 +244,8 @@ class EmojiGridView extends StatefulWidget {
   const EmojiGridView(
     this.floatingActionButtonKey,
     this.gridViewFocusNode, {
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<EmojiGridView> createState() => _EmojiGridViewState();
@@ -298,7 +298,9 @@ class _EmojiGridViewState extends State<EmojiGridView> {
                   haveShownCustomEmojisTutorial = true;
                   // Small delay for the floating action button to animate in.
                   Future.delayed(const Duration(milliseconds: 500)).then((value) {
+                    if (!context.mounted) return;
                     _showCustomEmojisTutorial(
+                      // ignore: use_build_context_synchronously
                       context,
                       widget.floatingActionButtonKey,
                     );
@@ -473,10 +475,12 @@ Future<void> _showAddCustomEmojiDialog(BuildContext context) async {
   // Delay required for the tutorial widget to be disposed, or else it will
   // throw an exception when trying to close the dialog.
   Future.delayed(const Duration(milliseconds: 10), () {
-    return showDialog(
-      context: context,
-      builder: (context) => _AddCustomEmojiDialog(),
-    );
+    if (context.mounted) {
+      return showDialog(
+        context: context,
+        builder: (context) => _AddCustomEmojiDialog(),
+      );
+    }
   });
 }
 

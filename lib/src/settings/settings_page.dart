@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:helpers/helpers.dart';
 import 'package:hotkey_manager/hotkey_manager.dart';
@@ -17,7 +18,7 @@ import 'cubit/settings_cubit.dart';
 /// When a user changes a setting, the SettingsController is updated and
 /// Widgets that listen to the SettingsController are rebuilt.
 class SettingsPage extends StatelessWidget {
-  const SettingsPage({Key? key}) : super(key: key);
+  const SettingsPage({super.key});
 
   static const routeName = '/settings';
   static bool runsX11 = platformIsLinuxX11();
@@ -132,16 +133,21 @@ class SettingsPage extends StatelessWidget {
     final Widget hotkeyConfigurationTile = BlocBuilder<SettingsCubit, SettingsState>(
       builder: (context, state) {
         return Visibility(
-            visible: state.hotKeyEnabled,
-            maintainAnimation: true,
-            maintainState: true,
-            child: AnimatedOpacity(
-              opacity: state.hotKeyEnabled ? 1.0 : 0.0,
-              duration: const Duration(milliseconds: 500),
-              //TODO: Replace with proper hotkey configuration
-              child: Text(translations.settings.shortcutUsage(
-                  modifierKey: KeyModifier.alt.keyLabel, actionKey: KeyCode.period.keyLabel)),
-            ));
+          visible: state.hotKeyEnabled,
+          maintainAnimation: true,
+          maintainState: true,
+          child: AnimatedOpacity(
+            opacity: state.hotKeyEnabled ? 1.0 : 0.0,
+            duration: const Duration(milliseconds: 500),
+            //TODO: Replace with proper hotkey configuration
+            child: Text(
+              translations.settings.shortcutUsage(
+                modifierKey: HotKeyModifier.alt.name,
+                actionKey: PhysicalKeyboardKey.period.keyLabel,
+              ),
+            ),
+          ),
+        );
       },
     );
 
