@@ -5,7 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('EmojiService: ', () {
-    final emojiService = EmojiService();
+    final emojiService = EmojiService(false);
 
     test('allEmojis has 9 categories', () {
       expect(emojiService.allEmojis.length, 9);

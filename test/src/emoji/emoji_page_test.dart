@@ -71,7 +71,7 @@ void main() {
 
       final emojiCubit = EmojiCubit(
         appWindow,
-        EmojiService(),
+        EmojiService(false),
         settingsCubit,
         SettingsService(mockStorageService),
         mockStorageService,
@@ -125,7 +125,7 @@ void main() {
 
       final emojiCubit = EmojiCubit(
         appWindow,
-        EmojiService(),
+        EmojiService(false),
         settingsCubit,
         SettingsService(mockStorageService),
         mockStorageService,
