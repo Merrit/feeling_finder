@@ -13,8 +13,8 @@ class EmojiService {
   const EmojiService._(this.allEmojis);
 
   /// Builds the emoji set from the supplied json.
-  factory EmojiService() {
-    final Map<EmojiCategory, List<Emoji>> emojiMap = _buildEmojisFromUnicodePackage();
+  factory EmojiService(bool isWindows11) {
+    final Map<EmojiCategory, List<Emoji>> emojiMap = _buildEmojisFromUnicodePackage(isWindows11);
 
     return EmojiService._(emojiMap);
   }
@@ -49,7 +49,7 @@ class EmojiService {
 }
 
 /// Builds the emoji set from the unicode_emojis package.
-Map<EmojiCategory, List<Emoji>> _buildEmojisFromUnicodePackage() {
+Map<EmojiCategory, List<Emoji>> _buildEmojisFromUnicodePackage(bool isWindows11) {
   final Map<EmojiCategory, List<Emoji>> emojiMap = {};
 
   for (final emojiCategory in ue.Category.values) {
@@ -59,8 +59,15 @@ Map<EmojiCategory, List<Emoji>> _buildEmojisFromUnicodePackage() {
         .toList();
 
     if (defaultTargetPlatform.isWindows) {
-      // Windows only supports version 14.0 of the Unicode emoji set.
-      emojiList.removeWhere((e) => double.parse(e.unicodeVersion) > 14.0);
+      // // Windows only supports version 14.0 of the Unicode emoji set.
+      // emojiList.removeWhere((e) => double.parse(e.unicodeVersion) > 14.0);
+      if (isWindows11) {
+        // Windows 11 supports version 14.0 of the Unicode emoji set.
+        emojiList.removeWhere((e) => double.parse(e.unicodeVersion) > 14.0);
+      } else {
+        // Windows 10 supports version 12.0 of the Unicode emoji set.
+        emojiList.removeWhere((e) => double.parse(e.unicodeVersion) > 12.0);
+      }
     }
 
     emojiMap[emojiCategory.toEmojiCategory()] = emojiList;

@@ -2,6 +2,8 @@
 
 // ignore_for_file: dangling_library_doc_comments
 
+import 'package:device_info_plus/device_info_plus.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -46,7 +48,8 @@ void main(List<String> args) async {
   // and prevents unsightly things like the theme suddenly changing when loaded.
   await storageService.init();
 
-  final emojiService = EmojiService();
+  final isWindows11 = await _isWindows11();
+  final emojiService = EmojiService(isWindows11);
 
   // Initialize the settings service.
   final settingsService = SettingsService(storageService);
@@ -99,4 +102,24 @@ void main(List<String> args) async {
       ),
     ),
   );
+}
+
+/// True if the current platform is Windows 11.
+///
+/// This is important because different versions of Windows support different versions of the
+/// Unicode emoji set. We may be able to do away with this check if the bug preventing the Windows
+/// builds from using Noto Color Emoji is resolved. See:
+/// https://github.com/material-foundation/flutter-packages/issues/575
+///
+/// It seems that at the moment, Windows 10 supports Unicode 12.0 emojis, while Windows 11
+/// supports Unicode 14.0 emojis. See:
+/// https://emojipedia.org/microsoft
+Future<bool> _isWindows11() async {
+  if (!defaultTargetPlatform.isWindows) return false;
+
+  final DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+  final WindowsDeviceInfo windowsInfo = await deviceInfo.windowsInfo;
+  // If the platform reports this build number or greater, it is Windows 11.
+  const kWindows11AndGreaterBuildNumber = 22000;
+  return windowsInfo.buildNumber >= kWindows11AndGreaterBuildNumber ? true : false;
 }

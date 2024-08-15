@@ -41,7 +41,7 @@ void main() {
       settingsCubit = MockSettingsCubit();
       when(settingsCubit.state).thenReturn(SettingsState.initial);
 
-      emojiService = EmojiService();
+      emojiService = EmojiService(false);
     });
 
     setUp(() {
@@ -110,7 +110,7 @@ void main() {
 
       emojiCubit = EmojiCubit(
         appWindow,
-        EmojiService(),
+        EmojiService(false),
         settingsCubit,
         settingsService,
         storageService,
@@ -146,7 +146,7 @@ void main() {
 
       emojiCubit = EmojiCubit(
         appWindow,
-        EmojiService(),
+        EmojiService(false),
         settingsCubit,
         settingsService,
         storageService,
