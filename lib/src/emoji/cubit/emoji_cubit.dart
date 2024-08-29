@@ -222,7 +222,7 @@ class EmojiCubit extends Cubit<EmojiState> {
 
     if (shouldExitApp) {
       log.i('Exiting app after copying emoji');
-      await LoggingManager.instance.close();
+      LoggingManager.instance.close();
       await hotKeyService.unregisterBindings();
       exit(0);
     }
