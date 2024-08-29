@@ -1,41 +1,51 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:logger/logger.dart';
 import 'package:path_provider/path_provider.dart';
 
+import 'src/src.dart';
+
 /// Globally available instance available for easy logging.
-late final Logger log;
+late Logger log;
 
 /// Manages logging for the app.
 class LoggingManager {
   /// The file to which logs are saved.
-  final File _logFile;
+  ///
+  /// If there was an issue creating the log file, this will be null.
+  final File? _logFile;
+
+  /// Whether verbose logging is enabled.
+  final bool verbose;
 
   /// Singleton instance for easy access.
-  static late final LoggingManager instance;
+  static late LoggingManager instance;
 
   LoggingManager._(
-    this._logFile,
-  ) {
+    this._logFile, {
+    required this.verbose,
+  }) {
     instance = this;
   }
 
-  static Future<LoggingManager> initialize({required bool verbose}) async {
+  static Future<LoggingManager> initialize({bool verbose = false}) async {
     final testing = Platform.environment.containsKey('FLUTTER_TEST');
     if (testing) {
       // Set the logger to a dummy logger during unit tests.
       log = Logger(level: Level.off);
-      return LoggingManager._(File(''));
+      return LoggingManager._(File(''), verbose: verbose);
     }
 
     final dataDir = await getApplicationSupportDirectory();
-    final logFile = File('${dataDir.path}${Platform.pathSeparator}log.txt');
-    if (await logFile.exists()) await logFile.delete();
-    await logFile.create();
+    final String logDirPath = '${dataDir.path}${Platform.pathSeparator}logs';
+    final Directory logDir = Directory(logDirPath);
+    final logFileService = LogFileService(logDir);
+    final File? logFile = await logFileService.getLogFile();
 
     final List<LogOutput> outputs = [
       ConsoleOutput(),
-      FileOutput(file: logFile),
+      if (logFile != null) FileOutput(file: logFile),
     ];
 
     log = Logger(
@@ -43,23 +53,44 @@ class LoggingManager {
       level: (verbose) ? Level.trace : Level.warning,
       output: MultiOutput(outputs),
       // Colors false because it outputs ugly escape characters to log file.
-      printer: PrefixPrinter(PrettyPrinter(colors: false)),
+      printer: PrefixPrinter(
+        PrettyPrinter(
+          colors: false,
+          dateTimeFormat: DateTimeFormat.onlyTimeAndSinceStart,
+        ),
+      ),
     );
 
-    log.t('Logger initialized.');
+    log.i('Logger initialized.');
+
+    _initializePlatformErrorHandler();
 
     return LoggingManager._(
       logFile,
+      verbose: verbose,
     );
   }
 
-  /// Read the logs from this run from the log file.
-  Future<String> getLogs() async => await _logFile.readAsString();
+  /// Read the logs for this run from the log file.
+  Future<String> getLogs() async {
+    if (_logFile == null) {
+      return 'There was an issue creating the log file.';
+    }
+
+    return await _logFile.readAsString();
+  }
 
   /// Close the logger and release resources.
-  Future<void> close() async {
-    // Small delay to allow the logger to finish writing to the file.
-    await Future.delayed(const Duration(milliseconds: 100));
-    log.close();
-  }
+  void close() => log.close();
+}
+
+/// Handle platform errors not caught by Flutter.
+///
+/// This is useful for errors that happen outside of the Flutter context, such as
+/// errors in the platform, or plugins.
+void _initializePlatformErrorHandler() {
+  PlatformDispatcher.instance.onError = (error, stack) {
+    log.e('Uncaught platform error', error: error, stackTrace: stack);
+    return true;
+  };
 }
