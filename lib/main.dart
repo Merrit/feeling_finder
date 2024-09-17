@@ -5,6 +5,7 @@
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:helpers/helpers.dart';
@@ -26,6 +27,14 @@ import 'src/updates/updates.dart';
 import 'src/window/app_window.dart';
 
 void main(List<String> args) async {
+  GoogleFonts.config.allowRuntimeFetching = false;
+
+  // Add the Google Fonts license to the LicenseRegistry.
+  LicenseRegistry.addLicense(() async* {
+    final license = await rootBundle.loadString('fonts/OFL.txt');
+    yield LicenseEntryWithLineBreaks(['google_fonts'], license);
+  });
+
   WidgetsFlutterBinding.ensureInitialized();
 
   /// Initial configuration for the app locale.
@@ -37,8 +46,6 @@ void main(List<String> args) async {
 
   await LoggingManager.initialize(verbose: verbose);
   await closeExistingSessions();
-
-  GoogleFonts.config.allowRuntimeFetching = false;
 
   // Initialize the storage service.
   final storageService = StorageService();
