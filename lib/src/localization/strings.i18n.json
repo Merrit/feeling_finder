@@ -34,5 +34,5 @@
     "shortcutUsage": "Press {modifierKey} + {actionKey} to use the shortcut",
     "startHiddenInTray": "Start hidden in system tray"
   },
-  "searchHintText": "Type to search"
+  "searchHintText": "Search"
 }
