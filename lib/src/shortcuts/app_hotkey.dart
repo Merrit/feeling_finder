@@ -28,22 +28,8 @@ class HotKeyService {
 
       await hotKeyManager.register(hideShortcut, keyDownHandler: (hotKey) async {
         if (time.elapsedMilliseconds > 250) {
-          final isFocused = await appWindow.isFocused();
-
-          // TODO: This currently only checks if the window is _visible_, not if it's focused.
-          // This means that if the window is visible but not focused, the window will remain
-          // unfocused. We'd prefer to set it focused in this case.
-          //
-          // The `window_size` plugin doesn't provide a way to set focus, and the `window_manager`
-          // plugin currently breaks the `onExitRequested` event.
-          // See: https://github.com/leanflutter/window_manager/issues/466
-          if (isFocused) {
-            time.reset();
-            await appWindow.hide();
-          } else {
-            time.reset();
-            await appWindow.show();
-          }
+          await appWindow.toggleVisible();
+          time.reset();
         }
       });
     }

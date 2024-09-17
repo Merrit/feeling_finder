@@ -137,7 +137,7 @@ class AppCubit extends Cubit<AppState> {
     if (closeToTray) {
       return;
     } else {
-      await _appWindow.dispose();
+      _appWindow.dispose();
       await hotKeyService.unregisterBindings();
       exit(0);
     }

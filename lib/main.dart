@@ -13,6 +13,7 @@ import 'package:http/http.dart' as http;
 
 import 'src/app.dart';
 import 'src/app/app.dart';
+import 'src/dbus/dbus_interface.dart';
 import 'src/emoji/cubit/emoji_cubit.dart';
 import 'src/emoji/emoji_service.dart';
 import 'src/helpers/helpers.dart';
@@ -45,7 +46,7 @@ void main(List<String> args) async {
       const String.fromEnvironment('VERBOSE') == 'true';
 
   await LoggingManager.initialize(verbose: verbose);
-  await closeExistingSessions();
+  await activateExistingSession();
 
   // Initialize the storage service.
   final storageService = StorageService();
@@ -61,7 +62,9 @@ void main(List<String> args) async {
   // Initialize the settings service.
   final settingsService = SettingsService(storageService);
 
-  final appWindow = await AppWindow.initialize();
+  final appWindow = AppWindow();
+  await appWindow.initialize();
+
   final systemTray = await SystemTray.initialize(appWindow);
 
   final appCubit = AppCubit(
@@ -81,13 +84,18 @@ void main(List<String> args) async {
   );
 
   // Initialize Visibility Shortcut (Depends on Settings Service)
-  if (platformIsLinuxX11() && appWindow != null) hotKeyService.initHotkeyRegistration(appWindow);
+  if (platformIsLinuxX11()) hotKeyService.initHotkeyRegistration(appWindow);
+
+  if (defaultTargetPlatform.isLinux) {
+    final dbusInterface = DBusInterface(appWindow);
+    await dbusInterface.initialize();
+  }
 
   // Run the app and pass in the state controllers.
   runApp(
     MultiRepositoryProvider(
       providers: [
-        if (appWindow != null) RepositoryProvider.value(value: appWindow),
+        RepositoryProvider.value(value: appWindow),
         RepositoryProvider.value(value: settingsService),
       ],
       child: MultiBlocProvider(
