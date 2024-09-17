@@ -56,7 +56,7 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
             ),
           ],
           searchController: searchController,
-          barHintText: 'Type to search',
+          barHintText: 'Search',
           viewHintText: 'Search for emoji',
           suggestionsBuilder: (context, controller) {
             return [
