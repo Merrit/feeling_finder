@@ -1,43 +1,26 @@
 import 'dart:async';
 import 'dart:io';
-import 'dart:ui';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
-import 'package:helpers/helpers.dart';
+import 'package:window_manager/window_manager.dart';
 import 'package:window_size/window_size.dart' as window_size;
 
-class AppWindow {
-  /// The app lifecycle listener.
-  late final AppLifecycleListener _appLifecycleListener;
+import '../logs/logging_manager.dart';
 
-  AppWindow._() {
-    _appLifecycleListener = AppLifecycleListener(
-      onExitRequested: _handleExitRequest,
-    );
+enum WindowEvent {
+  close,
+  closeRequested,
+  focused,
+  unfocused,
+}
+
+class AppWindow with WindowListener {
+  Future<void> initialize() async {
+    await windowManager.ensureInitialized();
+
+    windowManager.addListener(this);
+    await windowManager.setPreventClose(true);
   }
-
-  static Future<AppWindow?> initialize() async {
-    if (!defaultTargetPlatform.isDesktop) return null;
-    return AppWindow._();
-  }
-
-  /// To be called when the app is going to exit.
-  Future<void> dispose() async {
-    _appLifecycleListener.dispose();
-    await _windowEventController.close();
-  }
-
-  Future<AppExitResponse> _handleExitRequest() async {
-    // Emit an event informing the app that the window was requested to close.
-    _windowEventController.add(WindowEvent.closeRequested);
-
-    return AppExitResponse.cancel;
-  }
-
-  /// Exits the app.
-  void close() => exit(0);
 
   /// Stream that emits a signal when the window state has changed.
   Stream<WindowEvent> get events => _windowEventController.stream;
@@ -46,10 +29,24 @@ class AppWindow {
   final StreamController<WindowEvent> _windowEventController =
       StreamController<WindowEvent>.broadcast();
 
-  Future<bool> isFocused() async =>
-      SchedulerBinding.instance.lifecycleState == AppLifecycleState.resumed;
+  @override
+  void onWindowEvent(String eventName) {
+    log.d('Window event: $eventName');
 
-  Future<void> hide() async => window_size.setWindowVisibility(visible: false);
+    switch (eventName) {
+      case 'close':
+        _windowEventController.add(WindowEvent.closeRequested);
+    }
+  }
+
+  void close() {
+    dispose();
+    exit(0);
+  }
+
+  Future<void> hide() async => await windowManager.hide();
+  Future<bool> isFocused() async => await windowManager.isFocused();
+  Future<bool> isVisible() async => await windowManager.isVisible();
 
   /// Resets the window size to the default size.
   Future<void> resetSize() async {
@@ -66,11 +63,26 @@ class AppWindow {
     );
   }
 
-  Future<void> show() async => window_size.setWindowVisibility(visible: true);
-}
+  /// Sets whether the window should be shown in the taskbar.
+  Future<void> setSkipTaskbar(bool skip) async {
+    await windowManager.setSkipTaskbar(skip);
+  }
 
-enum WindowEvent {
-  closeRequested,
-  focused,
-  unfocused,
+  Future<void> show() async => await windowManager.show();
+
+  /// Toggles the visibility of the window.
+  ///
+  /// We wanted to have logic to focus the window if it's already visible but not focused, however
+  /// this is not possible on Wayland with GTK3. See:
+  /// https://gitlab.gnome.org/GNOME/gtk/-/issues/4335
+  Future<void> toggleVisible() async {
+    final isVisible = await windowManager.isVisible();
+    if (isVisible) {
+      await windowManager.hide();
+    } else {
+      await windowManager.show();
+    }
+  }
+
+  void dispose() => windowManager.removeListener(this);
 }
