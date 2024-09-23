@@ -45,6 +45,22 @@
   </screenshots>
   <content_rating type="oars-1.1"/>
   <releases>
+    <release version="1.8.0" date="2024-09-23">
+      <url type="details">https://github.com/Merrit/feeling_finder/releases/tag/v1.8.0</url>
+      <description>
+        <p>Features</p>
+        <ul>
+          <li>Linux: Launching a second app instance toggles window visibility. ()</li>
+          <li>Linux: Added instructions for keyboard shortcut on Wayland. ()</li>
+          <li>Added hint to search bar for the keyboard shortcut. ()</li>
+        </ul>
+        <p>Bug Fixes</p>
+        <ul>
+          <li>Changed the search hint text to just 'Search', until type-to-search can be properly implemented. ()</li>
+          <li>Fixed an issue with missing window icons in Wayland. ()</li>
+        </ul>
+      </description>
+    </release>
     <release version="1.7.0" date="2024-08-15">
       <description/>
     </release>
