@@ -1,17 +1,13 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:helpers/helpers.dart';
-import 'package:hotkey_manager/hotkey_manager.dart';
 
 import '../app/app.dart';
 import '../core/core.dart';
-import '../helpers/helpers.dart';
 import '../localization/strings.g.dart';
-import '../shortcuts/app_hotkey.dart';
-import '../window/app_window.dart';
 import 'cubit/settings_cubit.dart';
+import 'shortcut.dart';
 
 /// Displays the various settings that can be customized by the user.
 ///
@@ -21,7 +17,6 @@ class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
 
   static const routeName = '/settings';
-  static bool runsX11 = platformIsLinuxX11();
 
   @override
   Widget build(BuildContext context) {
@@ -113,43 +108,22 @@ class SettingsPage extends StatelessWidget {
       },
     );
 
-    final Widget hotkeyEnabledTile = BlocBuilder<SettingsCubit, SettingsState>(
-      builder: (context, state) {
-        return SwitchListTile(
-          title: Text(translations.settings.hotkeyToggle),
-          value: state.hotKeyEnabled,
-          onChanged: (value) {
-            if (value) {
-              hotKeyService.initHotkeyRegistration(context.read<AppWindow>());
-            } else {
-              hotKeyService.unregisterBindings();
-            }
-            settingsCubit.updateHotKeyEnabled(value);
-          },
-        );
-      },
-    );
-
-    final Widget hotkeyConfigurationTile = BlocBuilder<SettingsCubit, SettingsState>(
-      builder: (context, state) {
-        return Visibility(
-          visible: state.hotKeyEnabled,
-          maintainAnimation: true,
-          maintainState: true,
-          child: AnimatedOpacity(
-            opacity: state.hotKeyEnabled ? 1.0 : 0.0,
-            duration: const Duration(milliseconds: 500),
-            //TODO: Replace with proper hotkey configuration
-            child: Text(
-              translations.settings.shortcutUsage(
-                modifierKey: HotKeyModifier.alt.name,
-                actionKey: PhysicalKeyboardKey.period.keyLabel,
-              ),
-            ),
-          ),
-        );
-      },
-    );
+    final Widget shortcutTile;
+    // Hotkey is currently only supported on Linux
+    // https://github.com/Merrit/feeling_finder/pull/59#issuecomment-1588154461
+    if (defaultTargetPlatform.isLinux) {
+      shortcutTile = ListTile(
+        leading: const Icon(Icons.keyboard),
+        title: Text(translations.settings.shortcut),
+        trailing: const Icon(Icons.arrow_forward_ios),
+        onTap: () => Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const ShortcutSettingsPage()),
+        ),
+      );
+    } else {
+      shortcutTile = const SizedBox();
+    }
 
     final Widget versionWidgets = BlocBuilder<AppCubit, AppState>(
       builder: (context, state) {
@@ -215,8 +189,7 @@ class SettingsPage extends StatelessWidget {
             if (defaultTargetPlatform.isDesktop) hideOnCopyTile,
             if (defaultTargetPlatform.isDesktop) closeToTrayTile,
             if (defaultTargetPlatform.isDesktop) startHiddenInTrayTile,
-            if (runsX11) hotkeyEnabledTile,
-            if (runsX11) hotkeyConfigurationTile,
+            shortcutTile,
             const Divider(),
             versionWidgets,
             const Divider(),

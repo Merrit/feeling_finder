@@ -18,6 +18,7 @@
   "settings": {
     "title": "Settings",
     "closeToTray": "Close to system tray",
+    "copyCommand": "Copy command",
     "theme": "Theme",
     "systemTheme": "System",
     "lightTheme": "Light",
@@ -30,6 +31,11 @@
     "donate": "Donate",
     "homepage": "Homepage",
     "currentVersion": "Current version",
+    "shortcut": "Shortcut",
+    "shortcutExplanation": "A keyboard shortcut can be used to toggle the visibility of the app",
+    "builtInShortcut": "Built-in Shortcut",
+    "shortcutInstructionsHeader": "Manual Shortcut",
+    "shortcutInstructions": "Requires manual setup, but works on Wayland and is the most reliable.\n\n1. Open your system settings\n2. Go to Keyboard Shortcuts\n3. Add a new shortcut\n4. Set the command to:\n\n ```\ndbus-send --session --print-reply --dest=codes.merritt.FeelingFinder / codes.merritt.FeelingFinder.toggleWindow\n```\n5. Set the shortcut to your desired key combination",
     "hotkeyToggle": "Toggle visibility with a keyboard shortcut",
     "shortcutUsage": "Press {modifierKey} + {actionKey} to use the shortcut",
     "startHiddenInTray": "Start hidden in system tray"
