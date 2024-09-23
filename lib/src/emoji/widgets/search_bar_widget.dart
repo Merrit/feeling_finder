@@ -58,6 +58,27 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
           searchController: searchController,
           barHintText: 'Search',
           viewHintText: 'Search for emoji',
+          barTrailing: const [
+            // Hint that Ctrl + F can be used to search.
+            Text.rich(
+              TextSpan(
+                children: [
+                  TextSpan(text: 'Ctrl'),
+                  WidgetSpan(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Text('+'),
+                    ),
+                  ),
+                  TextSpan(text: 'F'),
+                ],
+              ),
+              style: TextStyle(
+                fontSize: 18.0,
+                color: Colors.grey,
+              ),
+            ),
+          ],
           suggestionsBuilder: (context, controller) {
             return [
               BlocBuilder<EmojiCubit, EmojiState>(
