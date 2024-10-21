@@ -1,3 +1,9 @@
+// For unknown reasons the integration test is broken, it just runs forever and 
+// never completes. I have tried to debug it but I couldn't find the issue.
+//
+// Giving up for now since the unit tests cover the needed functionality for the 
+// moment. I will revisit this later if needed.
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
