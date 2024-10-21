@@ -8,7 +8,6 @@ import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
 import '../app/app.dart';
 import '../core/core.dart';
-import '../helpers/helpers.dart';
 import '../settings/settings_page.dart';
 import 'cubit/emoji_cubit.dart';
 import 'emoji.dart';
@@ -111,12 +110,14 @@ class _EmojiPageState extends State<EmojiPage> {
                         _SettingsButton(focusNode: settingsButtonFocusNode),
                       ],
                     ),
-                    drawer: (platformIsMobile()) ? const Drawer(child: CategoryListView()) : null,
+                    drawer: (defaultTargetPlatform.isMobile)
+                        ? const Drawer(child: CategoryListView())
+                        : null,
                     body: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         // Category buttons shown in a drawer on mobile.
-                        if (!platformIsMobile()) const CategoryListView(),
+                        if (!defaultTargetPlatform.isMobile) const CategoryListView(),
                         EmojiGridView(floatingActionButtonKey, gridViewFocusNode),
                       ],
                     ),
