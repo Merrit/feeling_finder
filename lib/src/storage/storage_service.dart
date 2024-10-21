@@ -1,9 +1,10 @@
 import 'dart:io' show FileSystemException;
 
+import 'package:flutter/foundation.dart';
+import 'package:helpers/helpers.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 
-import '../helpers/helpers.dart';
 import '../logs/logging_manager.dart';
 
 /// Interfaces with the host OS to store & retrieve data from disk.
@@ -15,7 +16,7 @@ class StorageService {
   /// Needs to be initialized only once, in the `main()` function.
   Future<void> init() async {
     /// On desktop platforms initialize to a specific directory.
-    if (platformIsDesktop()) {
+    if (defaultTargetPlatform.isDesktop) {
       final dir = await getApplicationSupportDirectory();
       // Defaults to ~/.local/share/feeling_finder/storage
       Hive.init('${dir.path}/storage');
