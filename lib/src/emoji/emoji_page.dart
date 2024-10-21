@@ -107,7 +107,7 @@ class _EmojiPageState extends State<EmojiPage> {
                         searchController: searchController,
                       ),
                       actions: [
-                        _DebugButton(),
+                        const _DebugButton(),
                         _SettingsButton(focusNode: settingsButtonFocusNode),
                       ],
                     ),
@@ -539,6 +539,8 @@ void _showCustomEmojisTutorial(
 
 /// A button that shows the debug menu.
 class _DebugButton extends StatelessWidget {
+  const _DebugButton();
+
   @override
   Widget build(BuildContext context) {
     if (!kDebugMode) return const SizedBox();
