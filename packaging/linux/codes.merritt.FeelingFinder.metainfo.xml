@@ -45,6 +45,15 @@
   </screenshots>
   <content_rating type="oars-1.1"/>
   <releases>
+    <release version="1.8.1" date="2024-10-22">
+      <url type="details">https://github.com/Merrit/feeling_finder/releases/tag/v1.8.1</url>
+      <description>
+        <p>Bug Fixes</p>
+        <ul>
+          <li>Fixed an issue where the window interface was causing crashes on non-desktop platforms.</li>
+        </ul>
+      </description>
+    </release>
     <release version="1.8.0" date="2024-09-23">
       <url type="details">https://github.com/Merrit/feeling_finder/releases/tag/v1.8.0</url>
       <description>
