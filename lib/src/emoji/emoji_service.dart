@@ -120,8 +120,6 @@ extension UnicodeEmojiCategoryHelper on ue.Category {
         return EmojiCategory.symbols;
       case ue.Category.flags:
         return EmojiCategory.flags;
-      default:
-        return EmojiCategory.smileys;
     }
   }
 }
