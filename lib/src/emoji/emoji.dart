@@ -9,7 +9,7 @@ part 'emoji.g.dart';
 ///
 /// Also contains associated metadata like description and category.
 @freezed
-class Emoji with _$Emoji {
+abstract class Emoji with _$Emoji {
   const factory Emoji({
     /// A list of strings that also match this emoji from the unicode spec.
     /// Example: ```["laughing", "satisfied"]```.

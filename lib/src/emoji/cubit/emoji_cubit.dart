@@ -218,6 +218,9 @@ class EmojiCubit extends Cubit<EmojiState> {
     if (shouldExitApp || shouldHideApp) {
       // Hide the window even when exiting to give a feeling of responsiveness.
       await _appWindow?.hide();
+
+      // Reset copiedEmoji so the stale snackbar is dismissed.
+      emit(state.copyWith(copiedEmoji: null));
     }
 
     if (shouldExitApp) {

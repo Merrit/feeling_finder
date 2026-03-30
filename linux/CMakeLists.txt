@@ -41,7 +41,7 @@ endif()
 # of modifying this function.
 function(APPLY_STANDARD_SETTINGS TARGET)
   target_compile_features(${TARGET} PUBLIC cxx_std_14)
-  target_compile_options(${TARGET} PRIVATE -Wall -Werror)
+  target_compile_options(${TARGET} PRIVATE -Wall)
   target_compile_options(${TARGET} PRIVATE "$<$<NOT:$<CONFIG:Debug>>:-O3>")
   target_compile_definitions(${TARGET} PRIVATE "$<$<NOT:$<CONFIG:Debug>>:NDEBUG>")
 endfunction()
@@ -69,6 +69,7 @@ add_executable(${BINARY_NAME}
 # Apply the standard set of build settings. This can be removed for applications
 # that need different build settings.
 apply_standard_settings(${BINARY_NAME})
+target_compile_options(${BINARY_NAME} PRIVATE -Werror)
 
 # Add dependency libraries. Add any application-specific dependencies here.
 target_link_libraries(${BINARY_NAME} PRIVATE flutter)

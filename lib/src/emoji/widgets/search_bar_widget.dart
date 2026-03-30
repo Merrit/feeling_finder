@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../cubit/emoji_cubit.dart';
 import 'widgets.dart';
@@ -6,11 +7,13 @@ import 'widgets.dart';
 /// Widget that allows the user to search for emoji by keyword.
 class SearchBarWidget extends StatefulWidget {
   final FocusNode focusNode;
+  final FocusScopeNode parentFocusScope;
   final SearchController searchController;
 
   const SearchBarWidget({
     super.key,
     required this.focusNode,
+    required this.parentFocusScope,
     required this.searchController,
   });
 
@@ -41,6 +44,18 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
       child: Focus(
         focusNode: widget.focusNode,
         child: SearchAnchor.bar(
+          onClose: () {
+            searchController.clear();
+            emojiCubit.search('');
+            // The SearchAnchor's didPop registers a post-frame callback that
+            // unfocuses the anchor. We need to restore focus *after* that, so
+            // we schedule our request one frame later.
+            SchedulerBinding.instance.addPostFrameCallback((_) {
+              SchedulerBinding.instance.addPostFrameCallback((_) {
+                widget.parentFocusScope.requestFocus();
+              });
+            });
+          },
           viewTrailing: [
             Focus(
               // Tab navigation goes straight to the emojis.

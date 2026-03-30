@@ -1,7 +1,7 @@
 part of 'app_cubit.dart';
 
 @freezed
-class AppState with _$AppState {
+abstract class AppState with _$AppState {
   const factory AppState({
     /// True if this is the first run of the app.
     required bool firstRun,
