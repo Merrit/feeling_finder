@@ -8,6 +8,7 @@ import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
 import '../app/app.dart';
 import '../core/core.dart';
+import '../settings/cubit/settings_cubit.dart';
 import '../settings/settings_page.dart';
 import 'cubit/emoji_cubit.dart';
 import 'emoji.dart';
@@ -49,6 +50,15 @@ class _EmojiPageState extends State<EmojiPage> {
 
   bool haveShownReleaseNotes = false;
 
+  /// Dismiss the search view and clear the search text.
+  void _dismissSearch() {
+    if (searchController.isOpen) {
+      searchController.closeView('');
+    }
+    searchController.clear();
+    EmojiCubit.instance.search('');
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AppCubit, AppState>(
@@ -67,10 +77,11 @@ class _EmojiPageState extends State<EmojiPage> {
           },
           child: CallbackShortcuts(
             bindings: <ShortcutActivator, VoidCallback>{
-              // If the user presses the Escape key, remove focus from the search box.
+              // If the user presses the Escape key, dismiss & clear the search.
               const SingleActivator(
                 LogicalKeyboardKey.escape,
               ): () {
+                _dismissSearch();
                 if (searchBoxFocusNode.hasFocus) {
                   searchBoxFocusNode.unfocus();
                 }
@@ -86,44 +97,55 @@ class _EmojiPageState extends State<EmojiPage> {
             child: FocusScope(
               debugLabel: 'emojiPageFocusScope',
               node: emojiPageFocusScope,
-              child: BlocBuilder<EmojiCubit, EmojiState>(
-                buildWhen: (previous, current) => previous.category != current.category,
-                builder: (context, state) {
-                  Widget? floatingActionButton;
-                  if (state.category == EmojiCategory.custom) {
-                    floatingActionButton = FloatingActionButton(
-                      key: floatingActionButtonKey,
-                      onPressed: () => _showAddCustomEmojiDialog(context),
-                      child: const Icon(Icons.add),
-                    );
+              child: BlocListener<EmojiCubit, EmojiState>(
+                listenWhen: (previous, current) =>
+                    previous.copiedEmoji != current.copiedEmoji && current.copiedEmoji != null,
+                listener: (context, state) {
+                  final settings = context.read<SettingsCubit>().state;
+                  if (settings.hideOnCopy || settings.exitOnCopy) {
+                    _dismissSearch();
                   }
-
-                  return Scaffold(
-                    appBar: AppBar(
-                      centerTitle: true,
-                      title: SearchBarWidget(
-                        focusNode: searchBoxFocusNode,
-                        searchController: searchController,
-                      ),
-                      actions: [
-                        const _DebugButton(),
-                        _SettingsButton(focusNode: settingsButtonFocusNode),
-                      ],
-                    ),
-                    drawer: (defaultTargetPlatform.isMobile)
-                        ? const Drawer(child: CategoryListView())
-                        : null,
-                    body: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // Category buttons shown in a drawer on mobile.
-                        if (!defaultTargetPlatform.isMobile) const CategoryListView(),
-                        EmojiGridView(floatingActionButtonKey, gridViewFocusNode),
-                      ],
-                    ),
-                    floatingActionButton: floatingActionButton,
-                  );
                 },
+                child: BlocBuilder<EmojiCubit, EmojiState>(
+                  buildWhen: (previous, current) => previous.category != current.category,
+                  builder: (context, state) {
+                    Widget? floatingActionButton;
+                    if (state.category == EmojiCategory.custom) {
+                      floatingActionButton = FloatingActionButton(
+                        key: floatingActionButtonKey,
+                        onPressed: () => _showAddCustomEmojiDialog(context),
+                        child: const Icon(Icons.add),
+                      );
+                    }
+
+                    return Scaffold(
+                      appBar: AppBar(
+                        centerTitle: true,
+                        title: SearchBarWidget(
+                          focusNode: searchBoxFocusNode,
+                          parentFocusScope: emojiPageFocusScope,
+                          searchController: searchController,
+                        ),
+                        actions: [
+                          const _DebugButton(),
+                          _SettingsButton(focusNode: settingsButtonFocusNode),
+                        ],
+                      ),
+                      drawer: (defaultTargetPlatform.isMobile)
+                          ? const Drawer(child: CategoryListView())
+                          : null,
+                      body: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Category buttons shown in a drawer on mobile.
+                          if (!defaultTargetPlatform.isMobile) const CategoryListView(),
+                          EmojiGridView(floatingActionButtonKey, gridViewFocusNode),
+                        ],
+                      ),
+                      floatingActionButton: floatingActionButton,
+                    );
+                  },
+                ),
               ),
             ),
           ),
@@ -268,9 +290,14 @@ class _EmojiGridViewState extends State<EmojiGridView> {
         child: BlocListener<EmojiCubit, EmojiState>(
           listenWhen: (previous, current) => previous.copiedEmoji != current.copiedEmoji,
           listener: (context, state) {
-            // Show a notification when an emoji is copied to clipboard.
-            if (state.copiedEmoji == null) return;
             final messenger = ScaffoldMessenger.of(context);
+            // Dismiss any existing snackbar, e.g. when the window was hidden
+            // after copying and the snackbar timer was paused.
+            if (state.copiedEmoji == null) {
+              messenger.hideCurrentSnackBar();
+              return;
+            }
+            // Show a notification when an emoji is copied to clipboard.
             messenger.hideCurrentSnackBar();
             messenger.showSnackBar(
               SnackBar(

@@ -8,5 +8,6 @@
         "editor.rulers": [
             100
         ],
-    }
+    },
+    "cmake.ignoreCMakeListsMissing": true
 }

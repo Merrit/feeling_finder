@@ -2,7 +2,7 @@ part of 'emoji_cubit.dart';
 
 /// Represents the state of the main emoji page.
 @freezed
-class EmojiState with _$EmojiState {
+abstract class EmojiState with _$EmojiState {
   const factory EmojiState({
     /// The currently selected emoji category.
     required EmojiCategory category,
